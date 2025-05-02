@@ -1,7 +1,3 @@
-# Front-End-Challenge
-
-Este repositorio contiene todo lo relacionado al reto de Front End, como complemento del Back End previamente desarrollado en .NET.
-
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -56,4 +52,3 @@ export default tseslint.config({
   },
 })
 ```
-
