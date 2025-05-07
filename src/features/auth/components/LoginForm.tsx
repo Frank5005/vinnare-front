@@ -61,7 +61,7 @@ const LoginForm = () => {
 
         <PasswordInput
           label="Password"
-          type="password"
+          //type="password"
           placeholder="Enter your Password"
           {...register("password")}
           error={errors.password?.message}
