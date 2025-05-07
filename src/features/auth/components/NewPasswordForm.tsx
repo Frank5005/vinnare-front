@@ -30,6 +30,7 @@ type NewPasswordFormData = z.infer<typeof newPasswordSchema>;
 
 const NewPasswordForm = () => {
 
+    // @ts-ignore
     const { state } = useLocation();
     const navigate = useNavigate();
 
@@ -41,6 +42,7 @@ const NewPasswordForm = () => {
         resolver: zodResolver(newPasswordSchema),
     });
 
+    // @ts-ignore
     const onSubmit = async (data: any) => {
         console.log("onSubmit fired");
         try {
