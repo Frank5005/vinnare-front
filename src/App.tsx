@@ -1,5 +1,5 @@
-import { SiN26 } from 'react-icons/si'
 import './App.css'
+import Header from './components/Header'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 
@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <div>
-        <SignUp />
+        <Header />
       </div>
     </>
   )
