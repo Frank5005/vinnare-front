@@ -18,7 +18,7 @@ const CheckboxField = forwardRef<HTMLInputElement, CheckboxFieldProps>(
               checked:bg-black checked:border-black focus:ring-0"
               {...props}
             />
-            {/* Chulito */}
+            
             <svg
               className="absolute top-0 left-0 w-4 h-4 text-white hidden peer-checked:block pointer-events-none"
               viewBox="0 0 20 20"

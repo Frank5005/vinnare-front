@@ -1,19 +1,18 @@
-import LoginForm from "../features/auth/components/LoginForm";
+import SignUpForm from "../features/auth/components/SignUpForm";
 import logo from "../assets/logo.png";
 import background from "../assets/blueLines.png";
 
-const LoginPage = () => {
-    return (
-      <div className="w-screen h-screen flex flex-col md:flex-row">
-
-        <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 px-4">
+const SignUpPage = () => {
+  return (
+    <div className="min-h-screen w-screen flex flex-col md:flex-row bg-gray-100">
+      <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 px-4">
           <div className="w-full max-w-sm">
             <p className="text-xl font-bold mb-8">Tech Trend Emporium</p>
-            <LoginForm />
+            <SignUpForm />
           </div>
         </div>
-  
-        <div className="hidden md:flex relative w-full md:w-1/2 h-screen bg-gray-100 overflow-hidden">
+
+      <div className="hidden md:flex relative w-full md:w-1/2 h-screen bg-gray-100 overflow-hidden">
 
           <img
             src={background}
@@ -29,8 +28,8 @@ const LoginPage = () => {
             />
           </div>
         </div>
-      </div>
-    );
-  };
-  
-  export default LoginPage;
+    </div>
+  );
+};
+
+export default SignUpPage;

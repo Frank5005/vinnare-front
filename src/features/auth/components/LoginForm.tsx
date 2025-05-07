@@ -6,10 +6,12 @@ import PasswordInput from "../../../components/ui/PasswordInput";
 import CheckboxField from "../../../components/ui/CheckboxField";
 import FormCardLayout from "../../../layouts/FormCardLayout";
 import Button from "../../../components/ui/Button";
+import { useNavigate } from "react-router-dom";
+import { getRoleFromToken, login } from "../../../services/auth";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(8, "Password required"),
+  username: z.string().min(1, "Invalid username"),
+  password: z.string().min(1, "Password required"),
   remember: z.boolean().optional(),
 });
 
@@ -24,19 +26,36 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log("Login data:", data);
+  const navigate = useNavigate();
+  
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const token = await login(data);
+      const role = getRoleFromToken(token);
+      if (role === "Admin") {
+        navigate("/admin-employee-homepage");
+      } else if (role === "Shopper") {
+        navigate("/shop-list");
+      } else if (role === "Seller") {
+        navigate("/admin-employee-homepage");
+      }
+    }catch (error: any) {
+      console.error("Login error:", error.response?.data || error.message);
+      if (error.response && error.response.status === 401) {
+        alert("Invalid username or password. Please try again.");
+      }
+    }
   };
 
   return (
     <FormCardLayout welcome="Welcome !" title="Log in" subtitle="Please enter your credentials to log in.">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
         <InputField
-          label="Email"
-          type="email"
-          placeholder="Enter your user email"
-          {...register("email")}
-          error={errors.email?.message}
+          label="Username"
+          type="username"
+          placeholder="Enter your username"
+          {...register("username")}
+          error={errors.username?.message}
         />
 
         <PasswordInput
