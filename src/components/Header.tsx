@@ -1,4 +1,4 @@
-import { useState } from "react";
+//import { useState } from "react";
 import { FaSearch, FaShoppingBag } from "react-icons/fa";
 import HamburgerMenu from "./ui/HamburgerMenu";
 
