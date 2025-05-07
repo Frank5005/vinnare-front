@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: 'http://3.147.45.32:8080',
   withCredentials: true,
 });
 
@@ -15,3 +15,4 @@ api.interceptors.request.use((config) => {
   });
 
 export default api;
+
