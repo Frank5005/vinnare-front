@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 
 const api = axios.create({
-  baseURL: 'http://3.147.45.32:8080',
+  baseURL: 'https://4d82-3-147-45-32.ngrok-free.app',
   withCredentials: true,
 });
 
