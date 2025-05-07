@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaSearch, FaShoppingBag } from "react-icons/fa";
-import HamburgerMenu from "./HamburgerMenu";
+import HamburgerMenu from "./ui/HamburgerMenu";
 
 const isLoggedIn = true;
 const userName = "Jengrik";
