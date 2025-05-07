@@ -7,21 +7,13 @@ import CheckboxField from "../../../components/ui/CheckboxField";
 import FormCardLayout from "../../../layouts/FormCardLayout";
 import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
-import api from "../../../services/api";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import { getRoleFromToken, login } from "../../../services/auth";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Invalid username"),
   password: z.string().min(1, "Password required"),
   remember: z.boolean().optional(),
 });
-
-interface DecodedToken {
-  role: string;
-  email: string;
-  username: string;
-}
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -38,42 +30,17 @@ const LoginForm = () => {
   
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await api.post("/api/login", {
-        username: data.username,
-        password: data.password,
-      });
-  
-      console.log("Successful login", response.data);
-  
-      const { token } = response.data;
-
-      //Save the token in cookies
-      if(data.remember) {
-      Cookies.set("token", token, { expires: 1 }); //1 day expiration
-      }
-
-      //Decode the token to get user data
-      const decoded = jwtDecode<any>(token);
-      const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-      console.log(role);
-
-      console.log("User role:", role);
-  
-      //Navigate to the appropriate page based on the user role
+      const token = await login(data);
+      const role = getRoleFromToken(token);
       if (role === "Admin") {
         navigate("/admin-employee-homepage");
-      }
-      else if (role === "Shopper") {
+      } else if (role === "Shopper") {
         navigate("/shop-list");
-      }
-      else if (role === "Seller") {
+      } else if (role === "Seller") {
         navigate("/admin-employee-homepage");
       }
-
-
-    } catch (error: any) {
+    }catch (error: any) {
       console.error("Login error:", error.response?.data || error.message);
-      // Handle error (e.g., show a notification or message to the user)
       if (error.response && error.response.status === 401) {
         alert("Invalid username or password. Please try again.");
       }

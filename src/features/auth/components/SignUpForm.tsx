@@ -39,7 +39,7 @@ const SignUpForm = () => {
 
   const onSubmit = (data: SignUpFormData) => {
     console.log("Sign Up Data:", data);
-    // Aquí iría la lógica de envío al backend
+    // lógica de envío al backend
   };
 
   return (
