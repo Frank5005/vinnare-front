@@ -4,7 +4,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 pb-8">
             {/* Newsletter */}
-            <div className="md:w-1/3">
+            <div className="w-full md:w-1/3 mb-6 md:mb-0">
               <h2 className="text-2xl font-bold mb-2">Sign up for our newsletter</h2>
               <p className="text-gray-600 mb-4 text-sm">
                 Be the first to know about our special offers, news, and updates.
@@ -27,7 +27,7 @@ const Footer = () => {
               </form>
             </div>
             {/* Links */}
-            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="w-full md:flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {[1, 2, 3].map((col) => (
                 <div key={col}>
                   <h3 className="font-semibold mb-2">Lorem Ipsum</h3>
