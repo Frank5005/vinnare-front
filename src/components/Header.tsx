@@ -1,6 +1,7 @@
 //import { useState } from "react";
 import { FaSearch, FaShoppingBag } from "react-icons/fa";
 import HamburgerMenu from "./ui/HamburgerMenu";
+import { Link } from "react-router-dom";
 
 const isLoggedIn = true;
 const userName = "Jengrik";
@@ -21,8 +22,8 @@ const Header = () => {
   {/* Desktop links */}
   <div className="hidden md:flex items-center flex-1 justify-between">
     <div className="flex items-center">
-      <a href="#" className="mx-2 text-sm font-medium !text-black hover:underline">Shop List</a>
-      <a href="#" className="mx-2 text-sm font-medium !text-black hover:underline">Wishlist</a>
+      <Link to="/shop-list" className="mx-2 text-sm font-medium !text-black hover:underline">Shop List</Link>
+      <Link to="/wishlist" className="mx-2 text-sm font-medium !text-black hover:underline">Wishlist</Link>
       <div className="flex items-center mx-4 max-w-xl bg-gray-100 rounded px-2 py-1">
         <FaSearch className="text-gray-400 mr-2" />
         <input
