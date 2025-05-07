@@ -16,7 +16,7 @@ const securityQuestions = [
 const schema = z
   .object({
     email: z.string().email("Invalid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(8, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
     securityQuestion: z.string().min(1, "Select a question"),
     answer: z.string().min(1, "Answer is required"),
@@ -48,7 +48,7 @@ const SignUpForm = () => {
       title="Sign up"
       subtitle="Register to add items to your wishlist and make purchases"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
         <InputField
           label="Email"
           type="email"
