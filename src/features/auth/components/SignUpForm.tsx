@@ -6,17 +6,26 @@ import PasswordInput from "../../../components/ui/PasswordInput";
 import SelectField from "../../../components/ui/SelectField";
 import Button from "../../../components/ui/Button";
 import FormCardLayout from "../../../layouts/FormCardLayout";
+import { Link } from "react-router-dom";
 
 const securityQuestions = [
-  { label: "What is your pet’s name?", value: "pet" },
-  { label: "What city were you born in?", value: "city" },
-  { label: "What is your favorite color?", value: "color" },
+  { label: "What is your favorite color?", value: "WhatIsYourFavoriteColor" },
+  { label: "What is your pet’s name?", value: "WhatIsYourPetName" },
+  { label: "What is your birth city?", value: "WhatIsYourBirthCity" },
+  { label: "What is your mother’s maiden name?", value: "WhatIsYourMotherMaidenName" },
+  { label: "What is your favorite food?", value: "WhatIsYourFavoriteFood" },
+  { label: "What is your favorite sport?", value: "WhatIsYourFavoriteSport" },
+  { label: "What is your favorite movie?", value: "WhatIsYourFavoriteMovie" },
+  { label: "What is your favorite book?", value: "WhatIsYourFavoriteBook" },
 ];
 
 const schema = z
   .object({
     email: z.string().email("Invalid email"),
-    password: z.string().min(8, "Password must be at least 6 characters"),
+    password: z.string().min(8).regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+      "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 symbol"
+    ),
     confirmPassword: z.string(),
     securityQuestion: z.string().min(1, "Select a question"),
     answer: z.string().min(1, "Answer is required"),
@@ -89,9 +98,9 @@ const SignUpForm = () => {
 
         <p className="text-sm text-center text-gray-600">
           Already have an Account?{" "}
-          <a href="/login" className="text-black font-semibold hover:underline">
+          <Link to="/login" className="text-black font-semibold hover:underline">
             Login
-          </a>
+          </Link>
         </p>
       </form>
     </FormCardLayout>

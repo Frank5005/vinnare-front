@@ -7,6 +7,7 @@ import CheckboxField from "../../../components/ui/CheckboxField";
 import FormCardLayout from "../../../layouts/FormCardLayout";
 import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getRoleFromToken, login } from "../../../services/auth";
 
 const loginSchema = z.object({
@@ -52,7 +53,7 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
         <InputField
           label="Username"
-          type="username"
+          type="text"
           placeholder="Enter your username"
           {...register("username")}
           error={errors.username?.message}
@@ -60,6 +61,7 @@ const LoginForm = () => {
 
         <PasswordInput
           label="Password"
+          type="password"
           placeholder="Enter your Password"
           {...register("password")}
           error={errors.password?.message}
@@ -72,7 +74,10 @@ const LoginForm = () => {
             error={errors.remember?.message}
         />
 
-          <a href="#" className="!text-gray-400 !visited:text-black hover:!text-gray-800">
+          <a 
+            onClick={() => navigate("/forgot-password")}
+            className="!text-gray-400 !visited:text-black hover:!text-gray-800 cursor-pointer"
+          >
            Forgot Password ? 
           </a>
         </div>
@@ -83,9 +88,9 @@ const LoginForm = () => {
 
         <p className="text-sm text-center text-gray-400">
           Don’t have an Account?{" "}
-          <a href="#" className="!text-black !visited:text-black hover:!text-gray-800">
+          <Link to="/signup" className="!text-black !visited:text-black hover:!text-gray-800">
             Register
-          </a>
+          </Link>
         </p>
       </form>
     </FormCardLayout>

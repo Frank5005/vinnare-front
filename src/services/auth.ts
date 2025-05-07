@@ -7,6 +7,7 @@ export async function login({ username, password, remember }: { username: string
   const { token } = response.data;
   if (remember) {
     Cookies.set('token', token, { expires: 1 });
+    Cookies.set('username', username, { expires: 1 });
   }
   return token;
 }
