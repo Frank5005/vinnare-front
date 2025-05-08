@@ -2,6 +2,21 @@ import api from './api';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 
+export interface SignUpData {
+  name: string;
+  email: string;
+  username: string;
+  password: string;
+  address: string;
+  securityAnswer: string;
+  securityQuestion: string;
+}
+
+export async function signup(data: SignUpData) {
+  const response = await api.post('/api/auth', data);
+  return response.data;
+}
+
 export async function login({ username, password, remember }: { username: string, password: string, remember?: boolean }) {
   const response = await api.post('/api/login', { username, password });
   const { token } = response.data;
