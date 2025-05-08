@@ -6,7 +6,9 @@ import PasswordInput from "../../../components/ui/PasswordInput";
 import SelectField from "../../../components/ui/SelectField";
 import Button from "../../../components/ui/Button";
 import FormCardLayout from "../../../layouts/FormCardLayout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signup } from "../../../services/auth";
+import { useState } from "react";
 
 const securityQuestions = [
   { label: "What is your favorite color?", value: "WhatIsYourFavoriteColor" },
@@ -21,12 +23,15 @@ const securityQuestions = [
 
 const schema = z
   .object({
+    name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email"),
+    username: z.string().min(1, "Username is required"),
     password: z.string().min(8).regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
       "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 symbol"
     ),
     confirmPassword: z.string(),
+    address: z.string().min(1, "Address is required"),
     securityQuestion: z.string().min(1, "Select a question"),
     answer: z.string().min(1, "Answer is required"),
   })
@@ -38,17 +43,32 @@ const schema = z
 type SignUpFormData = z.infer<typeof schema>;
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: SignUpFormData) => {
-    console.log("Sign Up Data:", data);
-    // lógica de envío al backend
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      setError(null);
+      await signup({
+        name: data.name,
+        email: data.email,
+        username: data.username,
+        password: data.password,
+        address: data.address,
+        securityQuestion: data.securityQuestion,
+        securityAnswer: data.answer,
+      });
+      navigate('/login');
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'An error occurred during signup');
+    }
   };
 
   return (
@@ -58,6 +78,17 @@ const SignUpForm = () => {
       subtitle="Register to add items to your wishlist and make purchases"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+        {error && (
+          <div className="text-red-500 text-sm text-center">{error}</div>
+        )}
+
+        <InputField
+          label="Full Name"
+          placeholder="Enter your full name"
+          {...register("name")}
+          error={errors.name?.message}
+        />
+
         <InputField
           label="Email"
           type="email"
@@ -66,18 +97,32 @@ const SignUpForm = () => {
           error={errors.email?.message}
         />
 
+        <InputField
+          label="Username"
+          placeholder="Choose a username"
+          {...register("username")}
+          error={errors.username?.message}
+        />
+
         <PasswordInput
           label="Password"
-          placeholder="Enter your Password"
+          placeholder="Enter your password"
           {...register("password")}
           error={errors.password?.message}
         />
 
         <PasswordInput
           label="Repeat Password"
-          placeholder="Enter your Password again"
+          placeholder="Confirm your password"
           {...register("confirmPassword")}
           error={errors.confirmPassword?.message}
+        />
+
+        <InputField
+          label="Address"
+          placeholder="Enter your address"
+          {...register("address")}
+          error={errors.address?.message}
         />
 
         <SelectField
@@ -94,7 +139,9 @@ const SignUpForm = () => {
           error={errors.answer?.message}
         />
 
-        <Button type="submit">Sign up</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Signing up..." : "Sign up"}
+        </Button>
 
         <p className="text-sm text-center text-gray-600">
           Already have an Account?{" "}
@@ -106,5 +153,4 @@ const SignUpForm = () => {
     </FormCardLayout>
   );
 };
-
 export default SignUpForm;
