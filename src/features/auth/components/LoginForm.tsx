@@ -9,6 +9,8 @@ import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getRoleFromToken, login } from "../../../services/auth";
+import { useAuth } from "../../../context/AuthContext";
+import Cookies from "js-cookie";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Invalid username"),
@@ -28,11 +30,21 @@ const LoginForm = () => {
   });
 
   const navigate = useNavigate();
+  const { login: loginContext } = useAuth();
   
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const token = await login(data);
+      const response = await login(data);
+      const { token, username, email } = response;
       const role = getRoleFromToken(token);
+
+      Cookies.set("token", token, { expires: data.remember ? 7 : undefined });
+
+      localStorage.setItem("userName", username);
+      localStorage.setItem("userEmail", email);
+
+      loginContext(username);
+
       if (role === "Admin") {
         navigate("/admin-employee-homepage");
       } else if (role === "Shopper") {

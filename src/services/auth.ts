@@ -24,7 +24,7 @@ export async function login({ username, password, remember }: { username: string
     Cookies.set('token', token, { expires: 1 });
     Cookies.set('username', username, { expires: 1 });
   }
-  return token;
+  return response.data;
 }
 
 export function getRoleFromToken(token: string): string | null {

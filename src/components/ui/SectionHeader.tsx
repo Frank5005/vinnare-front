@@ -1,58 +1,32 @@
-import React, { useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import React from "react";
 
-interface ImageSliderProps {
-  images: string[];
-  className?: string;
+interface SectionHeaderProps {
+  title: string;
+  description?: string;
+  buttonText?: string;
+  onButtonClick?: () => void;
 }
 
-const ImageSlider: React.FC<ImageSliderProps> = ({ images, className }) => {
-  const [current, setCurrent] = useState(0);
-
-  const prevSlide = () => {
-    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
-  return (
-    <div className={`relative w-full h-64 md:h-96 overflow-hidden rounded-lg ${className}`}>
-      <img
-        src={images[current]}
-        alt={`slide-${current}`}
-        className="w-full h-full object-cover transition-all duration-500"
-      />
-      {/* Botón anterior */}
+const SectionHeader: React.FC<SectionHeaderProps> = ({
+  title,
+  description,
+  buttonText,
+  onButtonClick,
+}) => (
+  <div className="flex flex-col items-center text-center gap-4 py-8">
+    <h2 className="text-3xl md:text-4xl font-bold">{title}</h2>
+    {description && (
+      <p className="text-gray-500 max-w-xl">{description}</p>
+    )}
+    {buttonText && (
       <button
-        onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 text-4xl text-black bg-transparent p-0 m-0 border-none outline-none hover:scale-125 transition-transform"
-        aria-label="Previous slide"
-        style={{ background: 'none', border: 'none', boxShadow: 'none' }}
+        onClick={onButtonClick}
+        className="border border-black bg-transparent px-6 py-2 rounded-md font-semibold hover:bg-gray-200 hover:text-black transition"
       >
-        <FaChevronLeft strokeWidth={2} />
+        {buttonText}
       </button>
-      {/* Botón siguiente */}
-      <button
-        onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-4xl text-black bg-transparent p-0 m-0 border-none outline-none hover:scale-125 transition-transform"
-        aria-label="Next slide"
-        style={{ background: 'none', border: 'none', boxShadow: 'none' }}
-      >
-        <FaChevronRight strokeWidth={2} />
-      </button>
-      {/* Indicadores */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {images.map((_, idx) => (
-          <span
-            key={idx}
-            className={`w-3 h-3 rounded-full ${idx === current ? "bg-black" : "bg-gray-300"}`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
+    )}
+  </div>
+);
 
-export default ImageSlider;
+export default SectionHeader;
