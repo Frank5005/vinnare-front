@@ -3,20 +3,36 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProductComponent from "../../components/ui/ProductComponent";
 import FilterDropdown from "../../components/ui/FilterDropdown";
+//import { set } from "react-hook-form";
 
 const allProducts = [
-  { id: 1, name: "Natural Honey Bottle", price: 99, category: "Food", date: "2025-05-03", imageUrl: "/img1.png" },
-  { id: 2, name: "Itar", price: 89, category: "Itar", date: "2025-05-02", imageUrl: "/img2.png" },
-  { id: 3, name: "White Cap", price: 59, category: "Caps", date: "2025-04-30", imageUrl: "/img3.png" },
-  { id: 4, name: "Jae Namaz", price: 79, category: "Kafan", date: "2025-04-28", imageUrl: "/img4.png" },
-  { id: 5, name: "Dates", price: 49, category: "Food", date: "2025-04-25", imageUrl: "/img5.png" },
-  { id: 6, name: "Miswak", price: 39, category: "Itar", date: "2025-04-20", imageUrl: "/img6.png" },
+  { id: 1, name: "Natural Honey Bottle", price: 99, category: "Food", date: "2025-05-03", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 2, name: "Itar", price: 89, category: "Itar", date: "2025-05-02", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 3, name: "White Cap", price: 59, category: "Caps", date: "2025-04-30", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 4, name: "Jae Namaz", price: 79, category: "Kafan", date: "2025-04-28", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 5, name: "Dates", price: 49, category: "Food", date: "2025-04-25", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 6, name: "Miswak", price: 39, category: "Itar", date: "2025-04-20", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 7, name: "Natural Honey Bottle", price: 99, category: "Food", date: "2025-05-03", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 8, name: "Itar", price: 89, category: "Itar", date: "2025-05-02", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 9, name: "White Cap", price: 59, category: "Caps", date: "2025-04-30", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 10, name: "Jae Namaz", price: 79, category: "Kafan", date: "2025-04-28", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 11, name: "Dates", price: 49, category: "Food", date: "2025-04-25", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 12, name: "Miswak", price: 39, category: "Itar", date: "2025-04-20", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 13, name: "Miswak", price: 39, category: "Itar", date: "2025-04-20", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 14, name: "Natural Honey Bottle", price: 99, category: "Food", date: "2025-05-03", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 15, name: "Itar", price: 89, category: "Itar", date: "2025-05-02", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 16, name: "White Cap", price: 59, category: "Caps", date: "2025-04-30", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 17, name: "Jae Namaz", price: 79, category: "Kafan", date: "2025-04-28", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 18, name: "Dates", price: 49, category: "Food", date: "2025-04-25", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
+  { id: 19, name: "Miswak", price: 39, category: "Itar", date: "2025-04-20", imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
 ];
 
 const ShopList = () => {
   const [visibleCount, setVisibleCount] = useState(6);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState("az");
+  const [isLoading, setIsLoading] = useState(false);
+  const hasMore = visibleCount < allProducts.length;
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategories((prev) =>
@@ -39,13 +55,22 @@ const ShopList = () => {
     })
     .slice(0, visibleCount);
 
-  const handleScroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-      setVisibleCount((prev) => prev + 3);
-    }
-  };
-
   useEffect(() => {
+    let isScrolling: ReturnType<typeof setTimeout>;
+
+    const handleScroll = () => {
+      clearTimeout(isScrolling);
+      isScrolling = setTimeout(() => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && hasMore) {
+          setIsLoading(true);
+          setTimeout(() => {
+            setVisibleCount((prev) => Math.min(prev + 3, allProducts.length));
+            setIsLoading(false);
+          }, 500);
+        }
+      }, 500);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -93,6 +118,18 @@ const ShopList = () => {
 
         </div>
       </main>
+
+      {isLoading && hasMore && (
+        <div className="flex justify-center py-6">
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {!hasMore && (
+        <div className="text-center py-6">
+          <span className="text-gray-500 text-sm">You have seen all products.</span>
+        </div>
+      )}
 
       <Footer />
     </div>
