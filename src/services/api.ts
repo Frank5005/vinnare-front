@@ -8,7 +8,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     const token = Cookies.get("token");
-    if (token) {
+    if (token && !config.url?.includes("/verify") && !config.url?.includes("/reset-password")) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
