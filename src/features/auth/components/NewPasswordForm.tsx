@@ -5,12 +5,7 @@ import FormCardLayout from "../../../layouts/FormCardLayout";
 import Button from "../../../components/ui/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import PasswordInput from "../../../components/ui/PasswordInput";
-
-//const passwordRegex =
-///^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
-//const location = useLocation();
-//const { email, securityQuestion, securityAnswer } = location.state || {};
+import { resetPassword } from "../../../services/auth";
 
 const newPasswordSchema = z.object({
     password: z
@@ -30,9 +25,9 @@ type NewPasswordFormData = z.infer<typeof newPasswordSchema>;
 
 const NewPasswordForm = () => {
 
-    // @ts-ignore
-    const { state } = useLocation();
+    const location = useLocation();
     const navigate = useNavigate();
+    const email = location.state?.email;
 
     const {
         register,
@@ -42,18 +37,23 @@ const NewPasswordForm = () => {
         resolver: zodResolver(newPasswordSchema),
     });
 
-    // @ts-ignore
-    const onSubmit = async (data: any) => {
-        console.log("onSubmit fired");
+    const onSubmit = async (data: NewPasswordFormData) => {
+        if (!email) {
+            alert("Missing email for password reset.");
+            return;
+        }
+
+        if (data.password !== data.confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
         try {
-            alert("Password reset successful!");
-            console.log("Password reset successful");
+            await resetPassword(email, data.password);
+            alert("Password updated successfully.");
             navigate("/login");
         } catch (error: any) {
-            console.error("Reseting password error:", error.response?.data || error.message);
-            if (error.response && error.response.status === 401) {
-                alert("Invalid password. Please try again.");
-            }
+            alert("Error updating password. Please try again.");
         }
     };
 
