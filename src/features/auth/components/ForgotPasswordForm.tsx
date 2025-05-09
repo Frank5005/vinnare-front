@@ -7,23 +7,14 @@ import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SelectField from "../../../components/ui/SelectField";
+import { useEffect, useState } from "react";
+import { getSecurityQuestions, verifyEmail } from "../../../services/auth";
 
 const forgotSchema = z.object({
     email: z.string().email("Invalid email address"),
     securityQuestion: z.string().min(1, "Security question required"),
     securityAnswer: z.string().min(1, "Security answer required"),
 });
-
-const securityQuestions = [
-    { label: "What is your favorite color?", value: "WhatIsYourFavoriteColor" },
-    { label: "What is your pet’s name?", value: "WhatIsYourPetName" },
-    { label: "What is your birth city?", value: "WhatIsYourBirthCity" },
-    { label: "What is your mother’s maiden name?", value: "WhatIsYourMotherMaidenName" },
-    { label: "What is your favorite food?", value: "WhatIsYourFavoriteFood" },
-    { label: "What is your favorite sport?", value: "WhatIsYourFavoriteSport" },
-    { label: "What is your favorite movie?", value: "WhatIsYourFavoriteMovie" },
-    { label: "What is your favorite book?", value: "WhatIsYourFavoriteBook" },
-];
 
 type ForgotPasswordFormData = z.infer<typeof forgotSchema>;
 
@@ -36,16 +27,45 @@ const ForgotPasswordForm = () => {
         resolver: zodResolver(forgotSchema),
     });
 
+    const [questions, setQuestions] = useState<{ value: string, label: string }[]>([]);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            try {
+                const data = await getSecurityQuestions();
+                setQuestions(data);
+            } catch (error) {
+                console.error("Error loading questions", error);
+            }
+        };
+        fetchQuestions();
+    }, []);
 
     const onSubmit = async (data: ForgotPasswordFormData) => {
         try {
-            navigate("/new-password", { state: { email: data.email, securityQuestion: data.securityQuestion, securityAnswer: data.securityAnswer } });
-        } catch (error: any) {
-            console.error("Reseting password error:", error.response?.data || error.message);
-            if (error.response && error.response.status === 401) {
-                alert("Invalid email or answer. Please try again.");
+            setLoading(true);
+            const isValid = await verifyEmail(
+                data.email,
+                data.securityQuestion,
+                data.securityAnswer
+            );
+
+            if (isValid) {
+                navigate("/new-password", {
+                    state: {
+                        email: data.email,
+                    },
+                });
+            } else {
+                alert("Invalid email, question, or answer.");
             }
+        } catch (error: any) {
+            console.error("Error verifying recovery data:", error);
+            alert("Verification failed. Please check your info and try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -62,7 +82,7 @@ const ForgotPasswordForm = () => {
 
                 <SelectField
                     label="Security Question"
-                    options={securityQuestions}
+                    options={questions}
                     //placeholder="Select a security question"
                     {...register("securityQuestion")}
                     error={errors.securityQuestion?.message}
