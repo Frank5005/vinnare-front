@@ -48,7 +48,7 @@ export async function getSecurityQuestions(){
 };
 
 export async function resetPassword(email: string, newPassword: string) {
-  const response = await api.post("/api/reset-password", { email, newPassword });
+  const response = await api.put("/api/reset-password", { email, newPassword });
   return response.data;
 }
 
