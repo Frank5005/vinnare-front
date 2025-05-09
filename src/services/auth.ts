@@ -37,6 +37,7 @@ export function getRoleFromToken(token: string): string | null {
   }
 }
 
+/*
 export async function verifyEmail(email: string, securityQuestion: string, securityAnswer: string) {
   const response = await api.post('/api/verify', { email, securityQuestion, securityAnswer });
   return response.data;
@@ -51,5 +52,5 @@ export async function resetPassword(email: string, newPassword: string) {
   const response = await api.put("/api/reset-password", { email, newPassword });
   return response.data;
 }
-
+*/
 
