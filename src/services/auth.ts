@@ -17,11 +17,12 @@ export async function signup(data: SignUpData) {
   return response.data;
 }
 
-export async function login({ username, password, remember }: { username: string, password: string, remember?: boolean }) {
-  const response = await api.post('/api/login', { username, password });
-  const { token } = response.data;
+export async function login({ email, password, remember }: { email: string, password: string, remember?: boolean }) {
+  const response = await api.post('/api/login', { email, password });
+  const { token, username} = response.data;
   if (remember) {
     Cookies.set('token', token, { expires: 1 });
+    Cookies.set('email', email, { expires: 1 });
     Cookies.set('username', username, { expires: 1 });
   }
   return token;
@@ -35,3 +36,4 @@ export function getRoleFromToken(token: string): string | null {
     return null;
   }
 }
+

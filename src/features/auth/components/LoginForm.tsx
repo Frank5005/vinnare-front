@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { getRoleFromToken, login } from "../../../services/auth";
 
 const loginSchema = z.object({
-  username: z.string().min(1, "Invalid username"),
+  email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password required"),
   remember: z.boolean().optional(),
 });
@@ -52,11 +52,11 @@ const LoginForm = () => {
     <FormCardLayout welcome="Welcome !" title="Log in" subtitle="Please enter your credentials to log in.">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
         <InputField
-          label="Username"
-          type="text"
-          placeholder="Enter your username"
-          {...register("username")}
-          error={errors.username?.message}
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+          {...register("email")}
+          error={errors.email?.message}
         />
 
         <PasswordInput
