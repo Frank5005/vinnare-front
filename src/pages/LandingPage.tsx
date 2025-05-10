@@ -8,6 +8,7 @@ import ProductGrid from "../layouts/ProductGrid";
 import { useTopCategories } from "../hooks/useTopCategories";
 import { useLatestProducts } from "../hooks/useLatestProducts";
 import { useTopSellingProducts } from "../hooks/useTopSellingProducts";
+import { useNavigate } from "react-router-dom";
 
 const sliderImages = [
   "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?auto=format&fit=crop&w=1920&q=80",
@@ -16,6 +17,7 @@ const sliderImages = [
 ];
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const { categories, loading, error } = useTopCategories();
   const { products: latestProducts, loading: latestLoading, error: latestError } = useLatestProducts();
   const { products: topProducts, loading: topLoading, error: topError } = useTopSellingProducts();
@@ -36,7 +38,7 @@ const LandingPage = () => {
           title="Top Categories"
           description="Discover our most popular categories, featuring the best-selling products that our customers love. "
           buttonText="Shop All"
-          onButtonClick={() => { }}
+          onButtonClick={() => navigate("/shop-list")}
         />
         {loading ? (
           <div className="flex justify-center items-center h-64">
@@ -58,7 +60,7 @@ const LandingPage = () => {
           title="Latest Arrivals"
           description="Discover our newest additions to the store, featuring the latest products that have just arrived."
           buttonText="Shop All"
-          onButtonClick={() => { }}
+          onButtonClick={() => navigate("/shop-list")}
         />
         {latestLoading ? (
           <div className="flex justify-center items-center h-64">
@@ -77,7 +79,7 @@ const LandingPage = () => {
           title="Our Best Sellers"
           description="Explore our most popular products, loved and trusted by our customers."
           buttonText="Shop All"
-          onButtonClick={() => { }}
+          onButtonClick={() => navigate("/shop-list")}
         />
         {topLoading ? (
           <div className="flex justify-center items-center h-64">

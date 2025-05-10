@@ -1,13 +1,14 @@
 //import { useState } from "react";
-import { FaSearch, FaShoppingBag } from "react-icons/fa";
+import { FaShoppingBag } from "react-icons/fa";
 import HamburgerMenu from "./ui/HamburgerMenu";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate,Link } from "react-router-dom";
-
-const cartCount = 0;
+import { useNavigate, Link } from "react-router-dom";
+import { SearchBar } from "./SearchBar";
+import { useCart } from "../hooks/useCart";
 
 const Header = () => {
   const { isLoggedIn, userName, logout } = useAuth();
+  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -36,20 +37,15 @@ const Header = () => {
           <div className="flex items-center">
             <Link to="/shop-list" className="mx-2 text-sm font-medium !text-black hover:underline">Shop List</Link>
             <Link to="/wishlist" className="mx-2 text-sm font-medium !text-black hover:underline">Wishlist</Link>
-            <div className="flex items-center mx-4 max-w-xl bg-gray-100 rounded px-2 py-1">
-              <FaSearch className="text-gray-400 mr-2" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-full bg-transparent outline-none text-sm border-none"
-              />
+            <div className="mx-4 flex-1 min-w-[300px]">
+              <SearchBar />
             </div>
           </div>
           {isLoggedIn ? (
             <div className="flex items-center gap-4 ml-8">
-              <div className="flex items-center cursor-pointer" onClick={() => navigate("/cart") }>
+              <div className="flex items-center cursor-pointer" onClick={() => navigate("/cart")}>
                 <FaShoppingBag className="text-xl mr-1" />
-                <span className="text-sm">{cartCount}</span>
+                <span className="text-sm">{totalItems}</span>
               </div>
               <span className="text-sm">{userName}</span>
               <button
@@ -69,7 +65,7 @@ const Header = () => {
           )}
         </div>
         {/* Menú hamburguesa para mobile */}
-        <HamburgerMenu isLoggedIn={isLoggedIn} userName={userName} cartCount={cartCount} />
+        <HamburgerMenu isLoggedIn={isLoggedIn} userName={userName} cartCount={totalItems} />
       </nav>
     </header>
   );

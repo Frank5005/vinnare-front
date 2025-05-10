@@ -17,8 +17,8 @@ export async function signup(data: SignUpData) {
   return response.data;
 }
 
-export async function login({ username, password, remember }: { username: string, password: string, remember?: boolean }) {
-  const response = await api.post('/api/login', { username, password });
+export async function login({ email, username, password, remember }: { email: string, username: string, password: string, remember?: boolean }) {
+  const response = await api.post('/api/login', { email, password });
   const { token } = response.data;
   if (remember) {
     Cookies.set('token', token, { expires: 1 });

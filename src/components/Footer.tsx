@@ -1,4 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigate("/signup");
+  };
+
   return (
     <footer className="bg-gray-100 border-t border-gray-300 pt-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -9,7 +18,7 @@ const Footer = () => {
             <p className="text-black mb-4 text-sm">
               Be the first to know about our special offers, news, and updates.
             </p>
-            <form className="w-full">
+            <form className="w-full" onSubmit={handleSignUp}>
               <div className="relative w-full">
                 <input
                   type="email"

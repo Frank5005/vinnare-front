@@ -6,6 +6,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Request interceptor to add auth token
 api.interceptors.request.use((config) => {
     const token = Cookies.get("token");
     if (token) {

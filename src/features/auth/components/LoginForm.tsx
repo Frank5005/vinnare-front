@@ -13,7 +13,7 @@ import { useAuth } from "../../../context/AuthContext";
 import Cookies from "js-cookie";
 
 const loginSchema = z.object({
-  username: z.string().min(1, "Invalid username"),
+  email: z.string().email("Invalid email"),
   password: z.string().min(1, "Password required"),
   remember: z.boolean().optional(),
 });
@@ -34,11 +34,14 @@ const LoginForm = () => {
   
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await login(data);
+      const response = await login({
+        ...data,
+        username: data.email 
+      });
       const { token, username, email } = response;
       const role = getRoleFromToken(token);
 
-      Cookies.set("token", token, { expires: data.remember ? 7 : undefined });
+      Cookies.set("token", token.replace('Bearer ', ''), { expires: data.remember ? 7 : undefined });
 
       localStorage.setItem("userName", username);
       localStorage.setItem("userEmail", email);
@@ -64,11 +67,11 @@ const LoginForm = () => {
     <FormCardLayout welcome="Welcome !" title="Log in" subtitle="Please enter your credentials to log in.">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
         <InputField
-          label="Username"
-          type="text"
-          placeholder="Enter your username"
-          {...register("username")}
-          error={errors.username?.message}
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+          {...register("email")}
+          error={errors.email?.message}
         />
 
         <PasswordInput
@@ -99,7 +102,7 @@ const LoginForm = () => {
         </Button>
 
         <p className="text-sm text-center text-gray-400">
-          Don’t have an Account?{" "}
+          Don't have an Account?{" "}
           <Link to="/signup" className="!text-black !visited:text-black hover:!text-gray-800">
             Register
           </Link>
