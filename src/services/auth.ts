@@ -74,25 +74,34 @@ export async function getSecurityQuestions() {
   const response = await api.get("/api/securityquestions");
   const rawQuestions = response.data;
 
-  const formattedQuestions = rawQuestions.map((q: { id: number; name: string }) => ({
-    value: q.name,
-    label: formatLabel(q.name),
-  }));
+  const formattedQuestions = rawQuestions.map(
+    (q: { id: number; name: string }) => ({
+      value: q.name,
+      label: formatLabel(q.name),
+    })
+  );
 
   return formattedQuestions;
 }
 
 function formatLabel(text: string) {
   return text
-    .replace(/([A-Z])/g, ' $1')
+    .replace(/([A-Z])/g, " $1")
     .replace(/^./, (str) => str.toUpperCase())
     .trim();
 }
 
-export async function resetPassword(newPassword: string, token: string) {
-  const res = await api.put("/api/user",{
-    newPassword,
-    token,
-  });
+export async function resetPassword(Password: string, token: string) {
+  const res = await api.put(
+    "/api/user",
+    {
+      password: Password,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return res.data;
 }
