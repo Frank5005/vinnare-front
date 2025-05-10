@@ -7,9 +7,10 @@ import SelectField from "../../../components/ui/SelectField";
 import Button from "../../../components/ui/Button";
 import FormCardLayout from "../../../layouts/FormCardLayout";
 import { Link, useNavigate } from "react-router-dom";
-import { signup } from "../../../services/auth";
-import { useState } from "react";
+import { getSecurityQuestions, signup } from "../../../services/auth";
+import { useEffect, useState } from "react";
 
+/*
 const securityQuestions = [
   { label: "What is your favorite color?", value: "WhatIsYourFavoriteColor" },
   { label: "What is your pet’s name?", value: "WhatIsYourPetName" },
@@ -20,6 +21,7 @@ const securityQuestions = [
   { label: "What is your favorite movie?", value: "WhatIsYourFavoriteMovie" },
   { label: "What is your favorite book?", value: "WhatIsYourFavoriteBook" },
 ];
+*/
 
 const schema = z
   .object({
@@ -52,6 +54,20 @@ const SignUpForm = () => {
   } = useForm<SignUpFormData>({
     resolver: zodResolver(schema),
   });
+
+  const [questions, setQuestions] = useState<{ value: string, label: string }[]>([]);
+
+  useEffect(() => {
+          const fetchQuestions = async () => {
+              try {
+                  const data = await getSecurityQuestions();
+                  setQuestions(data);
+              } catch (error) {
+                  console.error("Error loading questions", error);
+              }
+          };
+          fetchQuestions();
+      }, []);
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
@@ -127,7 +143,7 @@ const SignUpForm = () => {
 
         <SelectField
           label="Security question"
-          options={securityQuestions}
+          options={questions}
           {...register("securityQuestion")}
           error={errors.securityQuestion?.message}
         />

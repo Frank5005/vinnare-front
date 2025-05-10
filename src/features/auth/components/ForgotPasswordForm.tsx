@@ -53,11 +53,8 @@ const ForgotPasswordForm = () => {
             );
 
             if (isValid) {
-                navigate("/new-password", {
-                    state: {
-                        email: data.email,
-                    },
-                });
+                localStorage.setItem("resetToken", isValid.token);
+                navigate("/new-password");
             } else {
                 alert("Invalid email, question, or answer.");
             }

@@ -38,8 +38,9 @@ const NewPasswordForm = () => {
     });
 
     const onSubmit = async (data: NewPasswordFormData) => {
-        if (!email) {
-            alert("Missing email for password reset.");
+        const token = localStorage.getItem("resetToken");
+        if (!token) {
+            alert("Missing reset token.");
             return;
         }
 
@@ -49,7 +50,8 @@ const NewPasswordForm = () => {
         }
 
         try {
-            await resetPassword(email, data.password);
+            await resetPassword(data.password, token);
+            localStorage.removeItem("resetToken");
             alert("Password updated successfully.");
             navigate("/login");
         } catch (error: any) {
