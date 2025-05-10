@@ -2,14 +2,14 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 
 const api = axios.create({
-  baseURL: 'http://3.147.45.32:8080',
+  baseURL: 'https://4d82-3-147-45-32.ngrok-free.app',
   withCredentials: true,
 });
 
 // Request interceptor to add auth token
 api.interceptors.request.use((config) => {
     const token = Cookies.get("token");
-    if (token) {
+    if (token && !config.url?.includes("/verify") && !config.url?.includes("/reset-password")) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

@@ -17,11 +17,12 @@ export async function signup(data: SignUpData) {
   return response.data;
 }
 
-export async function login({ email, username, password, remember }: { email: string, username: string, password: string, remember?: boolean }) {
+export async function login({ email, password, remember }: { email: string, password: string, remember?: boolean }) {
   const response = await api.post('/api/login', { email, password });
-  const { token } = response.data;
+  const { token, username} = response.data;
   if (remember) {
     Cookies.set('token', token, { expires: 1 });
+    Cookies.set('email', email, { expires: 1 });
     Cookies.set('username', username, { expires: 1 });
   }
   return response.data;
@@ -35,3 +36,20 @@ export function getRoleFromToken(token: string): string | null {
     return null;
   }
 }
+
+export async function verifyEmail(email: string, securityQuestion: string, securityAnswer: string) {
+  const response = await api.post('/api/verify', { email, securityQuestion, securityAnswer });
+  return response.data;
+}
+
+export async function getSecurityQuestions(){
+  const response = await api.get("/api/security-questions");
+  return response.data;
+};
+
+export async function resetPassword(email: string, newPassword: string) {
+  const response = await api.put("/api/reset-password", { email, newPassword });
+  return response.data;
+}
+
+

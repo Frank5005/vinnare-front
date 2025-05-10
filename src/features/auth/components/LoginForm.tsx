@@ -13,7 +13,7 @@ import { useAuth } from "../../../context/AuthContext";
 import Cookies from "js-cookie";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email"),
+  email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password required"),
   remember: z.boolean().optional(),
 });
@@ -76,7 +76,7 @@ const LoginForm = () => {
 
         <PasswordInput
           label="Password"
-          type="password"
+          //type="password"
           placeholder="Enter your Password"
           {...register("password")}
           error={errors.password?.message}
