@@ -93,7 +93,9 @@ const SignUpForm = () => {
       title="Sign up"
       subtitle="Register to add items to your wishlist and make purchases"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+      <form 
+        onSubmit={handleSubmit(onSubmit)} 
+        className="flex flex-col space-y-4 w-full max-w-lg mx-auto text-base">
         {error && (
           <div className="text-red-500 text-sm text-center">{error}</div>
         )}

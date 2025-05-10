@@ -9,6 +9,8 @@ import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getRoleFromToken, login } from "../../../services/auth";
+import { useAuth } from "../../../context/AuthContext";
+import Cookies from "js-cookie";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -28,11 +30,24 @@ const LoginForm = () => {
   });
 
   const navigate = useNavigate();
+  const { login: loginContext } = useAuth();
   
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const token = await login(data);
+      const response = await login({
+        ...data,
+        username: data.email 
+      });
+      const { token, username, email } = response;
       const role = getRoleFromToken(token);
+
+      Cookies.set("token", token.replace('Bearer ', ''), { expires: data.remember ? 7 : undefined });
+
+      localStorage.setItem("userName", username);
+      localStorage.setItem("userEmail", email);
+
+      loginContext(username);
+
       if (role === "Admin") {
         navigate("/admin-employee-homepage");
       } else if (role === "Shopper") {
@@ -87,7 +102,7 @@ const LoginForm = () => {
         </Button>
 
         <p className="text-sm text-center text-gray-400">
-          Don’t have an Account?{" "}
+          Don't have an Account?{" "}
           <Link to="/signup" className="!text-black !visited:text-black hover:!text-gray-800">
             Register
           </Link>

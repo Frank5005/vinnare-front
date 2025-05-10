@@ -1,7 +1,16 @@
+import AdminHeader from "../../components/AdminHeader";
+
 const ProductsList = () => {
     return (
-      <div className="w-screen h-screen flex flex-col md:flex-row overflow-hidden">
+      <div className="min-h-screen flex flex-col bg-gray-100">
+      {/* Header sticky */}
+      <div className="sticky top-0 z-50">
+        <AdminHeader />
       </div>
+      <main className="flex-1 flex items-center justify-center">
+        <h1 className="text-4xl font-bold text-gray-900">Product List</h1>
+      </main>
+    </div>
     );
   };
   

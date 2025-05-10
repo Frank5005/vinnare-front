@@ -33,7 +33,7 @@ export async function login({
     Cookies.set("email", email, { expires: 1 });
     Cookies.set("username", username, { expires: 1 });
   }
-  return token;
+  return response.data;
 }
 
 /*export async function logout() {
