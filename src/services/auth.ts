@@ -29,9 +29,12 @@ export async function login({
   const response = await api.post("/api/login", { email, password });
   const { token, username } = response.data;
   if (remember) {
-    Cookies.set("token", token, { expires: 1 });
-    Cookies.set("email", email, { expires: 1 });
-    Cookies.set("username", username, { expires: 1 });
+    localStorage.setItem("token", token.replace("Bearer ", ""));
+    localStorage.setItem("username", username);
+    localStorage.setItem("email", email);
+    //Cookies.set("token", token, { expires: 1 });
+    //Cookies.set("email", email, { expires: 1 });
+    //Cookies.set("username", username, { expires: 1 });
   }
   return response.data;
 }
@@ -105,3 +108,8 @@ export async function resetPassword(Password: string, token: string) {
   );
   return res.data;
 }
+
+export const isAuthenticated = () => {
+  const token = localStorage.getItem("Token");
+  return !!token;
+};

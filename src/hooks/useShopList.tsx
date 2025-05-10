@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getProducts, getCategories } from "../../../services/shopper";
+import { getProducts, getCategories } from "../services/shopper";
 
-const Shop = () => {
+const useShopList = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<{ name: string }[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -76,4 +76,4 @@ const Shop = () => {
 
 };
 
-export default Shop;
+export default useShopList;
