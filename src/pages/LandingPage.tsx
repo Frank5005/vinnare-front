@@ -6,27 +6,19 @@ import CategoryGrid from "../layouts/CategoryGrid";
 import StaggeredImageGrid from "../components/StaggeredImageGrid";
 import ProductGrid from "../layouts/ProductGrid";
 import { useTopCategories } from "../hooks/useTopCategories";
+import { useLatestProducts } from "../hooks/useLatestProducts";
+import { useTopSellingProducts } from "../hooks/useTopSellingProducts";
 
 const sliderImages = [
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-];
-
-const arrivalsImages = [
-  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-];
-
-const products = [
-  { image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80", name: "Jae Namaz", price: 99 },
-  { image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80", name: "Dates", price: 99 },
-  { image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80", name: "Miswak", price: 99 },
+  "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1920&q=80"
 ];
 
 const LandingPage = () => {
   const { categories, loading, error } = useTopCategories();
+  const { products: latestProducts, loading: latestLoading, error: latestError } = useLatestProducts();
+  const { products: topProducts, loading: topLoading, error: topError } = useTopSellingProducts();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -63,21 +55,47 @@ const LandingPage = () => {
 
         {/* Latest Arrivals Section */}
         <SectionHeader
-          title="Our latest arrivals"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          title="Latest Arrivals"
+          description="Discover our newest additions to the store, featuring the latest products that have just arrived."
           buttonText="Shop All"
           onButtonClick={() => { }}
         />
-        <StaggeredImageGrid images={arrivalsImages} />
+        {latestLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        ) : latestError ? (
+          <div className="text-center text-red-500 p-4">{latestError}</div>
+        ) : (
+          <StaggeredImageGrid
+            images={latestProducts.map(product => product.image)}
+          />
+        )}
 
-        {/* Products Section */}
+        {/* our products section */}
         <SectionHeader
-          title="Our Products"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          title="Our Best Sellers"
+          description="Explore our most popular products, loved and trusted by our customers."
           buttonText="Shop All"
           onButtonClick={() => { }}
         />
-        <ProductGrid products={products} />
+        {topLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        ) : topError ? (
+          <div className="text-center text-red-500 p-4">{topError}</div>
+        ) : (
+          <ProductGrid
+            products={topProducts.map(product => ({
+              image: product.image,
+              name: product.title,
+              price: product.price,
+              description: product.description,
+              category: product.category
+            }))}
+          />
+        )}
       </main>
       <div className="mb-16" />
       <Footer />

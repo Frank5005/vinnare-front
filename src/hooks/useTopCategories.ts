@@ -17,22 +17,11 @@ export const useTopCategories = () => {
       try {
         const response = await api.get('/api/category/top');
         const data = response.data;
-
-        // Transform the image URLs to direct image links
-        const transformedCategories = data.map((category: Category) => {
-          let imageId = category.imageUrl;
-
-          if (imageId.includes('imgur.com/')) {
-            const match = imageId.match(/imgur\.com\/(?:a\/)?([\w]+)/);
-            if (match && match[1]) {
-              imageId = match[1];
-            }
-          }
-          return {
-            ...category,
-            imageUrl: `https://i.imgur.com/${imageId}.png`
-          };
-        });
+        
+        const transformedCategories = data.map((category: Category) => ({
+          ...category,
+          imageUrl: category.imageUrl + '.png'
+        }));
 
         setCategories(transformedCategories);
       } catch (err) {
