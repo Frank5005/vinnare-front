@@ -36,7 +36,7 @@ const LoginForm = () => {
     try {
       const response = await login({
         ...data,
-        username: data.email 
+        //username: data.email  
       });
       const { token, username, email } = response;
       const role = getRoleFromToken(token);
