@@ -41,8 +41,9 @@ const LoginForm = () => {
       const { token, username, email } = response;
       const role = getRoleFromToken(token);
 
-      Cookies.set("token", token.replace('Bearer ', ''), { expires: data.remember ? 7 : undefined });
+      //Cookies.set("token", token.replace('Bearer ', ''), { expires: data.remember ? 7 : undefined });
 
+      localStorage.setItem("token", token.replace('Bearer ', ''));
       localStorage.setItem("userName", username);
       localStorage.setItem("userEmail", email);
 

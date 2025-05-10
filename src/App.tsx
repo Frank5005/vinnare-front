@@ -26,6 +26,7 @@ import OrderDetail from './pages/Shopper/OrderDetail';
 import ProductDetail from './pages/Shopper/ProductDetail';
 import ShopList from './pages/Shopper/ShopList';
 import Wishlist from './pages/Shopper/Wishlist';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 function App() {
@@ -50,15 +51,15 @@ function App() {
         <Route path="/view-all-users" element={<ViewAllUsers />} />
 
         {/* Shopper */}
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout-address" element={<CheckoutAddress />} />
-        <Route path="/checkout-payment" element={<CheckoutPayment />} />
-        <Route path="/checkout-shipping" element={<CheckoutShipping />} />
+        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>}/>
+        <Route path="/checkout-address" element={<ProtectedRoute><CheckoutAddress /></ProtectedRoute>} />
+        <Route path="/checkout-payment" element={<ProtectedRoute><CheckoutPayment /></ProtectedRoute>} />
+        <Route path="/checkout-shipping" element={<ProtectedRoute><CheckoutShipping /></ProtectedRoute>} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/order-detail" element={<OrderDetail />} />
         <Route path="/product-detail" element={<ProductDetail />} />
         <Route path="/shop-list" element={<ShopList />} />
-        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>}/>
 
         {/* Catch-all route */}
       </Routes>

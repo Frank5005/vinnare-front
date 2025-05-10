@@ -2,7 +2,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProductComponent from "../../components/ui/ProductComponent";
 import FilterDropdown from "../../components/ui/FilterDropdown";
-import ShopProducts from "../../features/shopper/components/Shop";
+import ShopProducts from "../../hooks/useShopList";
 
 const ShopList = () => {
 
