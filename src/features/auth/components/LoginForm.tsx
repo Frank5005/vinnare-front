@@ -46,15 +46,18 @@ const LoginForm = () => {
       localStorage.setItem("token", token.replace('Bearer ', ''));
       localStorage.setItem("userName", username);
       localStorage.setItem("userEmail", email);
+      if (role) {
+        localStorage.setItem("userRole", role);
+      }
 
       loginContext(username);
 
       if (role === "Admin") {
-        navigate("/admin-employee-homepage");
+        navigate("/admin/homepage");
       } else if (role === "Shopper") {
         navigate("/shop-list");
       } else if (role === "Seller") {
-        navigate("/admin-employee-homepage");
+        navigate("/admin/homepage");
       }
     }catch (error: any) {
       console.error("Login error:", error.response?.data || error.message);
