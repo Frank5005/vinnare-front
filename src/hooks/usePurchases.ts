@@ -31,7 +31,7 @@ export const usePurchases = () => {
           ...purchase,
           userName: purchase.userName || userName,
         }));
-        setPurchases(response.data);
+        setPurchases(purchasesWithUserName);
       } catch (err: any) {
         setError("Error fetching purchases: " + (err?.message || JSON.stringify(err)));
         console.error("Error fetching purchases:", err);
