@@ -41,14 +41,14 @@ function App() {
         <Route path="/new-password" element={<NewPassword />} />
 
         {/* Admin - Employee */}
-        <Route path="/admin-employee-homepage" element={<AdminEmployeeHomepage />} />
-        <Route path="/category-list" element={<CategoryList />} />
-        <Route path="/create-category" element={<CreateCategory />} />
-        <Route path="/create-employee" element={<CreateEmployee />} />
-        <Route path="/create-product" element={<CreateProduct />} />
-        <Route path="/jobs-list" element={<JobsList />} />
-        <Route path="/products-list" element={<ProductsList />} />
-        <Route path="/view-all-users" element={<ViewAllUsers />} />
+        <Route path="/admin/homepage" element={<AdminEmployeeHomepage />} />
+        <Route path="/admin/categories-list" element={<CategoryList />} />
+        <Route path="/admin/create-category" element={<CreateCategory />} />
+        <Route path="/admin/create-employee" element={<CreateEmployee />} />
+        <Route path="/admin/create-product" element={<CreateProduct />} />
+        <Route path="/admin/jobs-list" element={<JobsList />} />
+        <Route path="/admin/products-list" element={<ProductsList />} />
+        <Route path="/admin/view-all-users" element={<ViewAllUsers />} />
 
         {/* Shopper */}
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>}/>

@@ -14,17 +14,17 @@ const AdminHeader = () => {
   return (
     <header>
       {/* Top black bar */}
-      <div className="w-full bg-black text-white text-xs flex justify-between items-center px-10 py-1">
-        <span className="mr-8">USD</span>
+      <div className="w-full bg-black text-white text-xs flex justify-between items-center px-4 md:px-10 py-1">
+        <span className="mr-4 md:mr-8">USD</span>
         <span className="text-center flex-1">FREE SHIPPING ON ALL HERMAN MILLER! FEB. 25–28.</span>
-        <span className="ml-8 text-right hidden md:inline">Support</span>
+        <span className="ml-4 md:ml-8 text-right hidden md:inline">Support</span>
       </div>
       {/* Main navigation bar */}
-      <nav className="w-full bg-gray-100 flex items-center px-10 py-2 border-b border-gray-300 relative">
+      <nav className="w-full bg-gray-100 flex flex-col md:flex-row md:items-center px-4 md:px-10 py-2 border-b border-gray-300 relative gap-2 md:gap-0">
         {/* Logo */}
         <span
-          className="font-bold text-lg mr-8 cursor-pointer hover:underline"
-          onClick={() => navigate("/admin-employee-homepage")}
+          className="hidden md:inline font-bold text-lg mb-2 md:mb-0 md:mr-8 cursor-pointer hover:underline whitespace-nowrap"
+          onClick={() => navigate("/admin/homepage")}
         >
           Tech Trend Emporium
         </span>
@@ -40,7 +40,7 @@ const AdminHeader = () => {
           </div>
         </div>
         {/* User info and Employee Portal */}
-        <div className="flex items-center gap-4 ml-8">
+        <div className="flex items-center gap-2 md:gap-4 w-full justify-center md:justify-end ml-0 md:ml-8">
           <span className="text-sm">{userName}</span>
           <button
             onClick={handleLogout}
@@ -48,7 +48,9 @@ const AdminHeader = () => {
           >
             Logout
           </button>
-          <span className="bg-black text-white px-4 py-2 rounded font-medium ml-2 text-sm">Employee Portal</span>
+          <span className="bg-black text-white px-3 py-1 rounded font-medium text-xs md:text-sm whitespace-nowrap">
+            Employee Portal
+          </span>
         </div>
       </nav>
     </header>
