@@ -1,6 +1,6 @@
 import React from "react";
 
-const OrderDetailModal = ({ order, onClose }: { order: any; onClose: () => void }) => (
+const OrderDetail = ({ order, onClose }: { order: any; onClose: () => void }) => (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100 bg-opacity-50 backdrop-blur-sl">
     <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
       <button
@@ -24,4 +24,4 @@ const OrderDetailModal = ({ order, onClose }: { order: any; onClose: () => void 
   </div>
 );
 
-export default OrderDetailModal;
+export default OrderDetail;

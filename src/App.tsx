@@ -56,7 +56,6 @@ function App() {
         <Route path="/checkout-payment" element={<ProtectedRoute><CheckoutPayment /></ProtectedRoute>} />
         <Route path="/checkout-shipping" element={<ProtectedRoute><CheckoutShipping /></ProtectedRoute>} />
         <Route path="/my-orders" element={<MyOrders />} />
-        <Route path="/order-detail" element={<OrderDetail />} />
         <Route path="/product-detail" element={<ProductDetail />} />
         <Route path="/shop-list" element={<ShopList />} />
         <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>}/>
