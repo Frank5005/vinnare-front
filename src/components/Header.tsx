@@ -45,7 +45,7 @@ const Header = () => {
             <div className="flex items-center gap-4 ml-8">
               <div className="flex items-center cursor-pointer" onClick={() => navigate("/cart")}>
                 <FaShoppingBag className="text-xl mr-1" />
-                <span className="text-sm">{totalItems}</span>
+                <span className="text-sm">{isLoggedIn ? totalItems : 0}</span>
               </div>
               <span className="text-sm">{userName}</span>
               <button
