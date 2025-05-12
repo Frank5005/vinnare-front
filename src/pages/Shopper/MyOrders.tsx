@@ -1,35 +1,24 @@
 import React, { useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import { usePurchases } from "../../hooks/usePurchases";
-
-const OrderDetailModal = ({ order, onClose }: { order: any; onClose: () => void }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-60 backdrop-blur-sm">
-    <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
-      <button
-        className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold"
-        onClick={onClose}
-        aria-label="Close"
-      >
-        ×
-      </button>
-      <h2 className="text-2xl font-bold mb-4">Order Detail</h2>
-      <div className="space-y-2">
-        <div><strong>Order No.:</strong> {order.id}</div>
-        <div><strong>Customer Name:</strong> {order.userName}</div>
-        <div><strong>Payment Status:</strong> {order.paymentStatus}</div>
-        <div><strong>Amount:</strong> ${order.totalPrice.toFixed(2)}</div>
-        <div><strong>Address:</strong> {order.address}</div>
-        <div><strong>Order Date:</strong> {new Date(order.date).toLocaleString()}</div>
-        <div><strong>Status:</strong> {order.status}</div>
-      </div>
-    </div>
-  </div>
-);
+import OrderDetailModal from "./OrderDetail";
+import OrderDateFilter from "../../components/ui/OrderDateFilter";
+import { usePurchases } from "../../hooks/usePurchases"; // Usa el hook real
 
 const MyOrders = () => {
   const { purchases, loading, error } = usePurchases();
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
+  const [filter, setFilter] = useState("7");
+
+  const filteredPurchases = purchases.filter((purchase) => {
+    if (filter === "all") return true;
+    const days = parseInt(filter, 10);
+    const orderDate = new Date(purchase.date);
+    const now = new Date();
+    const diffTime = now.getTime() - orderDate.getTime();
+    const diffDays = diffTime / (1000 * 3600 * 24);
+    return diffDays <= days;
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -39,7 +28,10 @@ const MyOrders = () => {
       </div>
       {/* Main content */}
       <main className="flex-1 max-w-7xl mx-auto py-12 px-4">
-        <h1 className="font-inter text-4xl font-bold mb-8">My Orders</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="font-inter text-4xl font-bold">My Orders</h1>
+          <OrderDateFilter value={filter} onChange={setFilter} />
+        </div>
         {loading ? (
           <div className="text-center py-10">Loading...</div>
         ) : error ? (
@@ -59,7 +51,7 @@ const MyOrders = () => {
                 </tr>
               </thead>
               <tbody>
-                {purchases.map((purchase) => (
+                {filteredPurchases.map((purchase) => (
                   <tr
                     key={purchase.id}
                     className="border-b cursor-pointer hover:bg-gray-100"

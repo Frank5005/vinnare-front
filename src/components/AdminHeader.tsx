@@ -23,11 +23,11 @@ const AdminHeader = () => {
       <nav className="w-full bg-gray-100 flex flex-col md:flex-row md:items-center px-4 md:px-10 py-2 border-b border-gray-300 relative gap-2 md:gap-0">
         {/* Logo */}
         <span
-  className="hidden md:inline font-bold text-lg mb-2 md:mb-0 md:mr-8 cursor-pointer hover:underline whitespace-nowrap"
-  onClick={() => navigate("/admin/homepage")}
->
-  Tech Trend Emporium
-</span>
+          className="hidden md:inline font-bold text-lg mb-2 md:mb-0 md:mr-8 cursor-pointer hover:underline whitespace-nowrap"
+          onClick={() => navigate("/admin/homepage")}
+        >
+          Tech Trend Emporium
+        </span>
         {/* Search */}
         <div className="flex-1 flex items-center">
           <div className="flex items-center mx-auto max-w-xl bg-gray-100 rounded px-2 py-1 w-72">
