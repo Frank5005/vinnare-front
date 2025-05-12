@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import api from '../services/api';
+import { useState, useEffect } from "react";
+import api from "../services/api";
 
 interface Category {
   id: number;
@@ -13,26 +13,22 @@ export const useTopCategories = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await api.get('/api/category/top');
-        const data = response.data;
-        
-        const transformedCategories = data.map((category: Category) => ({
-          ...category,
-          imageUrl: category.imageUrl + '.png'
-        }));
-
-        setCategories(transformedCategories);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
+    api
+      .get<Category[]>("/api/category/top")
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setCategories(res.data);
+        } else {
+          console.error("Invalid response format:", res.data);
+          setError("Data format is invalid");
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setError("Error loading categories");
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return { categories, loading, error };
-}; 
+};

@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
 import { getProducts, getCategories } from "../services/shopper";
 
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rate: number;
+}
+
 const useShopList = () => {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<{ name: string }[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [visibleCount, setVisibleCount] = useState(6);
@@ -14,8 +24,16 @@ const useShopList = () => {
   useEffect(() => {
     const loadData = async () => {
       const prods = await getProducts();
+      if (Array.isArray(prods)) {
+        setProducts(prods);
+      } else {
+        console.error("Expected an array of products but got:", prods);
+      }
       const cats = await getCategories();
-      setProducts(prods);
+      if (!Array.isArray(cats)) {
+        console.error("Expected an array of categories but got:", cats);
+      }
+      //setProducts(prods);
       setCategories(cats);
     };
     loadData();
@@ -29,16 +47,24 @@ const useShopList = () => {
     );
   };
 
-  //console.log(products);
   const sortedFilteredProducts = products
-    .filter((product) => selectedCategories.length === 0 || selectedCategories.includes(product.category))
+    .filter(
+      (product) =>
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(product.category)
+    )
     .sort((a, b) => {
       switch (sortOption) {
-        case "az": return a.name.localeCompare(b.name);
-        case "za": return b.name.localeCompare(a.name);
-        case "priceAsc": return a.price - b.price;
-        case "priceDesc": return b.price - a.price;
-        default: return 0;
+        case "az":
+          return a.title.localeCompare(b.title);
+        case "za":
+          return b.title.localeCompare(a.title);
+        case "priceAsc":
+          return a.price - b.price;
+        case "priceDesc":
+          return b.price - a.price;
+        default:
+          return 0;
       }
     })
     .slice(0, visibleCount);
@@ -49,7 +75,11 @@ const useShopList = () => {
     const handleScroll = () => {
       clearTimeout(isScrolling);
       isScrolling = setTimeout(() => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && hasMore) {
+        if (
+          window.innerHeight + window.scrollY >=
+            document.body.offsetHeight - 100 &&
+          hasMore
+        ) {
           setIsLoading(true);
           setTimeout(() => {
             setVisibleCount((prev) => Math.min(prev + 3, products.length));
@@ -73,7 +103,6 @@ const useShopList = () => {
     isLoading,
     hasMore,
   };
-
 };
 
 export default useShopList;

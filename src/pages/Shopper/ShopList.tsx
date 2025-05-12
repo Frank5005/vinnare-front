@@ -51,7 +51,7 @@ const ShopList = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300 ease-in-out min-h-[600px]">
               {sortedFilteredProducts.map((product) => (
-                <ProductComponent key={product.id} {...product} />
+                <ProductComponent name={product.title} imageUrl={product.image} key={product.id} {...product} />
               ))}
             </div>
           </section>
