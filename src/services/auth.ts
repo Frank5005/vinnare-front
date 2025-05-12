@@ -1,5 +1,5 @@
-import api from "./api";
 import Cookies from "js-cookie";
+import api from "./api";
 import { jwtDecode } from "jwt-decode";
 
 export interface SignUpData {
@@ -28,25 +28,17 @@ export async function login({
 }) {
   const response = await api.post("/api/login", { email, password });
   const { token, username } = response.data;
+  localStorage.setItem("token", token.replace("Bearer ", ""));
+  localStorage.setItem("username", username);
+  localStorage.setItem("email", email);
+  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   if (remember) {
-    localStorage.setItem("token", token.replace("Bearer ", ""));
-    localStorage.setItem("username", username);
-    localStorage.setItem("email", email);
-    //Cookies.set("token", token, { expires: 1 });
-    //Cookies.set("email", email, { expires: 1 });
-    //Cookies.set("username", username, { expires: 1 });
+    Cookies.set("token", token.replace("Bearer ", ""), { expires: 7 });
+    Cookies.set("username", username, { expires: 7 });
+    Cookies.set("email", email, { expires: 7 });
   }
   return response.data;
 }
-
-/*export async function logout() {
-  const response = await api.post("/api/logout");
-  Cookies.remove("token");
-  Cookies.remove("email");
-  Cookies.remove("username");
-  return response.data;
-}
-*/
 
 export function getRoleFromToken(token: string): string | null {
   try {
@@ -110,6 +102,6 @@ export async function resetPassword(Password: string, token: string) {
 }
 
 export const isAuthenticated = () => {
-  const token = localStorage.getItem("Token");
+  const token = localStorage.getItem("token");
   return !!token;
 };

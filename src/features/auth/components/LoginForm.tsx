@@ -43,9 +43,9 @@ const LoginForm = () => {
 
       //Cookies.set("token", token.replace('Bearer ', ''), { expires: data.remember ? 7 : undefined });
 
-      localStorage.setItem("token", token.replace('Bearer ', ''));
-      localStorage.setItem("userName", username);
-      localStorage.setItem("userEmail", email);
+      //localStorage.setItem("token", token.replace('Bearer ', ''));
+      //localStorage.setItem("userName", username);
+      //localStorage.setItem("userEmail", email);
 
       loginContext(username);
 

@@ -21,6 +21,7 @@ const LandingPage = () => {
   const { categories, loading, error } = useTopCategories();
   const { products: latestProducts, loading: latestLoading, error: latestError } = useLatestProducts();
   const { products: topProducts, loading: topLoading, error: topError } = useTopSellingProducts();
+  //console.log("TOP PRODUCTS STATE:", topProducts);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -87,7 +88,7 @@ const LandingPage = () => {
           </div>
         ) : topError ? (
           <div className="text-center text-red-500 p-4">{topError}</div>
-        ) : (
+        ) : Array.isArray(topProducts) &&(
           <ProductGrid
             products={topProducts.map(product => ({
               image: product.image,

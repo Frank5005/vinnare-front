@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import api from '../services/api';
-
+import { useState, useEffect } from "react";
+import api from "../services/api";
 interface Product {
   id: number;
   title: string;
@@ -14,22 +13,29 @@ interface Product {
 export const useTopSellingProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get('/api/product/top-selling');
-        setProducts(response.data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
+    api
+      .get("/api/product/top-selling")
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setProducts(res.data as Product[]);
+        } else {
+          //setProducts([]);
+          console.error("Invalid response format:", res.data);
+          setError("Data format is invalid");
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setError("Error loading products");
+        //setProducts([]);
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    };
-
-    fetchProducts();
+      });
   }, []);
 
   return { products, loading, error };
-}; 
+};

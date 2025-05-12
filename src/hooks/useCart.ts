@@ -28,7 +28,10 @@ export const useCart = () => {
     fetchCart();
   }, []);
 
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  //const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = Array.isArray(cartItems)
+  ? cartItems.reduce((sum, item) => sum + item.quantity, 0)
+  : 0;
 
   return { cartItems, totalItems, loading, error, refetch: fetchCart };
 }; 

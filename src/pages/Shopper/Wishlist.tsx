@@ -1,14 +1,12 @@
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import ProductComponent from "../../components/ui/ProductComponent";
-
-const wishlistItems = [
-  { id: 1, name: "Shoes 1", price: 99, imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-6-6.png?fit=1080%2C1080&ssl=1" },
-  { id: 2, name: "Shoes 2", price: 99, imageUrl: "https://sc04.alicdn.com/kf/H2a4665343d4b4e62b8df4aa562abcfafd.jpg" },
-  { id: 3, name: "Shoes 3", price: 99, imageUrl: "https://i0.wp.com/lemonshoes.com.co/wp-content/uploads/2023/10/Mesa-de-trabajo-3-11.png?fit=1080%2C1080&ssl=1" },
-];
+import ShowWishList from "../../hooks/showWishList";
+import { getWishlist } from "../../services/shopper";
 
 const Wishlist = () => {
+
+  const { products, isLoading } = ShowWishList();
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Header sticky */}
@@ -28,16 +26,15 @@ const Wishlist = () => {
           </button>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {wishlistItems.map((item) => (
-              <ProductComponent
-                key={item.id}
-                name={item.name}
-                price={item.price}
-                imageUrl={item.imageUrl}
-                //showFavorite={true}
-              />
+            {products.map(product => (
+              <div key={product.id} className="wishlist-item">
+                <img src={product.image} alt={product.title} />
+                <h3>{product.title}</h3>
+                <p>${product.price}</p>
+              </div>
             ))}
           </div>
+          {isLoading && <p className="mt-4 text-gray-500">Loading more products...</p>}
         </div>
       </main>
 
