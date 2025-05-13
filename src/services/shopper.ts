@@ -18,17 +18,7 @@ export async function getProducts() {
 
 export async function getProductById(id: number) {
   const response = await api.get(`/api/product/${id}`);
-  return response.data.map((p: any) => ({
-    id: p.id,
-    title: p.title,
-    price: p.price,
-    description: p.description,
-    category: p.category,
-    imageUrl: p.image,
-    rate: p.rate,
-    quantity: p.quantity,
-    available: p.available,
-  }));
+  return response.data;
 }
 
 export async function getCategories() {
@@ -42,8 +32,7 @@ export async function getWishlist() {
   const response = await api.get("/api/user/wishlist");
 
   return response.data.map((p: any) => ({
-    id: p.id,
-    ownerId: p.ownerId,
+    id: p.id, 
     title: p.title,
     price: p.price,
     category: p.category,
@@ -52,7 +41,6 @@ export async function getWishlist() {
     approved: p.approved,
     quantity: p.quantity,
     available: p.available,
-    //date: p.date,
   }));
 }
 
@@ -65,7 +53,7 @@ export async function addToCart(productId: number, quantity: number) {
 }
 
 export async function addToWishlist(productId: number) {
-  const response = await api.post("/api/user/wishlist/add/{productId}", {
+  const response = await api.post("/api/user/wishlist/add", {
     productId,
   });
   return response.data;

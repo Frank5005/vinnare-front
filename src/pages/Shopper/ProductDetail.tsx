@@ -4,8 +4,8 @@ import Header from '../../components/Header';
 import { Heart } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useParams } from 'react-router-dom';
-import { getProductById } from '../../services/shopper';
-import { set } from 'react-hook-form';
+import { addToCart, addToWishlist, getProductById } from '../../services/shopper';
+import toast from 'react-hot-toast';
 
 type Product = {
   id: number;
@@ -26,6 +26,12 @@ const ProductDetail = () => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [inWishlist, setInWishlist] = useState(false);
 
+  const userId = (localStorage.getItem('userId'));
+  if (!userId) {
+    alert('You must be logged in to add to wishlist.');
+    return;
+  }
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -40,6 +46,32 @@ const ProductDetail = () => {
 
     fetchProduct();
   }, [id]);
+
+  //console.log('Token:', localStorage.getItem('token'));
+
+  const handleAddToWishlist = async () => {
+    if (!product) return;
+    //console.log('Adding to wishlist:', product.id, userId);
+    try {
+      await addToWishlist(product.id);
+      toast.success('Product added to wishlist!');
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.response?.data?.message || 'Error adding to wishlist');
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    try {
+      await addToCart(product.id, selectedQuantity);
+      toast.success('Product added to cart!');
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.response?.data?.message || 'Error adding to cart');
+
+    }
+  };
 
   if (loading) return <p className="p-6">Loading...</p>;
   if (!product) return <p className="p-6 text-red-600">Product not found</p>;
@@ -69,9 +101,11 @@ const ProductDetail = () => {
           <div className="flex-1 space-y-4">
             <div className="flex justify-between items-start">
               <h1 className="text-2xl font-semibold">{product.title}</h1>
-              <Button onClick={() => setInWishlist(!inWishlist)}>
-                <Heart className={inWishlist ? 'text-red-500 fill-red-500' : ''} />
-              </Button>
+              <Heart
+                onClick={handleAddToWishlist}
+                className={`w-6 h-6 cursor-pointer transition-colors duration-200 ${inWishlist ? 'text-red-500 fill-red-500' : 'text-gray-400'
+                  }`}
+              />
             </div>
 
             <p className="text-xl font-bold">${product.price}</p>
@@ -100,7 +134,7 @@ const ProductDetail = () => {
                   </span>
                 </div>
 
-                <Button  onClick={() => alert('Added to cart')}>
+                <Button onClick={handleAddToCart}>
                   Add to Cart – ${product.price * selectedQuantity}
                 </Button>
               </>

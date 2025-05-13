@@ -1,6 +1,7 @@
 import './App.css'
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 //General Imports 
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
@@ -59,9 +60,9 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/shop-list" element={<ShopList />} />
         <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>}/>
-
         {/* Catch-all route */}
       </Routes>
+      <Toaster position="top-right" reverseOrder={false} />
     </BrowserRouter>
   );
 }

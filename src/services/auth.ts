@@ -27,15 +27,17 @@ export async function login({
   remember?: boolean;
 }) {
   const response = await api.post("/api/login", { email, password });
-  const { token, username } = response.data;
+  const { token, username, id } = response.data;
   localStorage.setItem("token", token.replace("Bearer ", ""));
   localStorage.setItem("username", username);
   localStorage.setItem("email", email);
+  localStorage.setItem("userId", id);
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   if (remember) {
     Cookies.set("token", token.replace("Bearer ", ""), { expires: 7 });
     Cookies.set("username", username, { expires: 7 });
     Cookies.set("email", email, { expires: 7 });
+    Cookies.set("userId", id, { expires: 7 });
   }
   return response.data;
 }
