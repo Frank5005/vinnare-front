@@ -1,12 +1,32 @@
 import { useState } from "react";
 import { FaBars, FaTimes, FaSearch, FaShoppingBag } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { SearchBar } from "../SearchBar";
 
-const HamburgerMenu = ({ isLoggedIn, userName, cartCount }: {
+const HamburgerMenu = ({
+  isLoggedIn,
+  userName,
+  cartCount,
+}: {
   isLoggedIn: boolean;
   userName?: string;
   cartCount?: number;
 }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+    navigate("/");
+  };
+
+  const handleNavigate = (path: string) => {
+    setOpen(false);
+    navigate(path);
+  };
 
   return (
     <div className="md:hidden ml-auto relative">
@@ -14,7 +34,7 @@ const HamburgerMenu = ({ isLoggedIn, userName, cartCount }: {
         onClick={() => setOpen(!open)}
         aria-label="Open menu"
         className="text-2xl text-gray-700 focus:outline-none bg-transparent p-0 border-none shadow-none"
-        style={{ background: 'none', boxShadow: 'none', border: 'none' }}
+        style={{ background: "none", boxShadow: "none", border: "none" }}
       >
         <FaBars />
       </button>
@@ -26,33 +46,61 @@ const HamburgerMenu = ({ isLoggedIn, userName, cartCount }: {
               onClick={() => setOpen(false)}
               aria-label="Close menu"
               className="text-3xl text-gray-700 self-end focus:outline-none bg-transparent p-0 border-none shadow-none mt-4 mr-4"
-              style={{ background: 'none', boxShadow: 'none', border: 'none' }}
+              style={{ background: "none", boxShadow: "none", border: "none" }}
             >
               <FaTimes />
             </button>
             <nav className="flex flex-col gap-4 px-6 py-4">
+              {/* SearchBar */}
               <div className="flex items-center bg-gray-100 rounded px-2 py-2">
-                <FaSearch className="text-gray-400 mr-2" />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="w-full bg-transparent outline-none text-sm border-none"
-                />
+                <SearchBar />
               </div>
               {isLoggedIn && (
-                <div className="flex items-center gap-2">
+                <div
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={() => {
+                    setOpen(false);
+                    navigate("/cart");
+                  }}
+                >
                   <FaShoppingBag className="text-xl" />
                   <span className="text-sm">{cartCount}</span>
                   <span className="text-sm">{userName}</span>
                 </div>
               )}
-              <a href="#" className="text-base font-medium text-black hover:underline">Shop List</a>
-              <a href="#" className="text-base font-medium text-black hover:underline">Wishlist</a>
-              <a href="#" className="text-base font-medium text-black hover:underline">Support</a>
+              <button
+                className="text-base font-medium text-black hover:underline text-left bg-transparent border-none p-0 shadow-none outline-none"
+                style={{ background: "none", boxShadow: "none", border: "none" }}
+                onClick={() => handleNavigate("/shop-list")}
+              >
+                Shop List
+              </button>
+              <button
+                className="text-base font-medium text-black hover:underline text-left bg-transparent border-none p-0 shadow-none outline-none"
+                style={{ background: "none", boxShadow: "none", border: "none" }}
+                onClick={() => handleNavigate("/wishlist")}
+              >
+                Wishlist
+              </button>
               {isLoggedIn ? (
-                <a href="#" className="text-base font-medium text-black hover:underline">Logout</a>
+                <button
+                  className="text-base font-medium text-black hover:underline text-left bg-transparent border-none p-0 shadow-none outline-none"
+                  style={{ background: "none", boxShadow: "none", border: "none" }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               ) : (
-                <a href="#" className="text-base font-medium text-black hover:underline">Login</a>
+                <button
+                  className="text-base font-medium text-black hover:underline text-left bg-transparent border-none p-0 shadow-none outline-none"
+                  style={{ background: "none", boxShadow: "none", border: "none" }}
+                  onClick={() => {
+                    setOpen(false);
+                    navigate("/login");
+                  }}
+                >
+                  Login
+                </button>
               )}
             </nav>
           </div>
