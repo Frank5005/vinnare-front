@@ -12,7 +12,6 @@ interface Product {
   approved: boolean;
   quantity: number;
   available: number;
-  //date: Date;
 }
 
 const ShowWishList = () => {

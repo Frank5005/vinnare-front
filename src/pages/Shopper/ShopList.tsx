@@ -3,6 +3,7 @@ import Footer from "../../components/Footer";
 import ProductComponent from "../../components/ui/ProductComponent";
 import FilterDropdown from "../../components/ui/FilterDropdown";
 import ShopProducts from "../../hooks/useShopList";
+import { useNavigate } from 'react-router-dom';
 
 const ShopList = () => {
 
@@ -16,6 +17,12 @@ const ShopList = () => {
     isLoading,
     hasMore,
   } = ShopProducts();
+
+  const navigate = useNavigate();
+
+  const handleClick = (productId: number) => {
+    navigate(`/product/${productId}`);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">

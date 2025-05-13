@@ -31,6 +31,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggedIn(false);
     setUserName("");
     localStorage.removeItem("userName");
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
   };
 
   return (

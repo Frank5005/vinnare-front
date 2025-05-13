@@ -9,6 +9,8 @@ interface Product {
   category: string;
   image: string;
   rate: number;
+  quantity: number;
+  available: number;
 }
 
 const useShopList = () => {
