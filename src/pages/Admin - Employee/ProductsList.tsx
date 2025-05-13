@@ -15,6 +15,7 @@ const ProductsList = () => {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleEdit = (product: Product) => {
     setEditingId(product.id);
@@ -32,24 +33,21 @@ const ProductsList = () => {
       setIsSaving(true);
       setErrorMessage(null);
 
-      // Preparar los datos para la API
+      const originalProduct = products.find(p => p.id === id);
+      if (!originalProduct) {
+        throw new Error('Product not found');
+      }
+
       const updateData = {
         title: editForm.title,
         price: editForm.price,
         quantity: editForm.quantity,
-        available: editForm.available
+        available: editForm.available,
+        category: originalProduct.category 
       };
 
-      // Llamar al endpoint PUT
       await api.put(`/api/product/${id}`, updateData);
 
-      // Actualizar el estado local
-      const updatedProducts = products.map(product => 
-        product.id === id 
-          ? { ...product, ...editForm }
-          : product
-      );
-      
       // Forzar una recarga de los productos
       window.location.reload();
       
@@ -71,6 +69,38 @@ const ProductsList = () => {
       ...prev,
       [field]: field === 'title' ? value : Number(value)
     }));
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      setIsDeleting(true);
+      setErrorMessage(null);
+
+      const username = localStorage.getItem('username');
+      if (!username) {
+        throw new Error('Username not found in localStorage');
+      }
+
+      // Add username to headers
+      const config = {
+        headers: {
+          'Username': username
+        }
+      };
+
+      await api.delete(`/api/product/${id}`, config);
+
+      // Update local state by removing the deleted product
+      const updatedProducts = products.filter(product => product.id !== id);
+      //setProducts(updatedProducts);
+      window.location.reload();
+      
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      setErrorMessage('Failed to delete product. Please try again.');
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (loading) {
@@ -227,9 +257,10 @@ const ProductsList = () => {
                           <FaEdit />
                         </button>
                         <button
-                          className="text-red-600 hover:text-red-800"
+                          className={`text-red-600 hover:text-red-800 ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
                           title="Delete"
-                          onClick={() => {/* lógica para eliminar */}}
+                          onClick={() => handleDelete(product.id)}
+                          disabled={isDeleting}
                         >
                           <FaTrash />
                         </button>
