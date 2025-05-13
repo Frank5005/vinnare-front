@@ -1,10 +1,13 @@
 import AdminHeader from "../../components/AdminHeader";
 import { useAllProducts, Product } from "../../hooks/useAllProducts";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
+import { DataTable, DataTableColumn, DataTableAction } from "../../components/DataTable";
 import { useState } from "react";
 import api from "../../services/api";
+import OrderDateFilter from "../../components/ui/OrderDateFilter";
 
 const ProductsList = () => {
+  const [dateFilter, setDateFilter] = useState<string>("7");
   const { products, loading, error: fetchError } = useAllProducts();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({
@@ -12,6 +15,15 @@ const ProductsList = () => {
     price: 0,
     quantity: 0,
     available: 0
+  });
+  const filteredProducts = products.filter(product => {
+    if (dateFilter === "all") return true;
+    const days = parseInt(dateFilter, 10);
+    const productDate = new Date(product.date);
+    const now = new Date();
+    const diffTime = now.getTime() - productDate.getTime();
+    const diffDays = diffTime / (1000 * 3600 * 24);
+    return diffDays <= days;
   });
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -43,14 +55,11 @@ const ProductsList = () => {
         price: editForm.price,
         quantity: editForm.quantity,
         available: editForm.available,
-        category: originalProduct.category 
+        category: originalProduct.category
       };
 
       await api.put(`/api/product/${id}`, updateData);
-
-      // Forzar una recarga de los productos
       window.location.reload();
-      
     } catch (error) {
       console.error('Error updating product:', error);
       setErrorMessage('Failed to update product. Please try again.');
@@ -81,7 +90,6 @@ const ProductsList = () => {
         throw new Error('Username not found in localStorage');
       }
 
-      // Add username to headers
       const config = {
         headers: {
           'Username': username
@@ -89,12 +97,7 @@ const ProductsList = () => {
       };
 
       await api.delete(`/api/product/${id}`, config);
-
-      // Update local state by removing the deleted product
-      const updatedProducts = products.filter(product => product.id !== id);
-      //setProducts(updatedProducts);
       window.location.reload();
-      
     } catch (error) {
       console.error('Error deleting product:', error);
       setErrorMessage('Failed to delete product. Please try again.');
@@ -102,6 +105,111 @@ const ProductsList = () => {
       setIsDeleting(false);
     }
   };
+
+  // DataTable columns
+  const columns: DataTableColumn<Product>[] = [
+    { key: "id", label: "ID" },
+    {
+      key: "title", label: "TITLE", render: (row) => (
+        editingId === row.id ? (
+          <input
+            type="text"
+            value={editForm.title}
+            onChange={e => handleInputChange('title', e.target.value)}
+            className="w-full px-2 py-1 border rounded"
+            disabled={isSaving}
+          />
+        ) : (
+          row.title
+        )
+      )
+    },
+    { key: "ownerId", label: "OWNER ID" },
+    {
+      key: "price", label: "PRICE", render: (row) => (
+        editingId === row.id ? (
+          <input
+            type="number"
+            value={editForm.price}
+            onChange={e => handleInputChange('price', e.target.value)}
+            className="w-full px-2 py-1 border rounded"
+            step="0.01"
+            disabled={isSaving}
+          />
+        ) : (
+          `$${row.price.toFixed(2)}`
+        )
+      )
+    },
+    { key: "category", label: "CATEGORY" },
+    {
+      key: "image", label: "IMAGE", render: (row) => (
+        <img src={row.image} alt={row.title} className="w-12 h-12 object-cover rounded" />
+      )
+    },
+    { key: "approved", label: "APPROVED", render: (row) => (row.approved ? "✅" : "❌") },
+    {
+      key: "quantity", label: "QUANTITY", render: (row) => (
+        editingId === row.id ? (
+          <input
+            type="number"
+            value={editForm.quantity}
+            onChange={e => handleInputChange('quantity', e.target.value)}
+            className="w-full px-2 py-1 border rounded"
+            min="0"
+            disabled={isSaving}
+          />
+        ) : (
+          row.quantity
+        )
+      )
+    },
+    {
+      key: "available", label: "AVAILABLE", render: (row) => (
+        editingId === row.id ? (
+          <input
+            type="number"
+            value={editForm.available}
+            onChange={e => handleInputChange('available', e.target.value)}
+            className="w-full px-2 py-1 border rounded"
+            min="0"
+            disabled={isSaving}
+          />
+        ) : (
+          row.available
+        )
+      )
+    },
+    { key: "date", label: "DATE", render: (row) => new Date(row.date).toLocaleDateString() },
+  ];
+
+  // DataTable actions
+  const actions: DataTableAction<Product>[] = [
+    {
+      icon: editingId !== null ? <FaCheck /> : <FaEdit />,
+      label: editingId !== null ? "Save" : "Edit",
+      onClick: (row) => {
+        if (editingId === row.id) {
+          handleSave(row.id);
+        } else {
+          handleEdit(row);
+        }
+      },
+      disabled: isSaving || isDeleting,
+    },
+    {
+      icon: editingId !== null ? <FaTimes /> : <FaTrash />,
+      label: editingId !== null ? "Cancel" : "Delete",
+      onClick: (row) => {
+        if (editingId === row.id) {
+          handleCancel();
+        } else {
+          handleDelete(row.id);
+        }
+      },
+      disabled: isSaving || isDeleting,
+    },
+  ];
 
   if (loading) {
     return (
@@ -131,147 +239,28 @@ const ProductsList = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Header sticky */}
       <div className="sticky top-0 z-50">
         <AdminHeader />
       </div>
       <main className="flex-1 max-w-7xl mx-auto py-12 px-4">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold">Products List</h1>
+          <div>
+            <OrderDateFilter value={dateFilter} onChange={setDateFilter} />
+          </div>
         </div>
         {errorMessage && (
           <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
             {errorMessage}
           </div>
         )}
-        <div className="overflow-x-auto bg-white rounded shadow">
-          <table className="min-w-full text-sm text-left">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3">ID</th>
-                <th className="px-4 py-3">TITLE</th>
-                <th className="px-4 py-3">OWNER ID</th>
-                <th className="px-4 py-3">PRICE</th>
-                <th className="px-4 py-3">CATEGORY</th>
-                <th className="px-4 py-3">IMAGE</th>
-                <th className="px-4 py-3">APPROVED</th>
-                <th className="px-4 py-3">QUANTITY</th>
-                <th className="px-4 py-3">AVAILABLE</th>
-                <th className="px-4 py-3">DATE</th>
-                <th className="px-4 py-3">ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(product => (
-                <tr key={product.id} className="border-b">
-                  <td className="px-4 py-3">{product.id}</td>
-                  <td className="px-4 py-3">
-                    {editingId === product.id ? (
-                      <input
-                        type="text"
-                        value={editForm.title}
-                        onChange={(e) => handleInputChange('title', e.target.value)}
-                        className="w-full px-2 py-1 border rounded"
-                        disabled={isSaving}
-                      />
-                    ) : (
-                      product.title
-                    )}
-                  </td>
-                  <td className="px-4 py-3">{product.ownerId}</td>
-                  <td className="px-4 py-3">
-                    {editingId === product.id ? (
-                      <input
-                        type="number"
-                        value={editForm.price}
-                        onChange={(e) => handleInputChange('price', e.target.value)}
-                        className="w-full px-2 py-1 border rounded"
-                        step="0.01"
-                        disabled={isSaving}
-                      />
-                    ) : (
-                      `$${product.price.toFixed(2)}`
-                    )}
-                  </td>
-                  <td className="px-4 py-3">{product.category}</td>
-                  <td className="px-4 py-3">
-                    <img src={product.image} alt={product.title} className="w-12 h-12 object-cover rounded" />
-                  </td>
-                  <td className="px-4 py-3">{product.approved ? "✅" : "❌"}</td>
-                  <td className="px-4 py-3">
-                    {editingId === product.id ? (
-                      <input
-                        type="number"
-                        value={editForm.quantity}
-                        onChange={(e) => handleInputChange('quantity', e.target.value)}
-                        className="w-full px-2 py-1 border rounded"
-                        min="0"
-                        disabled={isSaving}
-                      />
-                    ) : (
-                      product.quantity
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    {editingId === product.id ? (
-                      <input
-                        type="number"
-                        value={editForm.available}
-                        onChange={(e) => handleInputChange('available', e.target.value)}
-                        className="w-full px-2 py-1 border rounded"
-                        min="0"
-                        disabled={isSaving}
-                      />
-                    ) : (
-                      product.available
-                    )}
-                  </td>
-                  <td className="px-4 py-3">{new Date(product.date).toLocaleDateString()}</td>
-                  <td className="px-4 py-3 flex gap-2">
-                    {editingId === product.id ? (
-                      <>
-                        <button
-                          className={`text-green-600 hover:text-green-800 ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          title="Save"
-                          onClick={() => handleSave(product.id)}
-                          disabled={isSaving}
-                        >
-                          <FaCheck />
-                        </button>
-                        <button
-                          className={`text-red-600 hover:text-red-800 ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          title="Cancel"
-                          onClick={handleCancel}
-                          disabled={isSaving}
-                        >
-                          <FaTimes />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          className="text-blue-600 hover:text-blue-800"
-                          title="Edit"
-                          onClick={() => handleEdit(product)}
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          className={`text-red-600 hover:text-red-800 ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          title="Delete"
-                          onClick={() => handleDelete(product.id)}
-                          disabled={isDeleting}
-                        >
-                          <FaTrash />
-                        </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          columns={columns}
+          data={filteredProducts}
+          actions={actions}
+          loading={loading}
+          error={fetchError || errorMessage}
+        />
       </main>
     </div>
   );
