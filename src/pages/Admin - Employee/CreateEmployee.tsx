@@ -1,4 +1,4 @@
-import AdminHeader from "../../components/AdminHeader";
+import AdminHeader from "../../components/organisms/AdminHeader";
 
 const CreateEmployee = () => {
     return (

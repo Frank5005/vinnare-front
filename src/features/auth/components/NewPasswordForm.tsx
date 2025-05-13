@@ -2,9 +2,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormCardLayout from "../../../layouts/FormCardLayout";
-import Button from "../../../components/ui/Button";
+import Button from "../../../components/atoms/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import PasswordInput from "../../../components/ui/PasswordInput";
+import PasswordInput from "../../../components/molecules/PasswordInput";
 import { resetPassword } from "../../../services/auth";
 
 const newPasswordSchema = z.object({

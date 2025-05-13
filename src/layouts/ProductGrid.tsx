@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCard from "../components/ui/ProductCard";
+import ProductCard from "../components/organisms/ProductCard";
 
 interface Product {
   image: string;

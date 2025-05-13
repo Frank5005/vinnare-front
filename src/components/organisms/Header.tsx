@@ -1,10 +1,9 @@
-//import { useState } from "react";
 import { FaShoppingBag } from "react-icons/fa";
-import HamburgerMenu from "./ui/HamburgerMenu";
-import { useAuth } from "../context/AuthContext";
+import HamburgerMenu from "./HamburgerMenu";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { SearchBar } from "./SearchBar";
-import { useCart } from "../hooks/useCart";
+import { SearchBar } from "../molecules/SearchBar";
+import { useCart } from "../../hooks/useCart";
 
 const Header = () => {
   const { isLoggedIn, userName, logout } = useAuth();
@@ -64,7 +63,7 @@ const Header = () => {
             </button>
           )}
         </div>
-        {/* Menú hamburguesa para mobile */}
+        
         <HamburgerMenu isLoggedIn={isLoggedIn} userName={userName} cartCount={totalItems} />
       </nav>
     </header>

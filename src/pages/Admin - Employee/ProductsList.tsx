@@ -1,10 +1,10 @@
-import AdminHeader from "../../components/AdminHeader";
+import AdminHeader from "../../components/organisms/AdminHeader";
 import { useAllProducts, Product } from "../../hooks/useAllProducts";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
-import { DataTable, DataTableColumn, DataTableAction } from "../../components/DataTable";
+import { DataTable, DataTableColumn, DataTableAction } from "../../components/organisms/DataTable";
 import { useState } from "react";
 import api from "../../services/api";
-import OrderDateFilter from "../../components/ui/OrderDateFilter";
+import OrderDateFilter from "../../components/molecules/OrderDateFilter";
 
 const ProductsList = () => {
   const [dateFilter, setDateFilter] = useState<string>("7");

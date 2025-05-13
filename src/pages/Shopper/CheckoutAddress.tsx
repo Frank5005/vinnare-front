@@ -1,5 +1,5 @@
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../../components/organisms/Header";
+import Footer from "../../components/organisms/Footer";
 const CheckoutAddress = () => {
     return (
       <div className="min-h-screen flex flex-col bg-gray-100">

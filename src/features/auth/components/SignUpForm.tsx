@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "../../../components/ui/InputField";
-import PasswordInput from "../../../components/ui/PasswordInput";
-import SelectField from "../../../components/ui/SelectField";
-import Button from "../../../components/ui/Button";
+import InputField from "../../../components/atoms/InputField";
+import PasswordInput from "../../../components/molecules/PasswordInput";
+import SelectField from "../../../components/atoms/SelectField";
+import Button from "../../../components/atoms/Button";
 import FormCardLayout from "../../../layouts/FormCardLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { getSecurityQuestions, signup } from "../../../services/auth";

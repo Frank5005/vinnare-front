@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import AdminHeader from "../../components/AdminHeader";
+import AdminHeader from "../../components/organisms/AdminHeader";
 
 const adminButtons = [
   { label: "Create Product", path: "/admin/create-product", roles: ["Seller", "Admin"] },

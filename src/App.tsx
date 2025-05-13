@@ -22,11 +22,10 @@ import CheckoutAddress from './pages/Shopper/CheckoutAddress';
 import CheckoutPayment from './pages/Shopper/CheckoutPayment';
 import CheckoutShipping from './pages/Shopper/CheckoutShipping';
 import MyOrders from './pages/Shopper/MyOrders';
-import OrderDetail from './pages/Shopper/OrderDetail';
 import ProductDetail from './pages/Shopper/ProductDetail';
 import ShopList from './pages/Shopper/ShopList';
 import Wishlist from './pages/Shopper/Wishlist';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
 
 
 function App() {

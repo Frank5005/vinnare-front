@@ -1,9 +1,9 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import ImageSlider from "../components/ui/ImageSlider";
-import SectionHeader from "../components/ui/SectionHeader";
+import Header from "../components/organisms/Header";
+import Footer from "../components/organisms/Footer";
+import ImageSlider from "../components/organisms/ImageSlider";
+import SectionHeader from "../components/molecules/SectionHeader";
 import CategoryGrid from "../layouts/CategoryGrid";
-import StaggeredImageGrid from "../components/StaggeredImageGrid";
+import StaggeredImageGrid from "../components/organisms/StaggeredImageGrid";
 import ProductGrid from "../layouts/ProductGrid";
 import { useTopCategories } from "../hooks/useTopCategories";
 import { useLatestProducts } from "../hooks/useLatestProducts";

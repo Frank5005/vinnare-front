@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "../../../components/ui/InputField";
+import InputField from "../../../components/atoms/InputField";
 import FormCardLayout from "../../../layouts/FormCardLayout";
-import Button from "../../../components/ui/Button";
+import Button from "../../../components/atoms/Button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import SelectField from "../../../components/ui/SelectField";
+import SelectField from "../../../components/atoms/SelectField";
 import { useEffect, useState } from "react";
 import { getSecurityQuestions, verifyEmail } from "../../../services/auth";
 

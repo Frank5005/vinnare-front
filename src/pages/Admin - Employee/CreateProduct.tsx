@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import AdminHeader from "../../components/AdminHeader";
-import InputField from "../../components/ui/InputField";
+import AdminHeader from "../../components/organisms/AdminHeader";
+import InputField from "../../components/atoms/InputField";
 import FormCardLayout from "../../layouts/FormCardLayout";
 import api from "../../services/api";
-import Button from "../../components/ui/Button";
+import Button from "../../components/atoms/Button";
 
 const CreateProduct = () => {
   const [form, setForm] = useState({
