@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getProducts, getCategories, getWishlist, addToWishlist, removeFromWishlist } from "../services/shopperService";
-import { Product } from "../types/product";
-import toast from "react-hot-toast";
+import { Product } from "../types/Product";
 
 const useShopList = () => {
   const [products, setProducts] = useState<Product[]>([]);
