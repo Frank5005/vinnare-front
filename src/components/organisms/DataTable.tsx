@@ -42,12 +42,12 @@ export function DataTable<T extends { id: number | string }>({
         <thead className="bg-gray-50">
           <tr>
             {columns.map((col) => (
-              <th key={col.key as string} className="px-4 py-3">
+              <th key={col.key as string} className="px-4 py-3 text-black">
                 {col.label}
               </th>
             ))}
             {actions && actions.length > 0 && (
-              <th className="px-4 py-3">ACTIONS</th>
+              <th className="px-4 py-3 text-black">ACTIONS</th>
             )}
           </tr>
         </thead>
@@ -59,12 +59,12 @@ export function DataTable<T extends { id: number | string }>({
             onClick={onRowClick ? () => onRowClick(row) : undefined}
           >
               {columns.map((col) => (
-                <td key={col.key as string} className="px-4 py-3">
+                <td key={col.key as string} className="px-4 py-3 text-black">
                   {col.render ? col.render(row) : (row as any)[col.key]}
                 </td>
               ))}
               {actions && actions.length > 0 && (
-                <td className="px-4 py-3 flex gap-2">
+                <td className="px-4 py-3 flex gap-2 text-black">
                   {actions.map((action, idx) => (
                     <button
                       key={idx}
