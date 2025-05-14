@@ -3,6 +3,7 @@ import { isAuthenticated } from "../services/auth";
 import { JSX } from "react";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+
   return isAuthenticated() ? children : <Navigate to="/login" />;
 };
 

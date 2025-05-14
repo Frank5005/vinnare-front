@@ -1,17 +1,14 @@
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import ProductComponent from "../../components/ui/ProductComponent";
 import ShowWishList from "../../hooks/useWishList";
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 //import { getWishlist } from "../../services/shopper";
 
 const Wishlist = () => {
 
-  const { products, isLoading } = ShowWishList();
-  const navigate = useNavigate();
-
-  const handleClick = (productId: number) => {
-    navigate(`/product/${productId}`);
-  };
+  const { products, isLoading, wishlistIds } = ShowWishList();
+  //const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -33,11 +30,7 @@ const Wishlist = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {products.map(product => (
-              <div key={product.id} onClick={() => handleClick(product.id)} className="wishlist-item">
-                <img src={product.image} alt={product.title} />
-                <h3>{product.title}</h3>
-                <p>${product.price}</p>
-              </div>
+              <ProductComponent name={product.title} imageUrl={product.image} key={product.id} {...product} inWishlistStart={wishlistIds.includes(product.id)}/>
             ))}
           </div>
           {isLoading && <p className="mt-4 text-gray-500">Loading more products...</p>}

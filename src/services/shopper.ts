@@ -52,9 +52,24 @@ export async function addToCart(productId: number, quantity: number) {
   return response.data;
 }
 
-export async function addToWishlist(productId: number) {
+export async function addToWishlist(userId: string, productId: number) {
   const response = await api.post("/api/user/wishlist/add", {
-    productId,
+    product_id: productId,
+    user_id: userId,
   });
   return response.data;
 }
+
+export const removeFromWishlist = async (wishlistId: number) => {
+  const res = await api.delete(`api/user/wishlist/remove/${wishlistId}`);
+  return res.data;
+};
+
+export const getWishlistItemId = async (productId: number) => {
+  const res = await api.get(`api/user/wishlist/item`, {
+    params: {
+      productId,
+    },
+  });
+  return res.data;
+};

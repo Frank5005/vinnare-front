@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProducts, getCategories } from "../services/shopper";
+import { getProducts, getCategories, getWishlist } from "../services/shopper";
 
 interface Product {
   id: number;
@@ -20,6 +20,7 @@ const useShopList = () => {
   const [visibleCount, setVisibleCount] = useState(6);
   const [sortOption, setSortOption] = useState("az");
   const [isLoading, setIsLoading] = useState(false);
+  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
 
   const hasMore = visibleCount < products.length;
 
@@ -40,6 +41,23 @@ const useShopList = () => {
     };
     loadData();
   }, []);
+
+  useEffect(() => {
+      const loadData = async () => {
+        setIsLoading(true);
+        try {
+          const wishlist = await getWishlist();
+          setProducts(wishlist);
+          setWishlistIds(wishlist);
+        } catch (error) {
+          console.error("Failed to fetch wishlist:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      loadData();
+    }, []);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategories((prev) =>
@@ -104,6 +122,7 @@ const useShopList = () => {
     sortedFilteredProducts,
     isLoading,
     hasMore,
+    wishlistIds
   };
 };
 

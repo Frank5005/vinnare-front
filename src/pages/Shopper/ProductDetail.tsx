@@ -4,7 +4,7 @@ import Header from '../../components/Header';
 import { Heart } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useParams } from 'react-router-dom';
-import { addToCart, addToWishlist, getProductById } from '../../services/shopper';
+import { addToCart, addToWishlist, getProductById, getWishlistItemId, removeFromWishlist } from '../../services/shopper';
 import toast from 'react-hot-toast';
 
 type Product = {
@@ -25,6 +25,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [inWishlist, setInWishlist] = useState(false);
+  const [wishlistId, setWishlistId] = useState(null);
 
   const userId = (localStorage.getItem('userId'));
   if (!userId) {
@@ -44,20 +45,40 @@ const ProductDetail = () => {
       }
     };
 
+    const fetchWishlistStatus = async () => {
+      try {
+        const wishlistItemId = await getWishlistItemId(Number(id));
+        if (wishlistItemId) {
+          setInWishlist(true);
+          setWishlistId(wishlistItemId);
+        }
+      } catch (err) {
+        console.warn('Wishlist check failed:', err);
+      }
+    };
+
     fetchProduct();
-  }, [id]);
+    fetchWishlistStatus();
+  }, [id, userId]);
 
-  //console.log('Token:', localStorage.getItem('token'));
-
-  const handleAddToWishlist = async () => {
+  const handleToggleWishlist = async () => {
     if (!product) return;
-    //console.log('Adding to wishlist:', product.id, userId);
+
     try {
-      await addToWishlist(product.id);
-      toast.success('Product added to wishlist!');
-    } catch (error: any) {
+      if (inWishlist && wishlistId) {
+        await removeFromWishlist(wishlistId);
+        setInWishlist(false);
+        setWishlistId(null);
+        toast.success('Removed from wishlist');
+      } else {
+        const res = await addToWishlist(userId, product.id);
+        toast.success('Added to wishlist');
+        setInWishlist(true);
+        setWishlistId(res.id);
+      }
+    } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.message || 'Error adding to wishlist');
+      toast.error('Error updating wishlist');
     }
   };
 
@@ -66,10 +87,9 @@ const ProductDetail = () => {
     try {
       await addToCart(product.id, selectedQuantity);
       toast.success('Product added to cart!');
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.message || 'Error adding to cart');
-
+      toast.error('Error adding to cart');
     }
   };
 
@@ -102,8 +122,8 @@ const ProductDetail = () => {
             <div className="flex justify-between items-start">
               <h1 className="text-2xl font-semibold">{product.title}</h1>
               <Heart
-                onClick={handleAddToWishlist}
-                className={`w-6 h-6 cursor-pointer transition-colors duration-200 ${inWishlist ? 'text-red-500 fill-red-500' : 'text-gray-400'
+                onClick={handleToggleWishlist}
+                className={`w-5 h-5 cursor-pointer transition-colors ${inWishlist ? 'text-red-500 fill-red-500' : 'text-gray-400'
                   }`}
               />
             </div>

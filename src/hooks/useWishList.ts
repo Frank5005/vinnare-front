@@ -16,10 +16,12 @@ interface Product {
 
 const ShowWishList = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
 
   const hasMore = visibleCount < products.length;
+  //const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const loadData = async () => {
@@ -27,6 +29,7 @@ const ShowWishList = () => {
       try {
         const wishlist = await getWishlist();
         setProducts(wishlist);
+        setWishlistIds(wishlist);
       } catch (error) {
         console.error("Failed to fetch wishlist:", error);
       } finally {
@@ -65,6 +68,7 @@ const ShowWishList = () => {
     products: products.slice(0, visibleCount),
     isLoading,
     hasMore,
+    wishlistIds,
   };
 };
 
