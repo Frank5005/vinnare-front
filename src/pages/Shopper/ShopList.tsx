@@ -1,7 +1,7 @@
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import ProductComponent from "../../components/ui/ProductComponent";
-import FilterDropdown from "../../components/ui/FilterDropdown";
+import Header from "../../components/organisms/Header";
+import Footer from "../../components/organisms/Footer";
+import ProductComponent from "../../components/organisms/ProductComponent";
+import FilterDropdown from "../../components/molecules/FilterDropdown";
 import ShopProducts from "../../hooks/useShopList";
 import { useNavigate } from 'react-router-dom';
 

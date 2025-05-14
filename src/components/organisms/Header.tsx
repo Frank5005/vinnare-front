@@ -1,10 +1,9 @@
-//import { useState } from "react";
 import { FaShoppingBag } from "react-icons/fa";
-import HamburgerMenu from "./ui/HamburgerMenu";
-import { useAuth } from "../context/AuthContext";
+import HamburgerMenu from "./HamburgerMenu";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { SearchBar } from "./SearchBar";
-import { useCart } from "../hooks/useCart";
+import { SearchBar } from "../molecules/SearchBar";
+import { useCart } from "../../hooks/useCart";
 
 const Header = () => {
   const { isLoggedIn, userName, logout } = useAuth();
@@ -14,6 +13,11 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     navigate("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    
   };
 
   return (
@@ -45,7 +49,7 @@ const Header = () => {
             <div className="flex items-center gap-4 ml-8">
               <div className="flex items-center cursor-pointer" onClick={() => navigate("/cart")}>
                 <FaShoppingBag className="text-xl mr-1" />
-                <span className="text-sm">{totalItems}</span>
+                <span className="text-sm">{isLoggedIn ? totalItems : 0}</span>
               </div>
               <span className="text-sm">{userName}</span>
               <button
@@ -64,7 +68,7 @@ const Header = () => {
             </button>
           )}
         </div>
-        {/* Menú hamburguesa para mobile */}
+
         <HamburgerMenu isLoggedIn={isLoggedIn} userName={userName} cartCount={totalItems} />
       </nav>
     </header>

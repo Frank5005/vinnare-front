@@ -1,5 +1,5 @@
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "../../components/organisms/Footer";
+import Header from "../../components/organisms/Header";
 import ProductComponent from "../../components/ui/ProductComponent";
 import ShowWishList from "../../hooks/useWishList";
 //import { useNavigate } from 'react-router-dom';

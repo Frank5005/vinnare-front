@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { useProductSearch } from '../hooks/useProductSearch';
+import { useProductSearch } from '../../hooks/useProductSearch';
 import { useNavigate } from 'react-router-dom';
 
 export const SearchBar = () => {
@@ -10,7 +10,7 @@ export const SearchBar = () => {
   const navigate = useNavigate();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -46,7 +46,7 @@ export const SearchBar = () => {
         />
       </div>
 
-      {/* Dropdown Results */}
+
       {isOpen && searchTerm.length >= 2 && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
           {loading ? (

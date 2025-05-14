@@ -26,10 +26,14 @@ export const usePurchases = () => {
     const fetchPurchases = async () => {
       try {
         const response = await api.get("/api/purchases");
-        setPurchases(response.data);
+        const userName = localStorage.getItem("userName") || "";
+        const purchasesWithUserName = response.data.map((purchase: Purchase) => ({
+          ...purchase,
+          userName: purchase.userName || userName,
+        }));
+        setPurchases(purchasesWithUserName);
       } catch (err: any) {
         setError("Error fetching purchases: " + (err?.message || JSON.stringify(err)));
-        // Opcional: log completo en consola para debug
         console.error("Error fetching purchases:", err);
       }finally {
         setLoading(false);

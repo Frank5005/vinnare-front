@@ -24,7 +24,6 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, className }) => {
         alt={`slide-${current}`}
         className="w-full h-full object-cover transition-all duration-500"
       />
-      {/* Botón anterior */}
       <button
         onClick={prevSlide}
         className="absolute left-4 top-1/2 -translate-y-1/2 text-4xl text-black bg-transparent p-0 m-0 border-none outline-none hover:scale-125 transition-transform"
@@ -33,7 +32,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, className }) => {
       >
         <FaChevronLeft strokeWidth={2} />
       </button>
-      {/* Botón siguiente */}
+
+
       <button
         onClick={nextSlide}
         className="absolute right-4 top-1/2 -translate-y-1/2 text-4xl text-black bg-transparent p-0 m-0 border-none outline-none hover:scale-125 transition-transform"
@@ -42,7 +42,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, className }) => {
       >
         <FaChevronRight strokeWidth={2} />
       </button>
-      {/* Indicadores */}
+
+
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
         {images.map((_, idx) => (
           <span

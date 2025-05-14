@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "../../../components/ui/InputField";
-import PasswordInput from "../../../components/ui/PasswordInput";
-import CheckboxField from "../../../components/ui/CheckboxField";
+import InputField from "../../../components/atoms/InputField";
+import PasswordInput from "../../../components/molecules/PasswordInput";
+import CheckboxField from "../../../components/atoms/CheckboxField";
 import FormCardLayout from "../../../layouts/FormCardLayout";
-import Button from "../../../components/ui/Button";
+import Button from "../../../components/atoms/Button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getRoleFromToken, login } from "../../../services/auth";
