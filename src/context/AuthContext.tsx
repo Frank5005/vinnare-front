@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 interface AuthContextType {
@@ -31,6 +32,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggedIn(false);
     setUserName("");
     localStorage.removeItem("userName");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userId");
   };
 
   return (

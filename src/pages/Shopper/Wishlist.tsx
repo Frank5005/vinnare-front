@@ -1,11 +1,11 @@
 import Footer from "../../components/organisms/Footer";
 import Header from "../../components/organisms/Header";
-import ShowWishList from "../../hooks/showWishList";
-import { getWishlist } from "../../services/shopper";
+import ProductComponent from "../../components/organisms/ProductComponent";
+import ShowWishList from "../../hooks/useWishList";
 
 const Wishlist = () => {
 
-  const { products, isLoading } = ShowWishList();
+  const { products, isLoading, hasMore, wishlistIds ,ToggleWishlist } = ShowWishList();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -27,14 +27,10 @@ const Wishlist = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {products.map(product => (
-              <div key={product.id} className="wishlist-item">
-                <img src={product.image} alt={product.title} />
-                <h3>{product.title}</h3>
-                <p>${product.price}</p>
-              </div>
+              <ProductComponent name={product.title} imageUrl={product.image} key={product.id} {...product} inWishlistStart={wishlistIds.includes(product.id)} onToggleWishlist={ToggleWishlist} />
             ))}
           </div>
-          {isLoading && <p className="mt-4 text-gray-500">Loading more products...</p>}
+          {isLoading && hasMore && <p className="mt-4 text-gray-500">Loading more products...</p>}
         </div>
       </main>
 
@@ -45,3 +41,5 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+
+//inWishlistStart={wishlistIds.includes(product.id)}

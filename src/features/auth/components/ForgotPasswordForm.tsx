@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SelectField from "../../../components/atoms/SelectField";
 import { useEffect, useState } from "react";
-import { getSecurityQuestions, verifyEmail } from "../../../services/auth";
+import { getSecurityQuestions, verifyEmail } from "../../../services/authService";
 
 const forgotSchema = z.object({
     email: z.string().email("Invalid email address"),
