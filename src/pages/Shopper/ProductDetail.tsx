@@ -6,7 +6,7 @@ import Button from '../../components/atoms/Button';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Product } from "../../types/Product";
-import { getWishlist, addToWishlist, removeFromWishlist, addToCart, getProductById } from "../../services/shopperService";
+import { getWishlist, addToWishlist, removeFromWishlist, addToCart, getProductById, getCart } from "../../services/shopperService";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -14,6 +14,9 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [inWishlist, setWishList] = useState(false);
+  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
+  const [cart, setCart] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const userId = (localStorage.getItem('userId'));
   if (!userId) {
@@ -23,27 +26,59 @@ const ProductDetail = () => {
 
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const wishlistProducts = await getWishlist();
-        const ids = wishlistProducts.map((p:any) => p.id);
-        const data = await getProductById(Number(id));
-        setProduct(data);
-        setWishList(ids.includes(data.id));
-        console.log(ids);
-
-      } catch (error) {
-        console.error('Failed to fetch product:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    fetchWishList();
+    fetchCart();
     fetchProduct();
   }, [id]);
 
+  const fetchWishList = async () => {
+    setIsLoading(true);
+    try {
+      const wishlistProducts = await getWishlist();
+      const ids = wishlistProducts.map((p: any) => p.id);
+      //setProducts(wishlistProducts);
+      setWishlistIds(ids);
+      //console.log(ids);
+    } catch (error) {
+      console.error("Failed to fetch wishlist:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchProduct = async () => {
+    try {
+      const wishlistProducts = await getWishlist();
+      const ids = wishlistProducts.map((p: any) => p.id);
+      const data = await getProductById(Number(id));
+      setProduct(data);
+      setWishList(ids.includes(data.id));
+      console.log(ids);
+
+    } catch (error) {
+      console.error('Failed to fetch product:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCart = async () => {
+    const cart = await getCart();
+    setCart(cart);
+    console.log(cart);
+  };
+
   const handleAddToCart = async () => {
     if (!product) return;
+
+    const cartIds = cart.map((p) => p.id);
+    const filteredIds = wishlistIds.filter((id) => !cartIds.includes(id));
+
+    if (filteredIds.length === 0) {
+      toast("The product is already in the cart.");
+      return;
+    }
+
     try {
       await addToCart(product.id, selectedQuantity);
       toast.success('Product added to cart!');

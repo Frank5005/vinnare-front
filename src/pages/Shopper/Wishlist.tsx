@@ -5,7 +5,8 @@ import ShowWishList from "../../hooks/useWishList";
 
 const Wishlist = () => {
 
-  const { products, isLoading, hasMore, wishlistIds ,ToggleWishlist } = ShowWishList();
+  const { products, isLoading, hasMore, wishlistIds, ToggleWishlist, ShopAll } = ShowWishList();
+  //console.log(wishlistIds);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -21,9 +22,11 @@ const Wishlist = () => {
           <p className="text-gray-500 mb-6">
             This are the products that you liked it before, check it out!
           </p>
-          <button className="bg-black text-white px-6 py-2 rounded mb-10 hover:bg-gray-800">
-            Shop All
-          </button>
+          {wishlistIds.length > 0 && (
+            <button onClick={() => ShopAll(wishlistIds)} className="bg-black text-white px-6 py-2 rounded mb-10 hover:bg-gray-800">
+              Shop All
+            </button>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {products.map(product => (
