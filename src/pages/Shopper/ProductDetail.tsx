@@ -2,30 +2,18 @@ import { useEffect, useState } from 'react';
 import Footer from '../../components/organisms/Footer';
 import Header from '../../components/organisms/Header';
 import { Heart } from 'lucide-react';
-import Button from '../../components/ui/Button';
+import Button from '../../components/atoms/Button';
 import { useParams } from 'react-router-dom';
-import { addToCart, addToWishlist, getProductById, getWishlistItemId, removeFromWishlist } from '../../services/shopper';
 import toast from 'react-hot-toast';
-
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description?: string;
-  category: string;
-  image: string;
-  rate: number;
-  quantity: number;
-  available: number;
-};
+import { Product } from "../../types/product";
+import { getWishlist, addToWishlist, removeFromWishlist, addToCart, getProductById } from "../../services/shopperService";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [inWishlist, setInWishlist] = useState(false);
-  const [wishlistId, setWishlistId] = useState(null);
+  const [inWishlist, setWishList] = useState(false);
 
   const userId = (localStorage.getItem('userId'));
   if (!userId) {
@@ -33,11 +21,17 @@ const ProductDetail = () => {
     return;
   }
 
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        const wishlistProducts = await getWishlist();
+        const ids = wishlistProducts.map((p:any) => p.id);
         const data = await getProductById(Number(id));
         setProduct(data);
+        setWishList(ids.includes(data.id));
+        console.log(ids);
+
       } catch (error) {
         console.error('Failed to fetch product:', error);
       } finally {
@@ -45,42 +39,8 @@ const ProductDetail = () => {
       }
     };
 
-    const fetchWishlistStatus = async () => {
-      try {
-        const wishlistItemId = await getWishlistItemId(Number(id));
-        if (wishlistItemId) {
-          setInWishlist(true);
-          setWishlistId(wishlistItemId);
-        }
-      } catch (err) {
-        console.warn('Wishlist check failed:', err);
-      }
-    };
-
     fetchProduct();
-    fetchWishlistStatus();
-  }, [id, userId]);
-
-  const handleToggleWishlist = async () => {
-    if (!product) return;
-
-    try {
-      if (inWishlist && wishlistId) {
-        await removeFromWishlist(wishlistId);
-        setInWishlist(false);
-        setWishlistId(null);
-        toast.success('Removed from wishlist');
-      } else {
-        const res = await addToWishlist(userId, product.id);
-        toast.success('Added to wishlist');
-        setInWishlist(true);
-        setWishlistId(res.id);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error('Error updating wishlist');
-    }
-  };
+  }, [id]);
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -92,6 +52,25 @@ const ProductDetail = () => {
       toast.error('Error adding to cart');
     }
   };
+
+  const ToggleWishlist = async () => {
+    if (!product) return;
+
+
+    try {
+      if (inWishlist) {
+        const remove = await removeFromWishlist(product.id);
+        setWishList(false);
+        console.log(remove);
+      } else {
+        const add = await addToWishlist(userId, product.id);
+        setWishList(true);
+        console.log(add);
+      }
+    } catch (error) {
+      console.error("Error updating wishlist", error);
+    }
+  }
 
   if (loading) return <p className="p-6">Loading...</p>;
   if (!product) return <p className="p-6 text-red-600">Product not found</p>;
@@ -122,7 +101,7 @@ const ProductDetail = () => {
             <div className="flex justify-between items-start">
               <h1 className="text-2xl font-semibold">{product.title}</h1>
               <Heart
-                onClick={handleToggleWishlist}
+                onClick={ToggleWishlist}
                 className={`w-5 h-5 cursor-pointer transition-colors ${inWishlist ? 'text-red-500 fill-red-500' : 'text-gray-400'
                   }`}
               />

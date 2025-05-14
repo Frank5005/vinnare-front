@@ -33,13 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUserName("");
     localStorage.removeItem("userName");
     localStorage.removeItem("token");
-    localStorage.removeItem("email");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userRole");
-    localStorage.removeItem("username");
-    //Cookies.remove("token");
-    //Cookies.remove("email");
-    //Cookies.remove("username");
+    localStorage.removeItem("userId");
   };
 
   return (

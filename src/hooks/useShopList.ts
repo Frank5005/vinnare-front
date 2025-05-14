@@ -1,28 +1,52 @@
 import { useEffect, useState } from "react";
-import { getProducts, getCategories, getWishlist } from "../services/shopper";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rate: number;
-  quantity: number;
-  available: number;
-}
+import { getProducts, getCategories, getWishlist, addToWishlist, removeFromWishlist } from "../services/shopperService";
+import { Product } from "../types/product";
+import toast from "react-hot-toast";
 
 const useShopList = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
   const [categories, setCategories] = useState<{ name: string }[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [sortOption, setSortOption] = useState("az");
   const [isLoading, setIsLoading] = useState(false);
-  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
 
   const hasMore = visibleCount < products.length;
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchWishList = async () => {
+      try{
+        const wishlistProducts = await getWishlist();
+        const ids = wishlistProducts.map((p:any) => p.id);
+        setWishlistIds(ids);
+      } catch (error){
+        console.error("Error loading wishlist", error);
+        //toast.error("Error loading wishlist");
+      }
+    };
+
+    fetchWishList();
+  }, []);
+
+  const inWishlist = (productId: number) => {
+    return wishlistIds.includes(productId);
+  }
+
+  const ToggleWishlist = async (productId: number) =>{
+    if(!userId) return;
+
+    if(inWishlist(productId)){
+      const remove = await removeFromWishlist(productId);
+      setWishlistIds(p => p.filter(id => id !== productId));
+      console.log(remove);
+    } else {
+      const add = await addToWishlist(userId, productId);
+      setWishlistIds(p => [...p, productId]);
+      console.log(add); 
+    }
+  }
 
   useEffect(() => {
     const loadData = async () => {
@@ -41,23 +65,6 @@ const useShopList = () => {
     };
     loadData();
   }, []);
-
-  useEffect(() => {
-      const loadData = async () => {
-        setIsLoading(true);
-        try {
-          const wishlist = await getWishlist();
-          setProducts(wishlist);
-          setWishlistIds(wishlist);
-        } catch (error) {
-          console.error("Failed to fetch wishlist:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-  
-      loadData();
-    }, []);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategories((prev) =>
@@ -116,13 +123,14 @@ const useShopList = () => {
   return {
     categories,
     sortOption,
-    setSortOption,
-    selectedCategories,
-    handleCategoryChange,
-    sortedFilteredProducts,
     isLoading,
+    sortedFilteredProducts,
     hasMore,
-    wishlistIds
+    wishlistIds,
+    selectedCategories,
+    setSortOption,
+    handleCategoryChange,
+    ToggleWishlist
   };
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getWishlist } from "../services/shopper";
+import { getWishlist } from "../services/shopperService";
 
 interface Product {
   id: number;
@@ -16,7 +16,7 @@ interface Product {
 
 const ShowWishList = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
+  //const [wishlistIds, setWishlistIds] = useState<number[]>([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,7 +29,7 @@ const ShowWishList = () => {
       try {
         const wishlist = await getWishlist();
         setProducts(wishlist);
-        setWishlistIds(wishlist);
+        //setWishlistIds(wishlist);
       } catch (error) {
         console.error("Failed to fetch wishlist:", error);
       } finally {
@@ -68,7 +68,7 @@ const ShowWishList = () => {
     products: products.slice(0, visibleCount),
     isLoading,
     hasMore,
-    wishlistIds,
+    //wishlistIds,
   };
 };
 

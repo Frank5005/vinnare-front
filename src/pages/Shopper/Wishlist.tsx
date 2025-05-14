@@ -1,14 +1,12 @@
 import Footer from "../../components/organisms/Footer";
 import Header from "../../components/organisms/Header";
-import ProductComponent from "../../components/ui/ProductComponent";
+import ProductComponent from "../../components/organisms/ProductComponent";
 import ShowWishList from "../../hooks/useWishList";
-//import { useNavigate } from 'react-router-dom';
-//import { getWishlist } from "../../services/shopper";
 
 const Wishlist = () => {
 
-  const { products, isLoading, wishlistIds } = ShowWishList();
-  //const navigate = useNavigate();
+  const { products, isLoading } = ShowWishList();
+  //wishlistIds
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -30,7 +28,7 @@ const Wishlist = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {products.map(product => (
-              <ProductComponent name={product.title} imageUrl={product.image} key={product.id} {...product} inWishlistStart={wishlistIds.includes(product.id)}/>
+              <ProductComponent name={product.title} imageUrl={product.image} key={product.id} {...product}/>
             ))}
           </div>
           {isLoading && <p className="mt-4 text-gray-500">Loading more products...</p>}
@@ -44,3 +42,5 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+
+//inWishlistStart={wishlistIds.includes(product.id)}

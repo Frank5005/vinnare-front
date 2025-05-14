@@ -1,4 +1,3 @@
-//import { date } from "zod";
 import api from "./api";
 
 export async function getProducts() {
@@ -30,18 +29,7 @@ export async function getCategories() {
 
 export async function getWishlist() {
   const response = await api.get("/api/user/wishlist");
-
-  return response.data.map((p: any) => ({
-    id: p.id, 
-    title: p.title,
-    price: p.price,
-    category: p.category,
-    description: p.description,
-    image: p.image,
-    approved: p.approved,
-    quantity: p.quantity,
-    available: p.available,
-  }));
+  return response.data;
 }
 
 export async function addToCart(productId: number, quantity: number) {
@@ -60,8 +48,8 @@ export async function addToWishlist(userId: string, productId: number) {
   return response.data;
 }
 
-export const removeFromWishlist = async (wishlistId: number) => {
-  const res = await api.delete(`api/user/wishlist/remove/${wishlistId}`);
+export const removeFromWishlist = async (productId: number) => {
+  const res = await api.delete(`api/user/wishlist/${productId}`);
   return res.data;
 };
 

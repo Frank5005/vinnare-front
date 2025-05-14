@@ -107,7 +107,7 @@ function App() {
             <MyOrders />
           </ProtectedRoute>
         } />
-        <Route path="/product-detail" element={<ProductDetail />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/shop-list" element={<ShopList />} />
         <Route path="/wishlist" element={
           <ProtectedRoute allowedRoles={["Shopper"]}>
