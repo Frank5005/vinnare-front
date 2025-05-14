@@ -5,7 +5,7 @@ import { Heart } from 'lucide-react';
 import Button from '../../components/atoms/Button';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Product } from "../../types/product";
+import { Product } from "../../types/Product";
 import { getWishlist, addToWishlist, removeFromWishlist, addToCart, getProductById } from "../../services/shopperService";
 
 const ProductDetail = () => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getWishlist, removeFromWishlist, addToWishlist } from "../services/shopperService";
-import { Product } from "../types/product";
+import { Product } from "../types/Product";
 
 const ShowWishList = () => {
   const [products, setProducts] = useState<Product[]>([]);
