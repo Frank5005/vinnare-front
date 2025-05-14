@@ -5,8 +5,7 @@ import ShowWishList from "../../hooks/useWishList";
 
 const Wishlist = () => {
 
-  const { products, isLoading } = ShowWishList();
-  //wishlistIds
+  const { products, isLoading, hasMore, wishlistIds ,ToggleWishlist } = ShowWishList();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -28,10 +27,10 @@ const Wishlist = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {products.map(product => (
-              <ProductComponent name={product.title} imageUrl={product.image} key={product.id} {...product}/>
+              <ProductComponent name={product.title} imageUrl={product.image} key={product.id} {...product} inWishlistStart={wishlistIds.includes(product.id)} onToggleWishlist={ToggleWishlist} />
             ))}
           </div>
-          {isLoading && <p className="mt-4 text-gray-500">Loading more products...</p>}
+          {isLoading && hasMore && <p className="mt-4 text-gray-500">Loading more products...</p>}
         </div>
       </main>
 

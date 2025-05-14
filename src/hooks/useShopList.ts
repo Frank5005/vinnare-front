@@ -41,10 +41,12 @@ const useShopList = () => {
       const remove = await removeFromWishlist(productId);
       setWishlistIds(p => p.filter(id => id !== productId));
       console.log(remove);
+      //toast("Product removed from wishlist!");
     } else {
       const add = await addToWishlist(userId, productId);
       setWishlistIds(p => [...p, productId]);
       console.log(add); 
+      //toast("Product added to wishlist!");
     }
   }
 

@@ -117,7 +117,7 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<Unauthorized />} />
       </Routes>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </BrowserRouter>
   );
 }
