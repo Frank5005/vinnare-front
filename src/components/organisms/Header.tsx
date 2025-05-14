@@ -13,6 +13,11 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     navigate("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    
   };
 
   return (
@@ -63,7 +68,7 @@ const Header = () => {
             </button>
           )}
         </div>
-        
+
         <HamburgerMenu isLoggedIn={isLoggedIn} userName={userName} cartCount={totalItems} />
       </nav>
     </header>

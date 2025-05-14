@@ -24,7 +24,7 @@ const CreateCategory = () => {
     setError(null);
     setSuccess(null);
     try {
-      const username = localStorage.getItem("username");
+      const username = localStorage.getItem("userName");
       if (!username) throw new Error("No username found in localStorage");
       const body = {
         ...form,

@@ -85,7 +85,7 @@ const ProductsList = () => {
       setIsDeleting(true);
       setErrorMessage(null);
 
-      const username = localStorage.getItem('username');
+      const username = localStorage.getItem('userName');
       if (!username) {
         throw new Error('Username not found in localStorage');
       }
