@@ -21,6 +21,10 @@ const HamburgerMenu = ({
     logout();
     setOpen(false);
     navigate("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
   };
 
   const handleNavigate = (path: string) => {

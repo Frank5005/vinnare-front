@@ -24,6 +24,7 @@ import ProductDetail from './pages/Shopper/ProductDetail';
 import ShopList from './pages/Shopper/ShopList';
 import Wishlist from './pages/Shopper/Wishlist';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import Unauthorized from './pages/Unauthorized';
 
 
 function App() {
@@ -38,26 +39,82 @@ function App() {
         <Route path="/new-password" element={<NewPassword />} />
 
         {/* Admin - Employee */}
-        <Route path="/admin/homepage" element={<AdminEmployeeHomepage />} />
-        <Route path="/admin/categories-list" element={<CategoryList />} />
-        <Route path="/admin/create-category" element={<CreateCategory />} />
-        <Route path="/admin/create-employee" element={<CreateEmployee />} />
-        <Route path="/admin/create-product" element={<CreateProduct />} />
-        <Route path="/admin/jobs-list" element={<JobsList />} />
-        <Route path="/admin/products-list" element={<ProductsList />} />
-        <Route path="/admin/view-all-users" element={<ViewAllUsers />} />
+        <Route path="/admin/homepage" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <AdminEmployeeHomepage />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/categories-list" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <CategoryList />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/create-category" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <CreateCategory />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/create-employee" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <CreateEmployee />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/create-product" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <CreateProduct />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/jobs-list" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <JobsList />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/products-list" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <ProductsList />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/view-all-users" element={
+          <ProtectedRoute allowedRoles={["Admin", "Seller"]}>
+            <ViewAllUsers />
+          </ProtectedRoute>
+        } />
 
         {/* Shopper */}
-        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>}/>
-        <Route path="/checkout-address" element={<ProtectedRoute><CheckoutAddress /></ProtectedRoute>} />
-        <Route path="/checkout-payment" element={<ProtectedRoute><CheckoutPayment /></ProtectedRoute>} />
-        <Route path="/checkout-shipping" element={<ProtectedRoute><CheckoutShipping /></ProtectedRoute>} />
-        <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/cart" element={
+          <ProtectedRoute allowedRoles={["Shopper"]}>
+            <Cart />
+          </ProtectedRoute>
+        } />
+        <Route path="/checkout-address" element={
+          <ProtectedRoute allowedRoles={["Shopper"]}>
+            <CheckoutAddress />
+          </ProtectedRoute>
+        } />
+        <Route path="/checkout-payment" element={
+          <ProtectedRoute allowedRoles={["Shopper"]}>
+            <CheckoutPayment />
+          </ProtectedRoute>
+        } />
+        <Route path="/checkout-shipping" element={
+          <ProtectedRoute allowedRoles={["Shopper"]}>
+            <CheckoutShipping />
+          </ProtectedRoute>
+        } />
+        <Route path="/my-orders" element={
+          <ProtectedRoute allowedRoles={["Shopper"]}>
+            <MyOrders />
+          </ProtectedRoute>
+        } />
         <Route path="/product-detail" element={<ProductDetail />} />
         <Route path="/shop-list" element={<ShopList />} />
-        <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>}/>
-
-        {/* Catch-all route */}
+        <Route path="/wishlist" element={
+          <ProtectedRoute allowedRoles={["Shopper"]}>
+            <Wishlist />
+          </ProtectedRoute>
+        } />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="*" element={<Unauthorized />} />
       </Routes>
     </BrowserRouter>
   );

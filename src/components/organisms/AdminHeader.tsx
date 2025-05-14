@@ -9,6 +9,10 @@ const AdminHeader = () => {
   const handleLogout = () => {
     logout();
     navigate("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
   };
 
   return (
