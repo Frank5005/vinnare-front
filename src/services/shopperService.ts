@@ -32,6 +32,28 @@ export async function getWishlist() {
   return response.data;
 }
 
+export async function addToWishlist(userId: string, productId: number) {
+  const response = await api.post("/api/user/wishlist/add", {
+    product_id: productId,
+    user_id: userId,
+  });
+  return response.data;
+}
+
+export const removeFromWishlist = async (productId: number) => {
+  const res = await api.delete(`api/user/wishlist/${productId}`);
+  return res.data;
+};
+
+export const getWishlistItemId = async (productId: number) => {
+  const res = await api.get(`api/user/wishlist/item`, {
+    params: {
+      productId,
+    },
+  });
+  return res.data;
+};
+
 export async function getCart(){
   const response = await api.get("/api/cart/full");
   return response.data.map((p: any) => ({
@@ -54,25 +76,3 @@ export async function addToCart(productId: number, quantity: number) {
   });
   return response.data;
 }
-
-export async function addToWishlist(userId: string, productId: number) {
-  const response = await api.post("/api/user/wishlist/add", {
-    product_id: productId,
-    user_id: userId,
-  });
-  return response.data;
-}
-
-export const removeFromWishlist = async (productId: number) => {
-  const res = await api.delete(`api/user/wishlist/${productId}`);
-  return res.data;
-};
-
-export const getWishlistItemId = async (productId: number) => {
-  const res = await api.get(`api/user/wishlist/item`, {
-    params: {
-      productId,
-    },
-  });
-  return res.data;
-};
