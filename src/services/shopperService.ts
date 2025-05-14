@@ -32,6 +32,21 @@ export async function getWishlist() {
   return response.data;
 }
 
+export async function getCart(){
+  const response = await api.get("/api/cart/full");
+  return response.data.map((p: any) => ({
+    id: p.productId,
+    title: p.title,
+    price: p.price,
+    description: p.description,
+    category: p.category,
+    imageUrl: p.image,
+    quantity: p.quantity,
+    available: p.available,
+    categoryId: p.categoryId,
+  }));
+}
+
 export async function addToCart(productId: number, quantity: number) {
   const response = await api.post("/api/cart", {
     productId,
