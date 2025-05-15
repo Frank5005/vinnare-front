@@ -2,7 +2,10 @@ import { date } from "zod";
 import api from "./api";
 
 export async function getProducts() {
-  const response = await api.get("/api/product/store");
+  const response = await api.get("/api/product/store", {
+    withCredentials:false,
+  });
+  console.log(response.data);
   return response.data.map((p: any) => ({
     id: p.id,
     title: p.title,

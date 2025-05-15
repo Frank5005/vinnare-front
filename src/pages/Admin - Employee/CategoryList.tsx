@@ -61,8 +61,17 @@ const CategoryList = () => {
 
       await api.delete(`/api/category/${id}`, config);
       window.location.reload();
-    } catch (error) {
-      setErrorMessage("Failed to delete category. Please try again.");
+    } catch (error: any) {
+      const category = categories.find(c => c.id === id);
+      if (
+        error?.response?.status === 500 &&
+        category &&
+        category.approved === false
+      ) {
+        setErrorMessage("Failed to delete category that is not approved.");
+      } else {
+        setErrorMessage("Failed to delete category. Please try again.");
+      }
     } finally {
       setIsDeleting(false);
     }
