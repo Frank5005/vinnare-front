@@ -7,7 +7,7 @@ import SelectField from "../../../components/atoms/SelectField";
 import Button from "../../../components/atoms/Button";
 import FormCardLayout from "../../../layouts/FormCardLayout";
 import { Link, useNavigate } from "react-router-dom";
-import { getSecurityQuestions, signup } from "../../../services/auth";
+import { getSecurityQuestions, signup } from "../../../services/authService";
 import { useEffect, useState } from "react";
 
 /*

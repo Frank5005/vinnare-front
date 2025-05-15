@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 //General Imports 
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
@@ -106,7 +107,7 @@ function App() {
             <MyOrders />
           </ProtectedRoute>
         } />
-        <Route path="/product-detail" element={<ProductDetail />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/shop-list" element={<ShopList />} />
         <Route path="/wishlist" element={
           <ProtectedRoute allowedRoles={["Shopper"]}>
@@ -116,6 +117,7 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<Unauthorized />} />
       </Routes>
+      <Toaster position="bottom-center" reverseOrder={false} />
     </BrowserRouter>
   );
 }

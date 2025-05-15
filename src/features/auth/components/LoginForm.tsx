@@ -8,7 +8,7 @@ import FormCardLayout from "../../../layouts/FormCardLayout";
 import Button from "../../../components/atoms/Button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { getRoleFromToken, login } from "../../../services/auth";
+import { getRoleFromToken, login } from "../../../services/authService";
 import { useAuth } from "../../../context/AuthContext";
 import Cookies from "js-cookie";
 

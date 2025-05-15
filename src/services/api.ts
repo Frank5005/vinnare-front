@@ -8,8 +8,8 @@ const api = axios.create({
 
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
-    if (token && !config.url?.includes("/api/user/verify") && !config.url?.includes("/api/user") && !config.url?.includes("/api/auth")) {
+    const token = localStorage.getItem("token");  
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     config.headers['ngrok-skip-browser-warning']="true";

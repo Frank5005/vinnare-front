@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
-import { getProducts, getCategories } from "../services/shopper";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rate: number;
-}
+import { getProducts, getCategories, getWishlist, addToWishlist, removeFromWishlist } from "../services/shopperService";
+import { Product } from "../types/Product";
 
 const useShopList = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
   const [categories, setCategories] = useState<{ name: string }[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [visibleCount, setVisibleCount] = useState(6);
@@ -20,6 +12,42 @@ const useShopList = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const hasMore = visibleCount < products.length;
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchWishList = async () => {
+      try{
+        const wishlistProducts = await getWishlist();
+        const ids = wishlistProducts.map((p:any) => p.id);
+        setWishlistIds(ids);
+      } catch (error){
+        console.error("Error loading wishlist", error);
+        //toast.error("Error loading wishlist");
+      }
+    };
+
+    fetchWishList();
+  }, []);
+
+  const inWishlist = (productId: number) => {
+    return wishlistIds.includes(productId);
+  }
+
+  const ToggleWishlist = async (productId: number) =>{
+    if(!userId) return;
+
+    if(inWishlist(productId)){
+      const remove = await removeFromWishlist(productId);
+      setWishlistIds(p => p.filter(id => id !== productId));
+      console.log(remove);
+      //toast("Product removed from wishlist!");
+    } else {
+      const add = await addToWishlist(userId, productId);
+      setWishlistIds(p => [...p, productId]);
+      console.log(add); 
+      //toast("Product added to wishlist!");
+    }
+  }
 
   useEffect(() => {
     const loadData = async () => {
@@ -96,12 +124,14 @@ const useShopList = () => {
   return {
     categories,
     sortOption,
-    setSortOption,
-    selectedCategories,
-    handleCategoryChange,
-    sortedFilteredProducts,
     isLoading,
+    sortedFilteredProducts,
     hasMore,
+    wishlistIds,
+    selectedCategories,
+    setSortOption,
+    handleCategoryChange,
+    ToggleWishlist
   };
 };
 
