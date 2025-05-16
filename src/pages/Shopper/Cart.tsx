@@ -3,15 +3,12 @@ import CartItem from "../../components/molecules/CartItem";
 import CartSummary from "../../components/molecules/CartSummary";
 import Footer from "../../components/organisms/Footer";
 import Header from "../../components/organisms/Header";
-//import { useNavigate } from "react-router-dom";
-
-
-const cartItems = [
-  { id: 1, name: "Natural Honey Bottle", quantity: 1, vendor: "Vendor Name", price: 99 },
-  { id: 2, name: "Natural Honey Bottle", quantity: 1, vendor: "Vendor Name", price: 89 },
-];
+import { useCart } from "../../hooks/useCart";
 
 const Cart = () => {
+
+  const { cartItems, loading, error, refetch: fetchCart } = useCart();
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
       {/* Header sticky */}
@@ -34,9 +31,12 @@ const Cart = () => {
               </a>
             </p>
 
+            {loading && <p>Loading...</p>}
+            {error && <p className="text-red-600">{error}</p>}
+
             <div className="space-y-6">
               {cartItems.map(item => (
-                <CartItem key={item.id} item={item} />
+                <CartItem key={item.productId} title={item.title} quantity={item.quantity} price={item.price} image={item.image} productId={item.productId} />
               ))}
             </div>
 

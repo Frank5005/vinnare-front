@@ -62,7 +62,7 @@ export async function getCart(){
     price: p.price,
     description: p.description,
     category: p.category,
-    imageUrl: p.image,
+    image: p.image,
     quantity: p.quantity,
     available: p.available,
     categoryId: p.categoryId,

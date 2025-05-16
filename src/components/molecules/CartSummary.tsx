@@ -1,10 +1,7 @@
-type CartItem = {
-  price: number;
-  quantity: number;
-};
+import { Item } from "../../types/Item";
 
 interface CartSummaryProps {
-  items: CartItem[];
+  items: Item[];
 }
 
 const CartSummary = ({ items }: CartSummaryProps) => {

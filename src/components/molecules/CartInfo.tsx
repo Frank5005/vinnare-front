@@ -6,7 +6,7 @@ const CartInfo = () => (
         This is our example return policy which is everything you need to know about our returns.
       </p>
     </details>
-    <details className="border-t pt-4">
+    <details className="border-t pt-4" open>
       <summary className="font-semibold text-gray-700">Shipping Options</summary>
       <p className="text-sm text-gray-500 mt-2">
         UPS/USPS Surepost and UPS Ground Shipping.
