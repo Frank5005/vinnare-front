@@ -1,7 +1,9 @@
 import api from "./api";
 
 export async function getProducts() {
-  const response = await api.get("/api/product/store");
+  const response = await api.get("/api/product/store", {
+    withCredentials:false,
+  });
   return response.data.map((p: any) => ({
     id: p.id,
     title: p.title,

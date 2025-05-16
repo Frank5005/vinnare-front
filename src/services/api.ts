@@ -6,12 +6,13 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor to add auth token
+
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");  
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    config.headers['ngrok-skip-browser-warning']="true";
     return config;
   });
 
