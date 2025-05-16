@@ -7,7 +7,7 @@ import { useCart } from "../../hooks/useCart";
 
 const Cart = () => {
 
-  const { cartItems, loading, error, refetch: fetchCart } = useCart();
+  const { cartItems, loading, error, productsIds, ToggleCart } = useCart();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
@@ -36,7 +36,7 @@ const Cart = () => {
 
             <div className="space-y-6">
               {cartItems.map(item => (
-                <CartItem key={item.productId} title={item.title} quantity={item.quantity} price={item.price} image={item.image} productId={item.productId} />
+                <CartItem key={item.id} title={item.title} quantity={item.quantity} price={item.price} image={item.image} id={item.id} onToggleCart={ToggleCart} />
               ))}
             </div>
 

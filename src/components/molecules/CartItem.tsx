@@ -1,15 +1,17 @@
 import { Item } from "../../types/Item";
 
 interface CartItemProps {
-  productId: number;
+  id: number;
   title: string;
   quantity: number;
   //vendor: string;
   price: number;
   image: string;
+  //inCartStart: boolean;
+  onToggleCart: (productId: number) => void;
 }
 
-const CartItem = ({ title, quantity, price, image }: CartItemProps) => (
+const CartItem = ({ title, quantity, price, image, id, onToggleCart }: CartItemProps) => (
 
   <div className="flex border-b pb-6">
     {/* Image */}
@@ -27,7 +29,7 @@ const CartItem = ({ title, quantity, price, image }: CartItemProps) => (
           <p className="text-lg font-bold">${price}</p>
         </div>
         <div className="flex items-end">
-          <p className="text-sm text-gray-600 underline cursor-pointer">Remove</p>
+          <p  onClick={() => onToggleCart(id)} className="text-sm text-gray-600 underline cursor-pointer">Remove</p>
         </div>
       </div>
     </div>

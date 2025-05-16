@@ -76,3 +76,8 @@ export async function addToCart(productId: number, quantity: number) {
   });
   return response.data;
 }
+
+export async function removeFromCart(productId: number){
+  const response = await api.delete(`api/cart/${productId}`);
+  return response.data;
+}
