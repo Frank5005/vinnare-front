@@ -184,3 +184,5 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+//<p className="text-gray-600">By {product.owner}</p>

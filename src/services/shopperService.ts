@@ -34,29 +34,6 @@ export async function getWishlist() {
   return response.data;
 }
 
-export async function getCart(){
-  const response = await api.get("/api/cart/full");
-  return response.data.map((p: any) => ({
-    id: p.productId,
-    title: p.title,
-    price: p.price,
-    description: p.description,
-    category: p.category,
-    imageUrl: p.image,
-    quantity: p.quantity,
-    available: p.available,
-    categoryId: p.categoryId,
-  }));
-}
-
-export async function addToCart(productId: number, quantity: number) {
-  const response = await api.post("/api/cart", {
-    productId,
-    quantity,
-  });
-  return response.data;
-}
-
 export async function addToWishlist(userId: string, productId: number) {
   const response = await api.post("/api/user/wishlist/add", {
     product_id: productId,
@@ -78,3 +55,38 @@ export const getWishlistItemId = async (productId: number) => {
   });
   return res.data;
 };
+
+export async function getCart(){
+  const response = await api.get("/api/cart/full");
+  return response.data.map((p: any) => ({
+    id: p.productId,
+    title: p.title,
+    price: p.price,
+    description: p.description,
+    category: p.category,
+    image: p.image,
+    quantity: p.quantity,
+    available: p.available,
+    categoryId: p.categoryId,
+  }));
+}
+
+export async function addToCart(productId: number, quantity: number) {
+  const response = await api.post("/api/cart", {
+    productId,
+    quantity,
+  });
+  return response.data;
+}
+
+export async function removeFromCart(productId: number){
+  const response = await api.delete(`api/cart/${productId}`);
+  return response.data;
+}
+
+export async function useCoupon(code: string){
+  const response = await api.get("/api/coupons/use", {
+    params: {code},
+  });
+  return response.data;
+}
