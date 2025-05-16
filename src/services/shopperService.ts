@@ -81,3 +81,10 @@ export async function removeFromCart(productId: number){
   const response = await api.delete(`api/cart/${productId}`);
   return response.data;
 }
+
+export async function useCoupon(code: string){
+  const response = await api.get("/api/coupons/use", {
+    params: {code},
+  });
+  return response.data;
+}

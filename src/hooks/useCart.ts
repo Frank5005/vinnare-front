@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { getCart, removeFromCart } from "../services/shopperService";
+import React, { useState, useEffect } from "react";
+import { getCart, removeFromCart, useCoupon } from "../services/shopperService";
 import { Item } from "../types/Item";
 
 export const useCart = () => {
@@ -7,6 +7,14 @@ export const useCart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [productsIds, setProductsIds] = useState<number[]>([]);
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  const discountedTotal = subtotal - (subtotal * discount) / 100;
 
   useEffect(() => {
     fetchCart();
@@ -45,6 +53,22 @@ export const useCart = () => {
     }
   };
 
+  const handleApplyCoupon = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key == "Enter") {
+      try {
+        const coupon = await useCoupon(couponCode);
+        setDiscount(coupon.discountPercentage);
+        console.log(coupon);
+        console.log(discount);
+      } catch (err) {
+        setDiscount(0);
+        setError(err instanceof Error ? err.message : "Invalid coupon code");
+      }
+    }
+  };
+
   //const totalItems = Array.isArray(cartItems) ? cartItems.length : 0;
-  return { cartItems, loading, error, productsIds, ToggleCart };
+  return { cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, ToggleCart, handleApplyCoupon, setCouponCode };
 };
