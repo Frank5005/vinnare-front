@@ -14,7 +14,7 @@ import CreateEmployee from './pages/Admin - Employee/CreateEmployee';
 import CreateProduct from './pages/Admin - Employee/CreateProduct';
 import JobsList from './pages/Admin - Employee/JobsList';
 import ProductsList from './pages/Admin - Employee/ProductsList';
-import ViewAllUsers from './pages/Admin - Employee/ViewAllUsers';
+import ViewAllUsers from './pages/Admin - Employee/UserList';
 //Shopper
 import Cart from './pages/Shopper/Cart';
 import CheckoutAddress from './pages/Shopper/CheckoutAddress';

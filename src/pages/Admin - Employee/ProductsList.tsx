@@ -118,6 +118,7 @@ const ProductsList = () => {
             onChange={e => handleInputChange('title', e.target.value)}
             className="w-full px-2 py-1 border rounded"
             disabled={isSaving}
+            placeholder="Title"
           />
         ) : (
           row.title
@@ -135,6 +136,7 @@ const ProductsList = () => {
             className="w-full px-2 py-1 border rounded"
             step="0.01"
             disabled={isSaving}
+            placeholder="Price"
           />
         ) : (
           `$${row.price.toFixed(2)}`
@@ -158,6 +160,7 @@ const ProductsList = () => {
             className="w-full px-2 py-1 border rounded"
             min="0"
             disabled={isSaving}
+            placeholder="Quantity"
           />
         ) : (
           row.quantity
@@ -174,6 +177,7 @@ const ProductsList = () => {
             className="w-full px-2 py-1 border rounded"
             min="0"
             disabled={isSaving}
+            placeholder="Available"
           />
         ) : (
           row.available
