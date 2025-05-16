@@ -35,7 +35,7 @@ const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, handleAp
       <div className="text-sm space-y-3">
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>${subtotal}</span>
+          <span>${subtotal.toFixed(2)}</span>
         </div>
 
         {discount > 0 && (
