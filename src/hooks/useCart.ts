@@ -69,6 +69,6 @@ export const useCart = () => {
     }
   };
 
-  //const totalItems = Array.isArray(cartItems) ? cartItems.length : 0;
-  return { cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, ToggleCart, handleApplyCoupon, setCouponCode };
+  const totalItems = Array.isArray(cartItems) ? cartItems.length : 0;
+  return { totalItems, cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, ToggleCart, handleApplyCoupon, setCouponCode };
 };

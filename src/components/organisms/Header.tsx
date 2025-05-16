@@ -9,7 +9,6 @@ const Header = () => {
   const { isLoggedIn, userName, logout } = useAuth();
   const { totalItems } = useCart();
   const navigate = useNavigate();
-
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -17,7 +16,7 @@ const Header = () => {
     localStorage.removeItem("userRole");
     localStorage.removeItem("userName");
     localStorage.removeItem("userEmail");
-    
+
   };
 
   return (
