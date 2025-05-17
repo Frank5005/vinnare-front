@@ -9,6 +9,10 @@ export const useCart = () => {
   const [productsIds, setProductsIds] = useState<number[]>([]);
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [initialTotal, setInitialTotal] = useState(() => {
+    const stored = localStorage.getItem("cartTotalItems");
+    return stored ? Number(stored) : 0;
+  });
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -70,5 +74,9 @@ export const useCart = () => {
   };
 
   const totalItems = Array.isArray(cartItems) ? cartItems.length : 0;
-  return { totalItems, cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, ToggleCart, handleApplyCoupon, setCouponCode };
+  useEffect(() => {
+    localStorage.setItem("cartTotalItems", String(totalItems));
+  }, [totalItems]);
+
+  return { totalItems,initialTotal, cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, ToggleCart, handleApplyCoupon, setCouponCode };
 };
