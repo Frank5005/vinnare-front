@@ -30,7 +30,7 @@ export const SearchBar = () => {
   const handleProductClick = (productId: number) => {
     setIsOpen(false);
     setSearchTerm('');
-    navigate(`/products/${productId}`);
+    navigate(`/product/${productId}`);
   };
 
   return (
