@@ -2,13 +2,14 @@ import AdminHeader from "../../components/organisms/AdminHeader";
 import { useAllProducts, Product } from "../../hooks/useAllProducts";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 import { DataTable, DataTableColumn, DataTableAction } from "../../components/organisms/DataTable";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../services/api";
 import OrderDateFilter from "../../components/molecules/OrderDateFilter";
 
 const ProductsList = () => {
   const [dateFilter, setDateFilter] = useState<string>("7");
-  const { products, loading, error: fetchError } = useAllProducts();
+  const { products: initialProducts, loading, error: fetchError } = useAllProducts();
+  const [products, setProducts] = useState<Product[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({
     title: "",
@@ -16,6 +17,12 @@ const ProductsList = () => {
     quantity: 0,
     available: 0
   });
+  
+  // Update local products state when initialProducts changes
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
   const filteredProducts = products.filter(product => {
     if (dateFilter === "all") return true;
     const days = parseInt(dateFilter, 10);
@@ -25,6 +32,7 @@ const ProductsList = () => {
     const diffDays = diffTime / (1000 * 3600 * 24);
     return diffDays <= days;
   });
+
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -59,7 +67,23 @@ const ProductsList = () => {
       };
 
       await api.put(`/api/product/${id}`, updateData);
-      window.location.reload();
+      
+      // Update the local state with the new product data
+      setProducts(prevProducts => 
+        prevProducts.map(product => 
+          product.id === id 
+            ? { 
+                ...product,
+                title: editForm.title,
+                price: editForm.price,
+                quantity: editForm.quantity,
+                available: editForm.available
+              } 
+            : product
+        )
+      );
+
+      setEditingId(null);
     } catch (error) {
       console.error('Error updating product:', error);
       setErrorMessage('Failed to update product. Please try again.');
@@ -97,7 +121,11 @@ const ProductsList = () => {
       };
 
       await api.delete(`/api/product/${id}`, config);
-      window.location.reload();
+      
+      // Update local state by removing the deleted product
+      setProducts(prevProducts => 
+        prevProducts.filter(product => product.id !== id)
+      );
     } catch (error) {
       console.error('Error deleting product:', error);
       setErrorMessage('Failed to delete product. Please try again.');

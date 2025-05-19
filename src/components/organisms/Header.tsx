@@ -7,15 +7,12 @@ import { useCart } from "../../hooks/useCart";
 
 const Header = () => {
   const { isLoggedIn, userName, logout } = useAuth();
-  const { totalItems } = useCart();
+  const { totalItems, initialTotal  } = useCart();
   const navigate = useNavigate();
   const handleLogout = () => {
     logout();
     navigate("/");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userEmail");
+    localStorage.clear();
 
   };
 
@@ -48,7 +45,7 @@ const Header = () => {
             <div className="flex items-center gap-4 ml-8">
               <div className="flex items-center cursor-pointer" onClick={() => navigate("/cart")}>
                 <FaShoppingBag className="text-xl mr-1" />
-                <span className="text-sm">{isLoggedIn ? totalItems : 0}</span>
+                <span className="text-sm">{isLoggedIn ? initialTotal : totalItems}</span>
               </div>
               <span className="text-sm">{userName}</span>
               <button

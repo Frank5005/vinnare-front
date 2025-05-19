@@ -2,16 +2,21 @@ import AdminHeader from "../../components/organisms/AdminHeader";
 import { DataTable, DataTableColumn, DataTableAction } from "../../components/organisms/DataTable";
 import { useAllCategories, Category } from "../../hooks/useAllCategories";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../services/api";
 
 const CategoryList = () => {
-  const { categories, loading, error } = useAllCategories();
+  const { categories: initialCategories, loading, error:fetchError } = useAllCategories();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ imageUrl: "" });
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  
+  useEffect(() => {
+    setCategories(initialCategories);
+  }, [initialCategories]);
 
   const handleEdit = (category: Category) => {
     setEditingId(category.id);
@@ -24,13 +29,41 @@ const CategoryList = () => {
       setIsSaving(true);
       setErrorMessage(null);
 
-      await api.put(`/api/category/${id}`, {
-        imageUrl: editForm.imageUrl
-      });
+      const category = categories.find(c => c.id === id);
+      if (!category) {
+        throw new Error('Category not found');
+      }
 
-      window.location.reload();
-    } catch (error) {
-      setErrorMessage("Failed to update category. Please try again.");
+      const updateData = {
+        imageUrl: editForm.imageUrl
+      };
+
+      console.log('Sending update data:', updateData); // Debug log
+
+      const response = await api.put(`/api/category/${id}`, updateData);
+      console.log('Server response:', response); // Debug log
+
+      setCategories(prevCategories => 
+        prevCategories.map(cat => 
+          cat.id === id 
+            ? { ...cat, imageUrl: editForm.imageUrl }
+            : cat
+        )
+      );
+
+      setEditingId(null);
+    } catch (error: any) {
+      console.error('Error details:', error); // Debug log
+      const category = categories.find(c => c.id === id);
+      if (
+        error?.response?.status === 500 &&
+        category &&
+        category.approved === false
+      ) {
+        setErrorMessage("Failed to update category that is not approved.");
+      } else {
+        setErrorMessage(`Failed to update category: ${error?.response?.data?.message || error.message || 'Unknown error'}`);
+      }
     } finally {
       setIsSaving(false);
     }
@@ -60,7 +93,10 @@ const CategoryList = () => {
       };
 
       await api.delete(`/api/category/${id}`, config);
-      window.location.reload();
+      setCategories(prevCategories => 
+        prevCategories.filter(category => category.id !== id)
+      );
+
     } catch (error: any) {
       const category = categories.find(c => c.id === id);
       if (
@@ -159,7 +195,7 @@ const CategoryList = () => {
           data={categories}
           actions={actions}
           loading={loading}
-          error={error}
+          error={fetchError}
         />
       </main>
     </div>
