@@ -10,19 +10,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { getSecurityQuestions, signup } from "../../../services/authService";
 import { useEffect, useState } from "react";
 
-/*
-const securityQuestions = [
-  { label: "What is your favorite color?", value: "WhatIsYourFavoriteColor" },
-  { label: "What is your pet’s name?", value: "WhatIsYourPetName" },
-  { label: "What is your birth city?", value: "WhatIsYourBirthCity" },
-  { label: "What is your mother’s maiden name?", value: "WhatIsYourMotherMaidenName" },
-  { label: "What is your favorite food?", value: "WhatIsYourFavoriteFood" },
-  { label: "What is your favorite sport?", value: "WhatIsYourFavoriteSport" },
-  { label: "What is your favorite movie?", value: "WhatIsYourFavoriteMovie" },
-  { label: "What is your favorite book?", value: "WhatIsYourFavoriteBook" },
-];
-*/
-
 const schema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -58,16 +45,16 @@ const SignUpForm = () => {
   const [questions, setQuestions] = useState<{ value: string, label: string }[]>([]);
 
   useEffect(() => {
-          const fetchQuestions = async () => {
-              try {
-                  const data = await getSecurityQuestions();
-                  setQuestions(data);
-              } catch (error) {
-                  console.error("Error loading questions", error);
-              }
-          };
-          fetchQuestions();
-      }, []);
+    const fetchQuestions = async () => {
+      try {
+        const data = await getSecurityQuestions();
+        setQuestions(data);
+      } catch (error) {
+        console.error("Error loading questions", error);
+      }
+    };
+    fetchQuestions();
+  }, []);
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
@@ -93,8 +80,8 @@ const SignUpForm = () => {
       title="Sign up"
       subtitle="Register to add items to your wishlist and make purchases"
     >
-      <form 
-        onSubmit={handleSubmit(onSubmit)} 
+      <form
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-4 w-full max-w-lg mx-auto text-base">
         {error && (
           <div className="text-red-500 text-sm text-center">{error}</div>

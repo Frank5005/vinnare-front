@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getRoleFromToken, login } from "../../../services/authService";
 import { useAuth } from "../../../context/AuthContext";
-import Cookies from "js-cookie";
+//import Cookies from "js-cookie";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -35,10 +35,9 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await login({
-        ...data,
-        //username: data.email  
+        ...data,  
       });
-      const { token, username, email } = response;
+      const { token, username, email, changePassword } = response;
       const role = getRoleFromToken(token);
 
       //Cookies.set("token", token.replace('Bearer ', ''), { expires: data.remember ? 7 : undefined });
@@ -49,6 +48,7 @@ const LoginForm = () => {
       if (role) {
         localStorage.setItem("userRole", role);
       }
+      localStorage.setItem("changePassword", changePassword);
 
       loginContext(username);
 
@@ -57,7 +57,12 @@ const LoginForm = () => {
       } else if (role === "Shopper") {
         navigate("/shop-list");
       } else if (role === "Seller") {
-        navigate("/admin/homepage");
+        if(changePassword == true){
+          localStorage.setItem("resetToken", token.replace('Bearer ', ''));
+          navigate("/new-password")
+        } else{
+          navigate("/admin/homepage");
+        }
       }
     }catch (error: any) {
       console.error("Login error:", error.response?.data || error.message);
