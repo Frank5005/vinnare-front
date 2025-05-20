@@ -18,7 +18,6 @@ const ProductsList = () => {
     available: 0
   });
   
-  // Update local products state when initialProducts changes
   useEffect(() => {
     setProducts(initialProducts);
   }, [initialProducts]);
@@ -68,7 +67,6 @@ const ProductsList = () => {
 
       await api.put(`/api/product/${id}`, updateData);
       
-      // Update the local state with the new product data
       setProducts(prevProducts => 
         prevProducts.map(product => 
           product.id === id 
@@ -110,6 +108,7 @@ const ProductsList = () => {
       setErrorMessage(null);
 
       const username = localStorage.getItem('userName');
+      const role = localStorage.getItem("userRole");
       if (!username) {
         throw new Error('Username not found in localStorage');
       }
@@ -120,21 +119,29 @@ const ProductsList = () => {
         }
       };
 
-      await api.delete(`/api/product/${id}`, config);
-      
-      // Update local state by removing the deleted product
-      setProducts(prevProducts => 
+      const response = await api.delete(`/api/product/${id}`, config);
+
+      if (response.status == 200 && role === "Seller"){
+        setErrorMessage(response.data.message + " Please wait for the admin to approve.");
+      }
+      else{
+        setProducts(prevProducts => 
         prevProducts.filter(product => product.id !== id)
-      );
-    } catch (error) {
-      console.error('Error deleting product:', error);
-      setErrorMessage('Failed to delete product. Please try again.');
+        );
+      }
+    } catch (error: any) {
+      const product = products.find(p => p.id === id);
+      if(product && product.approved === false){
+        setErrorMessage("Failed to delete product that is not approved.");
+      }
+      else{
+        setErrorMessage('Failed to delete product. Please try again.');
+      }
     } finally {
       setIsDeleting(false);
     }
   };
 
-  // DataTable columns
   const columns: DataTableColumn<Product>[] = [
     { key: "id", label: "ID" },
     {
@@ -291,7 +298,7 @@ const ProductsList = () => {
           data={filteredProducts}
           actions={actions}
           loading={loading}
-          error={fetchError || errorMessage}
+          error={fetchError}
         />
       </main>
     </div>

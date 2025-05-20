@@ -37,11 +37,7 @@ const CategoryList = () => {
       const updateData = {
         imageUrl: editForm.imageUrl
       };
-
-      console.log('Sending update data:', updateData); // Debug log
-
       const response = await api.put(`/api/category/${id}`, updateData);
-      console.log('Server response:', response); // Debug log
 
       setCategories(prevCategories => 
         prevCategories.map(cat => 
@@ -53,7 +49,6 @@ const CategoryList = () => {
 
       setEditingId(null);
     } catch (error: any) {
-      console.error('Error details:', error); // Debug log
       const category = categories.find(c => c.id === id);
       if (
         error?.response?.status === 500 &&
@@ -74,16 +69,13 @@ const CategoryList = () => {
     setErrorMessage(null);
   };
 
-  const handleInputChange = (value: string) => {
-    setEditForm({ imageUrl: value });
-  };
-
   const handleDelete = async (id: number) => {
     try {
       setIsDeleting(true);
       setErrorMessage(null);
 
       const username = localStorage.getItem("userName");
+      const role = localStorage.getItem("userRole");
       if (!username) throw new Error("Username not found in localStorage");
 
       const config = {
@@ -92,11 +84,16 @@ const CategoryList = () => {
         }
       };
 
-      await api.delete(`/api/category/${id}`, config);
-      setCategories(prevCategories => 
-        prevCategories.filter(category => category.id !== id)
-      );
+      const response = await api.delete(`/api/category/${id}`, config);
 
+      if (response.status == 200 && role === "Seller"){
+        setErrorMessage(response.data.message);
+      }
+      else{
+        setCategories(prevCategories => 
+          prevCategories.filter(category => category.id !== id)
+        );
+      }
     } catch (error: any) {
       const category = categories.find(c => c.id === id);
       if (
