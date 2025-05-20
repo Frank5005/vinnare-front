@@ -13,7 +13,6 @@ export async function createEmployee(data: EmployeeData) {
 
 export async function getJobs() {
   const response = await api.get("/api/jobs");
-  //console.log(response);
   return response.data;
 }
 

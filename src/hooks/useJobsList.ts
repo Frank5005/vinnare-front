@@ -10,24 +10,24 @@ export const useJobsList = () => {
   const [dateFilter, setDateFilter] = useState("7");
 
   useEffect(() => {
+    setLoading(true);
+    const fetchJobs = async () => {
+      setLoading(true);
+      try {
+        const jos = await getJobs();
+        setJobs(jos);
+        console.log(jos);
+      } catch (err: any) {
+        //setError(
+        //"Error fetching products: " + (err?.message || JSON.stringify(err))
+        //);
+        console.error("Failed to fetch jobs:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchJobs();
   }, []);
-
-  const fetchJobs = async () => {
-    setLoading(true);
-    try {
-      const jos = await getJobs();
-      setJobs(jos);
-      console.log(jos);
-    } catch (err: any) {
-      //setError(
-        //"Error fetching products: " + (err?.message || JSON.stringify(err))
-      //);
-      console.error("Failed to fetch jobs:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredJobs = jobs.filter((job: Job) => {
     if (dateFilter === "all") return true;
@@ -55,7 +55,7 @@ export const useJobsList = () => {
       removeJobFromList(job.id);
     } catch (error) {
       console.log("Error approving job", error);
-    }finally {
+    } finally {
       setIsAccepting(false);
     }
   };
@@ -69,7 +69,7 @@ export const useJobsList = () => {
       removeJobFromList(job.id);
     } catch (error) {
       console.log("Error rejecting job", error);
-    }finally {
+    } finally {
       setIsDeclining(false);
     }
   };
