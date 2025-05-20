@@ -97,12 +97,10 @@ const CategoryList = () => {
     } catch (error: any) {
       const category = categories.find(c => c.id === id);
       if (
-        error?.response?.status === 500 &&
-        category &&
-        category.approved === false
+        error?.response?.status === 500
       ) {
-        setErrorMessage("Failed to delete category that is not approved.");
-      } else {
+        setErrorMessage(error.response.data.title);
+      }  else {
         setErrorMessage("Failed to delete category. Please try again.");
       }
     } finally {
