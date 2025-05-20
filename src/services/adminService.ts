@@ -13,7 +13,18 @@ export async function createEmployee(data: EmployeeData) {
 
 export async function getJobs() {
   const response = await api.get("/api/jobs");
-  return response.data;
+  return response.data.map((job: any) => ({
+    id: job.id,
+    associatedId: job.associatedId,
+    type: job.type,
+    name:
+      job.type === "Product"
+        ? job.productName || "Unknown Product"
+        : job.categoryName || "Unknown Category",
+    creatorName: job.creatorName,
+    date: job.date,
+    operation: job.operation,
+  }));
 }
 
 export async function reviewJob(

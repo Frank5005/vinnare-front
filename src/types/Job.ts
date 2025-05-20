@@ -1,6 +1,7 @@
 export interface Job {
   id: number;
-  type: "Product" | "Category";
+  associatedId: number;
+  type: string;
   name: string;
   creatorName: string;
   date: string;
