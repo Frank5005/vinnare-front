@@ -4,6 +4,7 @@ import InputField from "../../components/atoms/InputField";
 import FormCardLayout from "../../layouts/FormCardLayout";
 import Button from "../../components/atoms/Button";
 import api from "../../services/api";
+import {useNavigate} from "react-router-dom"
 
 const CreateCategory = () => {
   const [form, setForm] = useState({
@@ -12,8 +13,8 @@ const CreateCategory = () => {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
+  const [error, setError] = useState<string | null>(null);  
+  const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -32,6 +33,9 @@ const CreateCategory = () => {
       };
       await api.post("/api/category/create", body);
       setSuccess("Category created successfully!");
+      setTimeout(() => {
+        navigate("/admin/categories");
+      }, 1500); 
       setForm({ name: "", imageUrl: "" });
     } catch (err: any) {
       setError(err?.response?.data?.message || err.message || "Error creating category");

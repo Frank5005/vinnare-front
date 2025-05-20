@@ -2,16 +2,21 @@ import AdminHeader from "../../components/organisms/AdminHeader";
 import { DataTable, DataTableColumn, DataTableAction } from "../../components/organisms/DataTable";
 import { useAllCategories, Category } from "../../hooks/useAllCategories";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../services/api";
 
 const CategoryList = () => {
-  const { categories, loading, error } = useAllCategories();
+  const { categories: initialCategories, loading, error:fetchError } = useAllCategories();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ imageUrl: "" });
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  
+  useEffect(() => {
+    setCategories(initialCategories);
+  }, [initialCategories]);
 
   const handleEdit = (category: Category) => {
     setEditingId(category.id);
@@ -24,13 +29,36 @@ const CategoryList = () => {
       setIsSaving(true);
       setErrorMessage(null);
 
-      await api.put(`/api/category/${id}`, {
-        imageUrl: editForm.imageUrl
-      });
+      const category = categories.find(c => c.id === id);
+      if (!category) {
+        throw new Error('Category not found');
+      }
 
-      window.location.reload();
-    } catch (error) {
-      setErrorMessage("Failed to update category. Please try again.");
+      const updateData = {
+        imageUrl: editForm.imageUrl
+      };
+      const response = await api.put(`/api/category/${id}`, updateData);
+
+      setCategories(prevCategories => 
+        prevCategories.map(cat => 
+          cat.id === id 
+            ? { ...cat, imageUrl: editForm.imageUrl }
+            : cat
+        )
+      );
+
+      setEditingId(null);
+    } catch (error: any) {
+      const category = categories.find(c => c.id === id);
+      if (
+        error?.response?.status === 500 &&
+        category &&
+        category.approved === false
+      ) {
+        setErrorMessage("Failed to update category that is not approved.");
+      } else {
+        setErrorMessage(`Failed to update category: ${error?.response?.data?.message || error.message || 'Unknown error'}`);
+      }
     } finally {
       setIsSaving(false);
     }
@@ -41,16 +69,13 @@ const CategoryList = () => {
     setErrorMessage(null);
   };
 
-  const handleInputChange = (value: string) => {
-    setEditForm({ imageUrl: value });
-  };
-
   const handleDelete = async (id: number) => {
     try {
       setIsDeleting(true);
       setErrorMessage(null);
 
       const username = localStorage.getItem("userName");
+      const role = localStorage.getItem("userRole");
       if (!username) throw new Error("Username not found in localStorage");
 
       const config = {
@@ -59,8 +84,16 @@ const CategoryList = () => {
         }
       };
 
-      await api.delete(`/api/category/${id}`, config);
-      window.location.reload();
+      const response = await api.delete(`/api/category/${id}`, config);
+
+      if (response.status == 200 && role === "Seller"){
+        setErrorMessage(response.data.message);
+      }
+      else{
+        setCategories(prevCategories => 
+          prevCategories.filter(category => category.id !== id)
+        );
+      }
     } catch (error: any) {
       const category = categories.find(c => c.id === id);
       if (
@@ -159,7 +192,7 @@ const CategoryList = () => {
           data={categories}
           actions={actions}
           loading={loading}
-          error={error}
+          error={fetchError}
         />
       </main>
     </div>

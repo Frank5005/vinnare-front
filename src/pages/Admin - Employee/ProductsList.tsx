@@ -2,13 +2,14 @@ import AdminHeader from "../../components/organisms/AdminHeader";
 import { useAllProducts, Product } from "../../hooks/useAllProducts";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 import { DataTable, DataTableColumn, DataTableAction } from "../../components/organisms/DataTable";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../services/api";
 import OrderDateFilter from "../../components/molecules/OrderDateFilter";
 
 const ProductsList = () => {
   const [dateFilter, setDateFilter] = useState<string>("7");
-  const { products, loading, error: fetchError } = useAllProducts();
+  const { products: initialProducts, loading, error: fetchError } = useAllProducts();
+  const [products, setProducts] = useState<Product[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({
     title: "",
@@ -16,6 +17,11 @@ const ProductsList = () => {
     quantity: 0,
     available: 0
   });
+  
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
   const filteredProducts = products.filter(product => {
     if (dateFilter === "all") return true;
     const days = parseInt(dateFilter, 10);
@@ -25,6 +31,7 @@ const ProductsList = () => {
     const diffDays = diffTime / (1000 * 3600 * 24);
     return diffDays <= days;
   });
+
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -59,7 +66,22 @@ const ProductsList = () => {
       };
 
       await api.put(`/api/product/${id}`, updateData);
-      window.location.reload();
+      
+      setProducts(prevProducts => 
+        prevProducts.map(product => 
+          product.id === id 
+            ? { 
+                ...product,
+                title: editForm.title,
+                price: editForm.price,
+                quantity: editForm.quantity,
+                available: editForm.available
+              } 
+            : product
+        )
+      );
+
+      setEditingId(null);
     } catch (error) {
       console.error('Error updating product:', error);
       setErrorMessage('Failed to update product. Please try again.');
@@ -86,6 +108,7 @@ const ProductsList = () => {
       setErrorMessage(null);
 
       const username = localStorage.getItem('userName');
+      const role = localStorage.getItem("userRole");
       if (!username) {
         throw new Error('Username not found in localStorage');
       }
@@ -96,17 +119,29 @@ const ProductsList = () => {
         }
       };
 
-      await api.delete(`/api/product/${id}`, config);
-      window.location.reload();
-    } catch (error) {
-      console.error('Error deleting product:', error);
-      setErrorMessage('Failed to delete product. Please try again.');
+      const response = await api.delete(`/api/product/${id}`, config);
+
+      if (response.status == 200 && role === "Seller"){
+        setErrorMessage(response.data.message + " Please wait for the admin to approve.");
+      }
+      else{
+        setProducts(prevProducts => 
+        prevProducts.filter(product => product.id !== id)
+        );
+      }
+    } catch (error: any) {
+      const product = products.find(p => p.id === id);
+      if(product && product.approved === false){
+        setErrorMessage("Failed to delete product that is not approved.");
+      }
+      else{
+        setErrorMessage('Failed to delete product. Please try again.');
+      }
     } finally {
       setIsDeleting(false);
     }
   };
 
-  // DataTable columns
   const columns: DataTableColumn<Product>[] = [
     { key: "id", label: "ID" },
     {
@@ -263,7 +298,7 @@ const ProductsList = () => {
           data={filteredProducts}
           actions={actions}
           loading={loading}
-          error={fetchError || errorMessage}
+          error={fetchError}
         />
       </main>
     </div>

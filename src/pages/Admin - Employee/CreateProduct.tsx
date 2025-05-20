@@ -30,7 +30,7 @@ const CreateProduct = () => {
     setSuccess(null);
 
     try {
-      const username = localStorage.getItem("username");
+      const username = localStorage.getItem("userName");
       if (!username) throw new Error("No username found in localStorage");
 
       const userRes = await api.get(`/api/user/id/${username}`);
