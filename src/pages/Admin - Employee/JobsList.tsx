@@ -1,17 +1,25 @@
 import AdminHeader from "../../components/organisms/AdminHeader";
 import { useJobsList } from "../../hooks/useJobsList";
 import { Job } from "../../types/Job";
-import { DataTable, DataTableColumn } from "../../components/organisms/DataTable";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { DataTable, DataTableColumn, DataTableAction } from "../../components/organisms/DataTable";
+import { FaCheck, FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import OrderDateFilter from "../../components/molecules/OrderDateFilter";
 
 const JobsList = () => {
-  const {loading, error, filteredJobs, dateFilter, handleAccept, handleReject, setDateFilter } = useJobsList();
+  const { loading, error, jobId, filteredJobs, dateFilter, isAccepting, isDeclining, handleAccept, handleReject, setDateFilter } = useJobsList();
 
   const columns: DataTableColumn<Job>[] = [
     { key: "id", label: "ID" },
     { key: "type", label: "TYPE" },
-    { key: "name", label: "NAME" },
+    {
+      key: "name",
+      label: "NAME",
+      render: (row) => {
+        return row.productName !== "Unknown Product"
+          ? row.productName
+          : row.categoryName;
+      },
+    },
     { key: "creatorName", label: "CREATED BY" },
     { key: "operation", label: "OPERATION" },
     {
@@ -24,16 +32,30 @@ const JobsList = () => {
         });
       }
     },
+  ];
+
+  // DataTable actions
+  const actions: DataTableAction<Job>[] = [
     {
-      key: "action",
-      label: "ACTION",
-      render: (row) => (
-        <div className="flex gap-2">
-          <button title="Accept" onClick={() => handleAccept(row)}><FaCheck className="text-green-500 hover:text-green-800" /></button>
-          <button title="Decline" onClick={() => handleReject(row)}><FaTimes className="text-red-500 hover:text-red-800" /></button>
-        </div>
-      )
-    }
+      icon: jobId !== null ? <FaCheck /> : <FaEdit />,
+      label: jobId !== null ? "Accept" : "Edit",
+      onClick: (row) => {
+        if (jobId === row.id) {
+          handleAccept(row);
+        }
+      },
+      disabled: isAccepting || isDeclining,
+    },
+    {
+      icon: jobId !== null ? <FaTimes /> : <FaTrash />,
+      label: jobId !== null ? "Decline" : "Delete",
+      onClick: (row) => {
+        if (jobId === row.id) {
+          handleReject(row);
+        }
+      },
+      disabled: isAccepting || isDeclining,
+    },
   ];
 
   return (
@@ -50,6 +72,7 @@ const JobsList = () => {
         <DataTable<Job>
           columns={columns}
           data={filteredJobs}
+          actions={actions}
           loading={loading}
           error={error}
         />

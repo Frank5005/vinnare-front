@@ -4,7 +4,7 @@ import { getJobs, reviewJob } from "../services/adminService";
 
 export const useJobsList = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [jobsIds, setJobsIds] = useState<number[]>([]);
+  const [jobId, setJobId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dateFilter, setDateFilter] = useState("7");
@@ -17,23 +17,17 @@ export const useJobsList = () => {
     setLoading(true);
     try {
       const jos = await getJobs();
-      const ids = jos.map((p: any) => p.id);
       setJobs(jos);
-      setJobsIds(ids);
       console.log(jos);
-      console.log(ids);
-    } catch (error) {
-      console.error("Failed to fetch wishlist:", error);
+    } catch (err: any) {
+      //setError(
+        //"Error fetching products: " + (err?.message || JSON.stringify(err))
+      //);
+      console.error("Failed to fetch jobs:", err);
     } finally {
       setLoading(false);
     }
   };
-
-  /*
-  const inJobs = (jobId: number) => {
-    return jobsIds.includes(jobId);
-  };
-  */
 
   const filteredJobs = jobs.filter((job: Job) => {
     if (dateFilter === "all") return true;
@@ -45,35 +39,49 @@ export const useJobsList = () => {
     return diffDays <= days;
   });
 
+  const [isAccepting, setIsAccepting] = useState(false);
+  const [isDeclining, setIsDeclining] = useState(false);
+
   const removeJobFromList = (id: number) => {
     setJobs((prev) => prev.filter((j) => j.id !== id));
   };
 
   const handleAccept = async (job: Job) => {
+    setJobId(job.id);
     try {
       await reviewJob(job.id, job.type, "Approve");
+      setIsAccepting(true);
       console.log("Job approved successfully");
       removeJobFromList(job.id);
     } catch (error) {
       console.log("Error approving job", error);
+    }finally {
+      setIsAccepting(false);
     }
   };
 
   const handleReject = async (job: Job) => {
+    setJobId(job.id);
     try {
       await reviewJob(job.id, job.type, "Reject");
+      setIsDeclining(true);
       console.log("Job rejected successfully");
       removeJobFromList(job.id);
     } catch (error) {
       console.log("Error rejecting job", error);
+    }finally {
+      setIsDeclining(false);
     }
   };
 
   return {
     loading,
     error,
+    jobId,
     filteredJobs,
     dateFilter,
+    isAccepting,
+    isDeclining,
     handleAccept,
     handleReject,
     setDateFilter,

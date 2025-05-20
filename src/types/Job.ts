@@ -2,7 +2,8 @@ export interface Job {
   id: number;
   associatedId: number;
   type: string;
-  name: string;
+  categoryName: string;
+  productName: string;
   creatorName: string;
   date: string;
   operation: string;
