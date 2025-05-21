@@ -90,3 +90,10 @@ export async function useCoupon(code: string){
   });
   return response.data;
 }
+
+export async function buyProducts(code: string){
+  const response = await api.post("/api/purchases", {
+    params: {code},
+  });
+  return response.data;
+}

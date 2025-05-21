@@ -6,12 +6,14 @@ interface CartSummaryProps {
   discountedTotal: number;
   couponCode: string;
   discount: number;
+  appliedCouponCode: string | null;
+  readOnly?: boolean;
   handleApplyCoupon: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   //OnToggleCoupon: (code: string) => void;
   setCouponCode: (code: string) => void;
 }
 
-const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, handleApplyCoupon, setCouponCode }: CartSummaryProps) => {
+const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, appliedCouponCode, readOnly, handleApplyCoupon, setCouponCode }: CartSummaryProps) => {
 
   const navigate = useNavigate();
 
@@ -23,14 +25,22 @@ const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, handleAp
     <div className="w-full px-4">
       <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
 
-      <input
-        type="text"
-        placeholder="Enter coupon code here"
-        className="w-full border border-gray-300 px-4 py-2 text-sm mb-6"
-        value={couponCode}
-        onChange={(e) => setCouponCode(e.target.value)}
-        onKeyDown={handleApplyCoupon}
-      />
+      {!readOnly ? (
+        <input
+          type="text"
+          placeholder="Enter coupon code here"
+          className="w-full border border-gray-300 px-4 py-2 text-sm mb-6"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+          onKeyDown={handleApplyCoupon}
+        />
+      ) : (
+        appliedCouponCode && (
+          <p className="text-sm text-gray-700 mb-4">
+            Applied coupon: <span className="font-semibold">{appliedCouponCode}</span>
+          </p>
+        )
+      )}
 
       <div className="text-sm space-y-3">
         <div className="flex justify-between">
@@ -57,9 +67,12 @@ const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, handleAp
         </div>
       </div>
 
-      <button onClick={handleClick} className="mt-6 w-full bg-black text-white py-3 rounded-none text-sm font-medium hover:bg-gray-900 transition">
-        Continue to checkout
-      </button>
+      {!readOnly && (
+        <button onClick={handleClick} className="mt-6 w-full bg-black text-white py-3 rounded-none text-sm font-medium hover:bg-gray-900 transition">
+          Continue to checkout
+        </button>
+      )}
+
     </div>
   );
 }
