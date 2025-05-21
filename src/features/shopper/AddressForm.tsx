@@ -17,6 +17,8 @@ const AddressForm = () => {
     saveInfo: false,
   });
 
+  const [error, setError] = useState<string | null>(null);
+
   const {
       handleSubmit,
       formState: { errors, isSubmitting },
@@ -39,7 +41,7 @@ const AddressForm = () => {
       setError(null);
       navigate("/checkout-shipping");
     } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred during checkout');
+      setError(err.response?.data?.message || 'An error occurred during address checkout');
     }
   };
 
@@ -81,7 +83,4 @@ const AddressForm = () => {
 };
 
 export default AddressForm;
-function setError(arg0: null) {
-  throw new Error("Function not implemented.");
-}
 
