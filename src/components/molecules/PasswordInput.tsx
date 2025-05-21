@@ -7,16 +7,18 @@ interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 }
 
 const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ label, error, ...rest }, ref) => {
+  ({ label, error,id, ...rest }, ref) => {
+    const inputId = id || label.replace(/\s+/g, '-').toLowerCase();
     const [show, setShow] = useState(false);
 
     return (
       <div className="space-y-1">
-        <label className="block text-sm text-gray-700 font-medium text-left">{label}</label>
+        <label htmlFor={inputId} className="block text-sm text-gray-700 font-medium text-left">{label}</label>
         <div className="relative">
           <input
             ref={ref}
             type={show ? "text" : "password"}
+            id={inputId}
             {...rest}
             className={`w-full border rounded px-3 py-2 text-sm text-black
                 pr-10 focus:outline-none focus:ring-2 focus:ring-black 
