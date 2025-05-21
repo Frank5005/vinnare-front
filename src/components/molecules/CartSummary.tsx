@@ -1,5 +1,6 @@
 //import { Item } from "../../types/Item";
 import { useNavigate } from "react-router-dom";
+import { Preview } from "../../types/Preview";
 
 interface CartSummaryProps {
   subtotal: number;
@@ -8,12 +9,12 @@ interface CartSummaryProps {
   discount: number;
   appliedCouponCode: string | null;
   readOnly?: boolean;
+  preview: Preview;
   handleApplyCoupon: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  //OnToggleCoupon: (code: string) => void;
   setCouponCode: (code: string) => void;
 }
 
-const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, appliedCouponCode, readOnly, handleApplyCoupon, setCouponCode }: CartSummaryProps) => {
+const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, appliedCouponCode, readOnly, preview, handleApplyCoupon, setCouponCode }: CartSummaryProps) => {
 
   const navigate = useNavigate();
 
@@ -55,16 +56,31 @@ const CartSummary = ({ subtotal, discountedTotal, couponCode, discount, appliedC
           </div>
         )}
 
-        <div className="flex justify-between text-gray-500">
+        
+        {!readOnly ? (
+          <div className="flex justify-between text-gray-500">
           <span>Shipping calculated at the next step</span>
         </div>
+        ) : (
+          <div className="flex justify-between">
+          <span>Shipping</span>
+          <span>${preview.shipping_cost.toFixed(2)}</span>
+        </div>
+        )}
 
         <hr className="my-2 border-gray-300" />
 
-        <div className="flex justify-between font-semibold text-base">
+        {!readOnly ? (
+          <div className="flex justify-between font-semibold text-base">
           <span>Total</span>
           <span>${discountedTotal.toFixed(2)}</span>
         </div>
+        ) : (
+          <div className="flex justify-between">
+          <span>Total</span>
+          <span>${preview.final_total.toFixed(2)}</span>
+        </div>
+        )}
       </div>
 
       {!readOnly && (

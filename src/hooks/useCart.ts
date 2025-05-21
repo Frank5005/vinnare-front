@@ -1,6 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { getCart, removeFromCart, useCoupon } from "../services/shopperService";
+import React, { useState, useEffect, createContext } from "react";
+import {
+  buyProducts,
+  getCart,
+  removeFromCart,
+  useCoupon,
+  viewPreview,
+} from "../services/shopperService";
 import { Item } from "../types/Item";
+import { Preview } from "../types/Preview";
+import { PurchaseContextType } from "../types/PurchaseContextType";
+import { usePurchase } from "../context/purchaseContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const useCart = () => {
   const [cartItems, setCartItems] = useState<Item[]>([]);
@@ -16,8 +26,8 @@ export const useCart = () => {
     const stored = localStorage.getItem("cartTotalItems");
     return stored ? Number(stored) : 0;
   });
-
-  //setInitialTotal(Number(stored));
+  const { data, setData } = usePurchase();
+  const navigate = useNavigate();
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -37,8 +47,6 @@ export const useCart = () => {
     }
 
     console.log(savedCode);
-    console.log(savedDiscount);
-    console.log(discountedTotal);
   }, []);
 
   const fetchCart = async () => {
@@ -67,10 +75,8 @@ export const useCart = () => {
       setProductsIds((p) => p.filter((id) => id !== productId));
       fetchCart();
       console.log(remove);
-      //toast("Product removed from wishlist!");
     } else {
       console.log("It cannot be removed from the cart");
-      //toast("Product added to wishlist!");
     }
   };
 
@@ -87,12 +93,52 @@ export const useCart = () => {
           "appliedDiscount",
           coupon.discountPercentage.toString()
         );
-        console.log(coupon);
+        fetchPreview();
+        console.log(appliedCouponCode);
         console.log(discount);
       } catch (err) {
         setDiscount(0);
+        //setAppliedCouponCode("");
         setError(err instanceof Error ? err.message : "Invalid coupon code");
       }
+    }
+  };
+
+  const fetchPreview = async () => {
+    try {
+
+      const body = { coupon_code: appliedCouponCode || undefined };
+
+      if(data?.coupon_applied == body.coupon_code){
+        return;
+      }
+
+      const preview = await viewPreview(body);
+      setData(preview);
+      console.log(preview);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Error while watching the preview shopping"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const buyingProducts = async () => {
+    try {
+      const body = { coupon_code: appliedCouponCode || undefined };
+      const bought = await buyProducts(body);
+      console.log(bought);
+      navigate(`/my-orders`);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Error while buying the products"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -111,8 +157,11 @@ export const useCart = () => {
     couponCode,
     discount,
     appliedCouponCode,
+    data,
     ToggleCart,
     handleApplyCoupon,
     setCouponCode,
+    buyingProducts,
+    fetchPreview,
   };
 };
