@@ -7,7 +7,9 @@ import { useCart } from "../../hooks/useCart";
 
 const Cart = () => {
 
-  const { cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, appliedCouponCode, ToggleCart, handleApplyCoupon, setCouponCode } = useCart();
+  const { cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, appliedCouponCode, data, ToggleCart, handleApplyCoupon, setCouponCode, fetchPreview } = useCart();
+
+  //fetchPreview();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
@@ -44,7 +46,19 @@ const Cart = () => {
           </div>
 
           {/* Right section: Summary */}
-          <CartSummary subtotal={subtotal} discountedTotal={discountedTotal} couponCode={couponCode} discount={discount} handleApplyCoupon={handleApplyCoupon} setCouponCode={setCouponCode} appliedCouponCode={appliedCouponCode}/>
+          {data && (
+              <CartSummary
+              subtotal={subtotal}
+              discountedTotal={discountedTotal}
+              couponCode={couponCode}
+              discount={discount}
+              appliedCouponCode={appliedCouponCode}
+              handleApplyCoupon={handleApplyCoupon}
+              setCouponCode={setCouponCode}
+              //readOnly={false}
+              preview={data}
+            />
+          )}
         </div>
       </main>
 

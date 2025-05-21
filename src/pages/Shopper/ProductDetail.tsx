@@ -71,6 +71,14 @@ const ProductDetail = () => {
   const handleAddToCart = async () => {
     if (!product) return;
 
+    const alreadyInCart = cart.some((p) => p.id === product.id);
+
+    if (alreadyInCart) {
+      toast("The product is already in the cart.");
+      return;
+    }
+    
+    /*
     const cartIds = cart.map((p) => p.id);
     const filteredIds = wishlistIds.filter((id) => !cartIds.includes(id));
 
@@ -78,6 +86,7 @@ const ProductDetail = () => {
       toast("The product is already in the cart.");
       return;
     }
+      */
 
     try {
       await addToCart(product.id, selectedQuantity);
