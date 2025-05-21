@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import paypal from "../../assets/paypalLogo.png";
 import { useCart } from "../../hooks/useCart";
+import toast from "react-hot-toast";
 
 const PaymentDetails = () => {
     const [paymentMethod, setPaymentMethod] = useState<"card" | "paypal">("card");
@@ -21,24 +22,34 @@ const PaymentDetails = () => {
 
     const isFormValid = () => {
         if (paymentMethod === "card") {
-            return (
+            const valid =
                 cardName.trim() !== "" &&
                 cardNumber.trim() !== "" &&
                 month !== "" &&
                 year !== "" &&
-                cvc.trim() !== ""
-            );
+                cvc.trim() !== "";
+
+            console.log("Card form valid: ", valid);
+            return valid;
         } else {
-            return paypalEmail.trim() !== "" && paypalCard.trim() !== "";
+            const valid = paypalEmail.trim() !== "" && paypalCard.trim() !== "";
+            console.log("Paypal form valid: ", valid);
+            return valid;
         }
     };
 
     const handleClick = () => {
-        if (!isFormValid) {
-            alert("Please complete the information.");
+
+        const valid = isFormValid();
+        console.log(valid);
+        if (!valid) {
+            toast.error("Please complete the information.");
+            console.log("Formulario incompleto");
             return;
         }
-        buyingProducts();
+        else {
+            buyingProducts();
+        }
     };
 
     return (
@@ -66,16 +77,39 @@ const PaymentDetails = () => {
             <div className="min-h-[350px] min-w-[350px]">
                 {paymentMethod === "card" ? (
                     <div className="space-y-4">
-                        <input type="text" placeholder="Cardholder Name" className="w-full border px-4 py-2" required />
-                        <input type="text" placeholder="Card Number" className="w-full border px-4 py-2" required />
+                        <input type="text" placeholder="Cardholder Name" className="w-full border px-4 py-2" value={cardName}
+                            onChange={(e) => setCardName(e.target.value)} required />
+                        <input type="text" placeholder="Card Number" className="w-full border px-4 py-2" value={cardNumber}
+                            onChange={(e) => setCardNumber(e.target.value)} required />
                         <div className="flex gap-2">
-                            <select title="Month" className="border px-4 py-2 w-1/3" required>
-                                <option>Month</option>
+                            <select title="Month" className="border px-4 py-2 w-1/3" value={month}
+                                onChange={(e) => setMonth(e.target.value)} required>
+                                <option value="">Month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
                             </select>
-                            <select title="Year" className="border px-4 py-2 w-1/3" required>
-                                <option>Year</option>
+                            <select title="Year" className="border px-4 py-2 w-1/3" value={year}
+                                onChange={(e) => setYear(e.target.value)} required>
+                                <option value="">Year</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
                             </select>
-                            <input type="text" placeholder="CVC" className="border px-4 py-2 w-1/3" required />
+                            <input type="text" placeholder="CVC" className="border px-4 py-2 w-1/3" value={cvc}
+                                onChange={(e) => setCvc(e.target.value)} required />
                         </div>
                         <div className="flex items-center justify-between mt-4">
                             <label htmlFor="save-card" className="text-sm font-medium">
@@ -93,13 +127,15 @@ const PaymentDetails = () => {
                                 />
                             </button>
                         </div>
-                        <button disabled={!isFormValid()} onClick={handleClick} className="w-full bg-black text-white py-3 rounded text-center">Pay with card</button>
+                        <button onClick={handleClick} className="w-full bg-black text-white py-3 rounded text-center">Pay with card</button>
                     </div>
                 ) : (
                     <div className="space-y-4 ">
-                        <input type="email" placeholder="Email" className="w-full border px-4 py-2" required />
-                        <input type="text" placeholder="Card Number" className="w-full border px-4 py-2" required />
-                        <button disabled={!isFormValid()} onClick={handleClick} className="w-full bg-black text-white py-3 rounded text-center">Pay Now</button>
+                        <input type="email" placeholder="Email" className="w-full border px-4 py-2" value={paypalEmail}
+                            onChange={(e) => setPaypalEmail(e.target.value)} required />
+                        <input type="text" placeholder="Card Number" className="w-full border px-4 py-2" value={paypalCard}
+                            onChange={(e) => setPaypalCard(e.target.value)} required />
+                        <button onClick={handleClick} className="w-full bg-black text-white py-3 rounded text-center">Pay Now</button>
                     </div>
                 )}
             </div>

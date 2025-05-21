@@ -9,7 +9,7 @@ const Cart = () => {
 
   const { cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, appliedCouponCode, data, ToggleCart, handleApplyCoupon, setCouponCode, fetchPreview } = useCart();
 
-  fetchPreview();
+  //fetchPreview();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">

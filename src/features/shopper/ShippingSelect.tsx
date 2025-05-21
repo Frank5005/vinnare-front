@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const shippingOptions = [
@@ -24,7 +25,7 @@ const ShippingSelect = () => {
 
     const handleContinue = () => {
         if (!selectedOption) {
-            alert("Please select a shipping method.");
+            toast.error("Please select a shipping method.");
             return;
         }
         navigate("/checkout-payment");

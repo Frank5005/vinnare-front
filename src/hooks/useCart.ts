@@ -46,6 +46,8 @@ export const useCart = () => {
       setDiscount(Number(savedDiscount));
     }
 
+    fetchPreview();
+
     console.log(savedCode);
   }, []);
 
@@ -109,9 +111,11 @@ export const useCart = () => {
 
       const body = { coupon_code: appliedCouponCode || undefined };
 
+      /* 
       if(data?.coupon_applied == body.coupon_code){
         return;
       }
+      */
 
       const preview = await viewPreview(body);
       setData(preview);
