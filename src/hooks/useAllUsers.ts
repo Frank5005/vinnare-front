@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { User } from "../types/User";
 import { getUsers } from "../services/adminService";
-//import { DataTableColumn } from "../components/organisms/DataTable";
 
 export const useAllUsers = () => {
   const [users, setUsers] = useState<User[]>([]);

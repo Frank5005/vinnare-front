@@ -7,7 +7,7 @@ import { useCart } from "../../hooks/useCart";
 
 const Cart = () => {
 
-  const { cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, ToggleCart, handleApplyCoupon, setCouponCode } = useCart();
+  const { cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, appliedCouponCode, ToggleCart, handleApplyCoupon, setCouponCode } = useCart();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
@@ -44,7 +44,7 @@ const Cart = () => {
           </div>
 
           {/* Right section: Summary */}
-          <CartSummary subtotal={subtotal} discountedTotal={discountedTotal} couponCode={couponCode} discount={discount} handleApplyCoupon={handleApplyCoupon} setCouponCode={setCouponCode}/>
+          <CartSummary subtotal={subtotal} discountedTotal={discountedTotal} couponCode={couponCode} discount={discount} handleApplyCoupon={handleApplyCoupon} setCouponCode={setCouponCode} appliedCouponCode={appliedCouponCode}/>
         </div>
       </main>
 

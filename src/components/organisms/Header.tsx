@@ -7,7 +7,7 @@ import { useCart } from "../../hooks/useCart";
 
 const Header = () => {
   const { isLoggedIn, userName, logout } = useAuth();
-  const { totalItems, initialTotal  } = useCart();
+  const { totalItems, initialTotal } = useCart();
   const navigate = useNavigate();
   const handleLogout = () => {
     logout();
@@ -40,6 +40,7 @@ const Header = () => {
             <div className="mx-4 flex-1 min-w-[300px]">
               <SearchBar />
             </div>
+            <Link to="/my-orders" className="mx-2 text-sm font-medium !text-black hover:underline">My Orders</Link>
           </div>
           {isLoggedIn ? (
             <div className="flex items-center gap-4 ml-8">

@@ -8,6 +8,9 @@ export const useCart = () => {
   const [error, setError] = useState<string | null>(null);
   const [productsIds, setProductsIds] = useState<number[]>([]);
   const [couponCode, setCouponCode] = useState("");
+  const [appliedCouponCode, setAppliedCouponCode] = useState<string | null>(
+    null
+  );
   const [discount, setDiscount] = useState(0);
   const [initialTotal, setInitialTotal] = useState(() => {
     const stored = localStorage.getItem("cartTotalItems");
@@ -22,6 +25,18 @@ export const useCart = () => {
 
   useEffect(() => {
     fetchCart();
+    const savedCode = localStorage.getItem("appliedCouponCode");
+    const savedDiscount = localStorage.getItem("appliedDiscount");
+
+    if (savedCode && savedDiscount) {
+      setAppliedCouponCode(savedCode);
+      setCouponCode(savedCode);
+      setDiscount(Number(savedDiscount));
+    }
+
+    console.log(savedCode);
+    console.log(savedDiscount);
+    console.log(discountedTotal);
   }, []);
 
   const fetchCart = async () => {
@@ -64,6 +79,12 @@ export const useCart = () => {
       try {
         const coupon = await useCoupon(couponCode);
         setDiscount(coupon.discountPercentage);
+        setAppliedCouponCode(couponCode);
+        localStorage.setItem("appliedCouponCode", couponCode);
+        localStorage.setItem(
+          "appliedDiscount",
+          coupon.discountPercentage.toString()
+        );
         console.log(coupon);
         console.log(discount);
       } catch (err) {
@@ -77,5 +98,18 @@ export const useCart = () => {
   useEffect(() => {
     localStorage.setItem("cartTotalItems", String(totalItems));
   }, [totalItems]);
-  return { totalItems, initialTotal, cartItems, loading, error, subtotal, discountedTotal, couponCode, discount, ToggleCart, handleApplyCoupon, setCouponCode };
+  return {
+    totalItems,
+    cartItems,
+    loading,
+    error,
+    subtotal,
+    discountedTotal,
+    couponCode,
+    discount,
+    appliedCouponCode,
+    ToggleCart,
+    handleApplyCoupon,
+    setCouponCode,
+  };
 };
