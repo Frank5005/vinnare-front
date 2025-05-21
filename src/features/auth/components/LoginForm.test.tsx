@@ -1,5 +1,4 @@
 import { TextEncoder, TextDecoder } from 'util';
-
 if (typeof global.TextEncoder === 'undefined') {
   global.TextEncoder = TextEncoder as any;
 }
@@ -27,10 +26,24 @@ jest.mock('../../../services/authService', () => ({
 describe('LoginForm', () => {
   it('renders all fields and button', () => {
     render(<LoginForm />);
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: /password/i })).toBeInTheDocument();
-    expect(screen.getByText(/login/i)).toBeInTheDocument();
     expect(screen.getByText(/welcome/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /log in/i })).toBeInTheDocument();
+    expect(screen.getByText(/please enter your credentials to log in/i)).toBeInTheDocument();
+  
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/enter your email/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/enter your password/i)).toBeInTheDocument();
+  
+    expect(screen.getByLabelText(/toggle password visibility/i)).toBeInTheDocument();
+  
+    expect(screen.getByLabelText(/remember me/i)).toBeInTheDocument();
+  
+    expect(screen.getByText(/forgot password/i)).toBeInTheDocument();
+  
+    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+  
+    expect(screen.getByText(/don't have an account/i)).toBeInTheDocument();
+    expect(screen.getByText(/register/i)).toBeInTheDocument();
   });
 
   it('shows validation errors on empty submit', async () => {
@@ -46,7 +59,7 @@ describe('LoginForm', () => {
     const { login } = require('../../../services/authService');
     render(<LoginForm />);
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'test@mail.com' } });
-    fireEvent.change(screen.getByRole('textbox', { name: /password/i }), { target: { value: '123456' } });
+    fireEvent.change(screen.getByPlaceholderText(/enter your password/i), { target: { value: '123456' } });
     fireEvent.click(screen.getByText(/login/i));
     await waitFor(() => {
       expect(login).toHaveBeenCalledWith({
