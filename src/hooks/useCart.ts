@@ -14,6 +14,7 @@ export const useCart = () => {
   const [discount, setDiscount] = useState(0);
   const [initialTotal, setInitialTotal] = useState(() => {
     const stored = localStorage.getItem("cartTotalItems");
+    setInitialTotal(Number(stored));
     return stored ? Number(stored) : 0;
   });
 
@@ -99,6 +100,7 @@ export const useCart = () => {
     localStorage.setItem("cartTotalItems", String(totalItems));
   }, [totalItems]);
   return {
+    initialTotal,
     totalItems,
     cartItems,
     loading,
