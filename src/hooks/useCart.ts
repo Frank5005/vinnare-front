@@ -14,9 +14,10 @@ export const useCart = () => {
   const [discount, setDiscount] = useState(0);
   const [initialTotal, setInitialTotal] = useState(() => {
     const stored = localStorage.getItem("cartTotalItems");
-    setInitialTotal(Number(stored));
     return stored ? Number(stored) : 0;
   });
+
+  //setInitialTotal(Number(stored));
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
