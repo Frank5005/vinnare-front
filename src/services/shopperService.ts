@@ -90,3 +90,13 @@ export async function useCoupon(code: string){
   });
   return response.data;
 }
+
+export async function viewPreview(body: { coupon_code?: string }){
+  const response = await api.post("/api/purchases/preview", body);
+  return response.data;
+}
+
+export async function buyProducts(body: { coupon_code?: string }){
+  const response = await api.post("/api/purchases", body);
+  return response.data;
+}
