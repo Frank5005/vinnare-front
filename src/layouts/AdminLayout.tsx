@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import AdminHeader from '../components/organisms/AdminHeader';
+import React from 'react';
 
 interface AdminLayoutProps {
   children: ReactNode;

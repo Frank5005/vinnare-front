@@ -6,7 +6,7 @@ import Button from "../../../components/atoms/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import PasswordInput from "../../../components/molecules/PasswordInput";
 import { resetPassword } from "../../../services/authService";
-
+import React from "react";
 const newPasswordSchema = z.object({
     password: z
         .string()

@@ -1,6 +1,8 @@
 import NewPasswordForm from "../features/auth/components/NewPasswordForm";
 import logo from "../assets/logo.png";
 import background from "../assets/blueLines.png";
+import React from 'react';
+
 
 const NewPassword = () => {
   return (

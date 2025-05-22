@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -98,7 +99,7 @@ const ForgotPasswordForm = () => {
                 </Button>
 
                 <p className="text-sm text-center text-gray-400">
-                    Don’t have an Account?{" "}
+                    Don't have an Account?{" "}
                     <Link to="/signup" className="!text-black !visited:text-black hover:!text-gray-800">
                         Register
                     </Link>

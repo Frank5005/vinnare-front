@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaBars, FaTimes, FaSearch, FaShoppingBag } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import React from 'react';
 import { SearchBar } from "../molecules/SearchBar";
 
 const HamburgerMenu = ({

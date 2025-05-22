@@ -1,6 +1,8 @@
 import AdminHeader from "../../components/organisms/AdminHeader";
 import EmployeeForm from "../../features/admin/EmployeeForm";
 import FormCardLayout from "../../layouts/FormCardLayout";
+import React from 'react';
+
 
 const CreateEmployee = () => {
     return (

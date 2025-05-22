@@ -1,5 +1,6 @@
 //import { Item } from "../../types/Item";
 import { useNavigate } from "react-router-dom";
+import React from 'react';
 import { Preview } from "../../types/Preview";
 
 interface CartSummaryProps {

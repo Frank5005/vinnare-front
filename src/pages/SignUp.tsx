@@ -1,6 +1,7 @@
 import SignUpForm from "../features/auth/components/SignUpForm";
 import logo from "../assets/logo.png";
 import background from "../assets/blueLines.png";
+import React from 'react';
 
 const SignUpPage = () => {
   return (
@@ -13,7 +14,6 @@ const SignUpPage = () => {
       </div>
 
       <div className="hidden md:flex relative w-full md:w-1/2 h-screen bg-gray-100 overflow-hidden">
-
         <img
           src={background}
           alt="Background pattern"

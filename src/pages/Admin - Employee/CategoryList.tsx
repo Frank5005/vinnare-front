@@ -4,6 +4,8 @@ import { useAllCategories, Category } from "../../hooks/useAllCategories";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
+import React from 'react';
+
 
 const CategoryList = () => {
   const { categories: initialCategories, loading, error:fetchError } = useAllCategories();
@@ -97,12 +99,10 @@ const CategoryList = () => {
     } catch (error: any) {
       const category = categories.find(c => c.id === id);
       if (
-        error?.response?.status === 500 &&
-        category &&
-        category.approved === false
+        error?.response?.status === 500
       ) {
-        setErrorMessage("Failed to delete category that is not approved.");
-      } else {
+        setErrorMessage(error.response.data.title);
+      }  else {
         setErrorMessage("Failed to delete category. Please try again.");
       }
     } finally {

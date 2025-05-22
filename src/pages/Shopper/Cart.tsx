@@ -4,6 +4,8 @@ import CartSummary from "../../components/molecules/CartSummary";
 import Footer from "../../components/organisms/Footer";
 import Header from "../../components/organisms/Header";
 import { useCart } from "../../hooks/useCart";
+import React from 'react';
+
 
 const Cart = () => {
 

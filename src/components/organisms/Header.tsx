@@ -4,6 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { SearchBar } from "../molecules/SearchBar";
 import { useCart } from "../../hooks/useCart";
+import React from 'react';
+
 
 const Header = () => {
   const { isLoggedIn, userName, logout } = useAuth();

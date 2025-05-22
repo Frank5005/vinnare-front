@@ -1,4 +1,5 @@
 import Header from "../../components/organisms/Header";
+import React from 'react';
 import Footer from "../../components/organisms/Footer";
 import CartItem from "../../components/molecules/CartItem";
 import { useCart } from "../../hooks/useCart";

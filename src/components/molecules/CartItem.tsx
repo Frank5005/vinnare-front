@@ -1,4 +1,5 @@
 import { Item } from "../../types/Item";
+import React from 'react';
 
 interface CartItemProps {
   id: number;

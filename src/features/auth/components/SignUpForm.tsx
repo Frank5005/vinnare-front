@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,7 +51,7 @@ const SignUpForm = () => {
         const data = await getSecurityQuestions();
         setQuestions(data);
       } catch (error) {
-        console.error("Error loading questions", error);
+        setError("Error loading questions");
       }
     };
     fetchQuestions();
