@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import PasswordInput from './PasswordInput';
+import React from 'react';
 
 describe('PasswordInput', () => {
   it('renders the label correctly', () => {

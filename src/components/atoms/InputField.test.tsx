@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import InputField from './InputField';
+import React from 'react';
 
 
 describe('InputField', () => {

@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface FormCardLayoutProps {
   welcome?: string;
   title: string;

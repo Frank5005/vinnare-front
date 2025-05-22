@@ -1,6 +1,8 @@
 import LoginForm from "../features/auth/components/LoginForm";
 import logo from "../assets/logo.png";
 import background from "../assets/blueLines.png";
+import React from 'react';
+
 
 const LoginPage = () => {
     return (

@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
-import { isAuthenticated } from "../../../services/authService";
 import { JSX } from "react";
+import React from "react";
 
 interface ProtectedRouteProps {
   children: JSX.Element;

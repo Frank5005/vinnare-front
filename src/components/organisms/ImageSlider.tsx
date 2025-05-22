@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
+
 interface ImageSliderProps {
   images: string[];
   className?: string;

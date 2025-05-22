@@ -4,6 +4,8 @@ import { useAllCategories, Category } from "../../hooks/useAllCategories";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
+import React from 'react';
+
 
 const CategoryList = () => {
   const { categories: initialCategories, loading, error:fetchError } = useAllCategories();

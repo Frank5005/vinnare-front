@@ -1,3 +1,5 @@
+import React from 'react';
+
 const CartInfo = () => (
   <div className="mt-8 space-y-4">
     <details className="border-t pt-4" open>

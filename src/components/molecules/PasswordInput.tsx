@@ -1,5 +1,6 @@
 import { useState, forwardRef } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import React from 'react';
 
 interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;

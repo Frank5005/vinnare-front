@@ -6,6 +6,7 @@ import Button from '../../components/atoms/Button';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Product } from "../../types/Product";
+import React from 'react';
 import { getWishlist, addToWishlist, removeFromWishlist, addToCart, getProductById, getCart } from "../../services/shopperService";
 
 const ProductDetail = () => {

@@ -1,6 +1,7 @@
 import React from "react";
 import CategoryCard from "../components/organisms/CategoryCard";
 
+
 interface Category {
   image: string;
   name: string;

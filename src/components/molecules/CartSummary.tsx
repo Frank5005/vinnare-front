@@ -1,5 +1,6 @@
 //import { Item } from "../../types/Item";
 import { useNavigate } from "react-router-dom";
+import React from 'react';
 
 interface CartSummaryProps {
   subtotal: number;

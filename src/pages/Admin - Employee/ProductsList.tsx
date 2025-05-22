@@ -5,6 +5,8 @@ import { DataTable, DataTableColumn, DataTableAction } from "../../components/or
 import { useState, useEffect } from "react";
 import api from "../../services/api";
 import OrderDateFilter from "../../components/molecules/OrderDateFilter";
+import React from 'react';
+
 
 const ProductsList = () => {
   const [dateFilter, setDateFilter] = useState<string>("7");

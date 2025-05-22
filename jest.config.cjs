@@ -1,6 +1,7 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
     moduleNameMapper: {
       '\\.(jpg|jpeg|png|gif|svg|webp|avif|ico)$': '<rootDir>/__mocks__/fileMock.js',
       '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
@@ -14,7 +15,7 @@ module.exports = {
     ],
     globals: {
       'ts-jest': {
-        tsconfig: 'tsconfig.app.json', // o 'tsconfig.app.json' si prefieres
+        tsconfig: 'tsconfig.app.json', 
       },
     },
   };

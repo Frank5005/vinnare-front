@@ -9,6 +9,7 @@ import { useTopCategories } from "../hooks/useTopCategories";
 import { useLatestProducts } from "../hooks/useLatestProducts";
 import { useTopSellingProducts } from "../hooks/useTopSellingProducts";
 import { useNavigate } from "react-router-dom";
+import React from 'react';
 
 const sliderImages = [
   "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?auto=format&fit=crop&w=1920&q=80",

@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import LoginPage from './Login';
+import React from 'react';
+
 
 jest.mock('../features/auth/components/LoginForm', () => () => <div data-testid="login-form">LoginForm</div>);
 

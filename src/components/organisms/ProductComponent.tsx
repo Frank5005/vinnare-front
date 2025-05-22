@@ -1,5 +1,6 @@
 import { Heart } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import React from 'react';
 //import { Product } from "../../types/product";
 
 interface ProductComponentProps {

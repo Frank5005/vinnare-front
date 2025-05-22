@@ -1,5 +1,6 @@
 import React from "react";
 
+
 interface CategoryCardProps {
   image: string;
   name: string;

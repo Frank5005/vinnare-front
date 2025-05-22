@@ -1,6 +1,7 @@
 import ForgotPasswordForm from "../features/auth/components/ForgotPasswordForm";
 import logo from "../assets/logo.png";
 import background from "../assets/blueLines.png";
+import React from 'react';
 
 const ForgotPassword = () => {
   return (
