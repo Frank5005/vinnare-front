@@ -19,7 +19,6 @@ export async function getJobs() {
 }
 
 export async function reviewJob(id: number, type: string, action: string) {
-  //console.log(action);
   const response = await api.post(
     `api/jobs/review-job`,
     {

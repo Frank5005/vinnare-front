@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const api = axios.create({
   //baseURL: '/api',
-  baseURL: import.meta.env.VITE_API_URL,
+  //baseURL: import.meta.env.VITE_API_URL,
+  baseURL: 'https://5586-3-147-45-32.ngrok-free.app',
   withCredentials: true,
 });
 

@@ -62,9 +62,6 @@ export const useJobsList = () => {
 
   const handleReject = async (job: Job) => {
     setJobId(job.id);
-    //console.log(job.id);
-    //console.log(job.operation);
-    //console.log(job.type);
     try {
       await reviewJob(job.id, job.type, "Decline");
       setIsDeclining(true);
