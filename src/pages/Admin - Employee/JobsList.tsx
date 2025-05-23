@@ -2,11 +2,12 @@ import AdminHeader from "../../components/organisms/AdminHeader";
 import { useJobsList } from "../../hooks/useJobsList";
 import { Job } from "../../types/Job";
 import { DataTable, DataTableColumn, DataTableAction } from "../../components/organisms/DataTable";
-import { FaCheck, FaEdit, FaTimes, FaTrash } from "react-icons/fa";
+import { FaCheck, FaTimes, FaTrash } from "react-icons/fa";
+import { TbXboxX } from "react-icons/tb";
 import OrderDateFilter from "../../components/molecules/OrderDateFilter";
-import { useState } from "react";
-import { reviewJob } from "../../services/adminService";
-import React from 'react';
+//import { useState } from "react";
+//import { reviewJob } from "../../services/adminService";
+//import React from 'react';
 
 const JobsList = () => {
   const { loading, error, jobId, filteredJobs, dateFilter, isAccepting, isDeclining, handleAccept, handleReject, setDateFilter } = useJobsList();
@@ -40,22 +41,20 @@ const JobsList = () => {
   // DataTable actions
   const actions: DataTableAction<Job>[] = [
     {
-      icon: jobId !== null ? <FaCheck /> : <FaEdit />,
+      icon: jobId !== null ? <FaCheck /> : <FaCheck />,
       label: jobId !== null ? "Accept" : "Edit",
       onClick: (row) => {
-        if (jobId === row.id) {
-          handleAccept(row);
-        }
+        handleAccept(row);
+        //console.log(row.id);
       },
       disabled: isAccepting || isDeclining,
     },
     {
-      icon: jobId !== null ? <FaTimes /> : <FaTrash />,
+      icon: jobId !== null ? <TbXboxX /> : <TbXboxX />,
       label: jobId !== null ? "Decline" : "Delete",
       onClick: (row) => {
-        if (jobId === row.id) {
-          handleReject(row);
-        }
+        handleReject(row);
+        //console.log(row.id);
       },
       disabled: isAccepting || isDeclining,
     },

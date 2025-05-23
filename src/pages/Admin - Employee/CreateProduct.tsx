@@ -44,9 +44,9 @@ const CreateProduct = () => {
         available: parseInt(form.available),
         username
       };
-      await api.post("/api/product/create", body);
-
-      setSuccess("Product created successfully!");
+      const response = await api.post("/api/product/create", body);
+      const res = response.data;
+      setSuccess(res.message);
       setForm({
         title: "",
         price: "",
