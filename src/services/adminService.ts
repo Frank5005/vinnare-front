@@ -16,12 +16,8 @@ export async function getJobs() {
   return response.data;
 }
 
-export async function reviewJob(
-  id: number,
-  type: string,
-  action: "Approve" | "Reject"
-) {
-  const response = await api.post(`/review-job`, {
+export async function reviewJob(id: number, type: string,action: string) {
+  const response = await api.post(`api/jobs/review-job`, {
     id,
     type,
     action,
