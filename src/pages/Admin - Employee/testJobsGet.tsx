@@ -8,7 +8,7 @@ export default function TestJobsGet() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    axios.get("https://4d82-3-147-45-32.ngrok-free.app/api/jobs", {
+    axios.get("https://5586-3-147-45-32.ngrok-free.app/api/jobs", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
