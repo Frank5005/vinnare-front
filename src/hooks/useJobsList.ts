@@ -10,13 +10,15 @@ export const useJobsList = () => {
   const [dateFilter, setDateFilter] = useState("7");
 
   useEffect(() => {
-    setLoading(true);
-    const fetchJobs = async () => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
       setLoading(true);
       try {
         const jos = await getJobs();
         setJobs(jos);
-        console.log(jos);
+        console.log("Los trabajos son", jos);
       } catch (err: any) {
         //setError(
         //"Error fetching products: " + (err?.message || JSON.stringify(err))
@@ -26,8 +28,6 @@ export const useJobsList = () => {
         setLoading(false);
       }
     };
-    fetchJobs();
-  }, []);
 
   const filteredJobs = jobs.filter((job: Job) => {
     if (dateFilter === "all") return true;
