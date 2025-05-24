@@ -162,6 +162,16 @@ describe('SignUpForm', () => {
       expect(screen.getByText(errorMessage)).toBeInTheDocument();
     });
   });
-
-
+  
+  it('shows error message when security questions fail to load', async () => {
+    (getSecurityQuestions as jest.Mock).mockRejectedValue(new Error('Failed to load questions'));
+    render(
+      <BrowserRouter>
+        <SignUpForm />
+      </BrowserRouter>
+    );
+    await waitFor(() => {
+      expect(screen.getByText('Error loading questions')).toBeInTheDocument();
+    });
+  });
 }); 

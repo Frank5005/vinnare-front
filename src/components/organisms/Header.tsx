@@ -47,7 +47,7 @@ const Header = () => {
           {isLoggedIn ? (
             <div className="flex items-center gap-4 ml-8">
               <div className="flex items-center cursor-pointer" onClick={() => navigate("/cart")}>
-                <FaShoppingBag className="text-xl mr-1" />
+                <FaShoppingBag className="text-xl mr-1" data-testid="cart-icon" />
                 <span className="text-sm">{isLoggedIn ? initialTotal : totalItems}</span>
               </div>
               <span className="text-sm">{userName}</span>

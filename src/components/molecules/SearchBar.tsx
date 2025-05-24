@@ -36,8 +36,9 @@ export const SearchBar = () => {
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl">
       <div className="flex items-center bg-white rounded-lg px-4 py-2">
-        <FaSearch className="text-gray-400 mr-2" />
+        <FaSearch className="text-gray-400 mr-2" data-testid="search-icon" />
         <input
+          data-testid="search-input"
           type="text"
           value={searchTerm}
           onChange={handleSearch}
@@ -48,13 +49,13 @@ export const SearchBar = () => {
 
 
       {isOpen && searchTerm.length >= 2 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto" data-testid="search-dropdown">
           {loading ? (
             <div className="p-4 text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto" data-testid="loading-spinner"></div>
             </div>
           ) : products.length > 0 ? (
-            <div className="py-2">
+            <div className="py-2" data-testid="search-results">
               {products.map((product) => (
                 <div
                   key={product.id}
