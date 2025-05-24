@@ -1,5 +1,6 @@
 import { EmployeeData } from "../types/EmployeeData";
 import api from "./api";
+import axios from 'axios';
 
 export async function getUsers() {
   const response = await api.get("/api/user/list");
@@ -11,14 +12,13 @@ export async function createEmployee(data: EmployeeData) {
   return response.data;
 }
 
+
 export async function getJobs() {
   const response = await api.get("/api/jobs");
   return response.data;
 }
 
 export async function reviewJob(id: number, type: string, action: string) {
-  const token = localStorage.getItem("token");
-  //const role = localStorage.getItem("userRole") ?? "";
   const response = await api.post(
     `api/jobs/review-job`,
     {
@@ -26,11 +26,6 @@ export async function reviewJob(id: number, type: string, action: string) {
       type,
       action,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
   );
   return response.data;
 }

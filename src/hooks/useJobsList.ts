@@ -63,7 +63,7 @@ export const useJobsList = () => {
   const handleReject = async (job: Job) => {
     setJobId(job.id);
     try {
-      await reviewJob(job.id, job.type, "Reject");
+      await reviewJob(job.id, job.type, "Decline");
       setIsDeclining(true);
       console.log("Job rejected successfully");
       removeJobFromList(job.id);

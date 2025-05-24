@@ -31,11 +31,12 @@ const CreateCategory = () => {
         ...form,
         username
       };
-      await api.post("/api/category/create", body);
-      setSuccess("Category created successfully!");
-      setTimeout(() => {
-        navigate("/admin/categories");
-      }, 1500); 
+      const response = await api.post("/api/category/create", body);
+      const res = response.data;
+      setSuccess(res.message);
+      //setTimeout(() => {
+        //navigate("/admin/categories");
+      //}, 1500); 
       setForm({ name: "", imageUrl: "" });
     } catch (err: any) {
       setError(err?.response?.data?.message || err.message || "Error creating category");
