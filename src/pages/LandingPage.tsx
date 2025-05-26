@@ -26,16 +26,12 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Header sticky */}
       <div className="sticky top-0 z-50">
         <Header />
       </div>
-      {/* Main content */}
       <main className="flex-1 w-full mx-auto">
-        {/* Hero Slider */}
         <ImageSlider images={sliderImages} className="mb-8" />
 
-        {/* Categories Section */}
         <SectionHeader
           title="Top Categories"
           description="Discover our most popular categories, featuring the best-selling products that our customers love. "
@@ -44,7 +40,7 @@ const LandingPage = () => {
         />
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900" data-testid="loading-spinner"></div>
           </div>
         ) : error ? (
           <div className="text-center text-red-500 p-4">{error}</div>
@@ -57,7 +53,6 @@ const LandingPage = () => {
           />
         )}
 
-        {/* Latest Arrivals Section */}
         <SectionHeader
           title="Latest Arrivals"
           description="Discover our newest additions to the store, featuring the latest products that have just arrived."
@@ -66,7 +61,7 @@ const LandingPage = () => {
         />
         {latestLoading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900" data-testid="loading-spinner"></div>
           </div>
         ) : latestError ? (
           <div className="text-center text-red-500 p-4">{latestError}</div>
@@ -76,7 +71,6 @@ const LandingPage = () => {
           />
         )}
 
-        {/* our products section */}
         <SectionHeader
           title="Our Best Sellers"
           description="Explore our most popular products, loved and trusted by our customers."
@@ -85,7 +79,7 @@ const LandingPage = () => {
         />
         {topLoading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900" data-testid="loading-spinner"></div>
           </div>
         ) : topError ? (
           <div className="text-center text-red-500 p-4">{topError}</div>

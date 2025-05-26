@@ -44,6 +44,7 @@ describe('Header', () => {
         expect(screen.getByText('FREE SHIPPING ON ALL HERMAN MILLER! FEB. 25–28.')).toBeInTheDocument();
         
         expect(screen.getByText('Login')).toBeInTheDocument();
+        expect(screen.queryByText('0')).not.toBeInTheDocument();
     });
 
     it('renders correctly when user is logged in', () => {
@@ -124,5 +125,23 @@ describe('Header', () => {
 
         fireEvent.click(screen.getByTestId('cart-icon')); 
         expect(mockNavigate).toHaveBeenCalledWith('/cart');
+    });
+
+    it('if log in should show cart number', () => {
+        (useAuth as jest.Mock).mockReturnValue({
+            isLoggedIn: true,
+            userName: 'John Doe',
+            logout: jest.fn()
+        });
+        (useCart as jest.Mock).mockReturnValue({
+            totalItems: 5,
+            initialTotal: 5
+        });
+        render(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        );
+        expect(screen.getByText('5')).toBeInTheDocument();
     });
 });

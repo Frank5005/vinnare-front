@@ -28,7 +28,7 @@ const Footer = () => {
       name: "WhatsApp",
       icon: <FaWhatsapp className="text-2xl" />,
       url: "https://wa.me/3032676304",
-      username: "+1 (303) 267-6304"
+      username: "+57 (303) 267-6304"
     }
   ];
 
@@ -41,7 +41,11 @@ const Footer = () => {
             <p className="text-black mb-4 text-sm">
               Be the first to know about our special offers, news, and updates.
             </p>
-            <form className="w-full" onSubmit={handleSignUp}>
+            <form
+              className="w-full"
+              data-testid="newsletter-form"
+              onSubmit={handleSignUp}
+            >
               <div className="relative w-full">
                 <input
                   type="email"
