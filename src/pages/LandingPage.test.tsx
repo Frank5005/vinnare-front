@@ -45,7 +45,7 @@ jest.mock('../components/molecules/SectionHeader', () =>
     )
   );
   
-jest.mock('../components/organisms/StaggeredImageGrid', () => ({ images }) => (
+jest.mock('../components/organisms/StaggeredImageGrid', () => ({ images }: { images: string[] }) => (
     <div data-testid="staggered-grid">
         {images.map((image: string, index: number) => (
             <img key={index} src={image} alt={index === 0 ? 'left' : index === 1 ? 'center' : 'right'} />
