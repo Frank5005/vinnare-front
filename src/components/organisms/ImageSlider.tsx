@@ -19,7 +19,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, className }) => {
   };
 
   return (
-    <div className={`relative w-full h-64 md:h-96 overflow-hidden rounded-lg ${className}`}>
+    <div className={`relative w-full h-64 md:h-96 overflow-hidden rounded-lg ${className}`} data-testid="image-slider">
       <img
         src={images[current]}
         alt={`slide-${current}`}
@@ -49,6 +49,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, className }) => {
         {images.map((_, idx) => (
           <span
             key={idx}
+            data-testid="navigation-dot"
             className={`w-3 h-3 rounded-full ${idx === current ? "bg-black" : "bg-gray-300"}`}
           />
         ))}

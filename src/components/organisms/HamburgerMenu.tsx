@@ -45,7 +45,6 @@ const HamburgerMenu = ({
       </button>
       {open && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-20 flex">
-          {/* Panel lateral */}
           <div className="ml-auto w-3/4 max-w-xs h-full bg-gray-100 shadow-lg flex flex-col">
             <button
               onClick={() => setOpen(false)}
@@ -57,8 +56,8 @@ const HamburgerMenu = ({
             </button>
             <nav className="flex flex-col gap-4 px-6 py-4">
               {/* SearchBar */}
-              <div className="flex items-center bg-gray-100 rounded px-2 py-2">
-                <SearchBar />
+              <div className="flex items-center bg-gray-100 rounded px-2 py-2" data-testid="search-bar">
+                <SearchBar/>
               </div>
               {isLoggedIn && (
                 <div
@@ -68,7 +67,7 @@ const HamburgerMenu = ({
                     navigate("/cart");
                   }}
                 >
-                  <FaShoppingBag className="text-xl" />
+                  <FaShoppingBag className="text-xl" data-testid="cart-icon" />
                   <span className="text-sm">{cartCount}</span>
                   <span className="text-sm">{userName}</span>
                 </div>
