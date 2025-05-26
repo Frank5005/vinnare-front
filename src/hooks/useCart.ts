@@ -167,5 +167,6 @@ export const useCart = () => {
     setCouponCode,
     buyingProducts,
     fetchPreview,
+    inCart,
   };
 };

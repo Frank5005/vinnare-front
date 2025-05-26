@@ -25,16 +25,26 @@ jest.mock('react-router-dom', () => ({
     useNavigate: () => mockNavigate
 }));
 
+type SectionHeaderProps = {
+    title: string;
+    description?: string;
+    buttonText?: string;
+    onButtonClick?: () => void;
+};
+
 jest.mock('../components/organisms/Header', () => () => <div data-testid="header">Header</div>);
 jest.mock('../components/organisms/Footer', () => () => <div data-testid="footer">Footer</div>);
 jest.mock('../components/organisms/ImageSlider', () => () => <div data-testid="image-slider">ImageSlider</div>);
-jest.mock('../components/molecules/SectionHeader', () => ({ title, description, buttonText, onButtonClick }) => (
-    <div data-testid="section-header">
+jest.mock('../components/molecules/SectionHeader', () => 
+    ({ title, description, buttonText, onButtonClick }: SectionHeaderProps) => (
+      <div data-testid="section-header">
         <h2>{title}</h2>
         <p>{description}</p>
         {buttonText && <button onClick={onButtonClick}>{buttonText}</button>}
-    </div>
-));
+      </div>
+    )
+  );
+  
 jest.mock('../components/organisms/StaggeredImageGrid', () => ({ images }) => (
     <div data-testid="staggered-grid">
         {images.map((image: string, index: number) => (
@@ -156,7 +166,7 @@ describe('LandingPage', () => {
         );
 
         const shopAllButtons = screen.getAllByText('Shop All');
-        fireEvent.click(shopAllButtons[0]); // First Shop All button (Top Categories)
+        fireEvent.click(shopAllButtons[0]); 
         expect(mockNavigate).toHaveBeenCalledWith('/shop-list');
     });
 
@@ -168,7 +178,7 @@ describe('LandingPage', () => {
         );
 
         const shopAllButtons = screen.getAllByText('Shop All');
-        fireEvent.click(shopAllButtons[1]); // Second Shop All button (Latest Arrivals)
+        fireEvent.click(shopAllButtons[1]); 
         expect(mockNavigate).toHaveBeenCalledWith('/shop-list');
     });
 
@@ -180,7 +190,7 @@ describe('LandingPage', () => {
         );
 
         const shopAllButtons = screen.getAllByText('Shop All');
-        fireEvent.click(shopAllButtons[2]); // Third Shop All button (Best Sellers)
+        fireEvent.click(shopAllButtons[2]); 
         expect(mockNavigate).toHaveBeenCalledWith('/shop-list');
     });
 
