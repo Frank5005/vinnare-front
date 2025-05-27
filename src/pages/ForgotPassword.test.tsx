@@ -47,7 +47,7 @@ describe('ForgotPasswordPage', () => {
         renderForgotPasswordPage();
 
         // Check main container classes
-        const mainContainer = screen.getByTestId('forgot-password-page');//.closest('w-screen');
+        const mainContainer = screen.getByTestId('forgot-password-page');
         expect(mainContainer).toHaveClass('w-screen', 'h-screen', 'flex', 'flex-col', 'md:flex-row');
 
         // Check form container classes

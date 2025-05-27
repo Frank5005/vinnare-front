@@ -6,7 +6,7 @@ import React from 'react';
 
 const NewPassword = () => {
   return (
-    <div className="w-screen h-screen flex flex-col md:flex-row">
+    <div className="w-screen h-screen flex flex-col md:flex-row" data-testid="new-password-page">
 
       <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 px-4">
         <div className="w-full max-w-sm">
