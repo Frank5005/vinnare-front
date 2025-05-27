@@ -41,16 +41,15 @@ const NewPasswordForm = () => {
     });
 
     const onSubmit = async (data: NewPasswordFormData) => {
-        //console.log("SUBMIT DATA:", data);
         const token = localStorage.getItem("resetToken");
 
-        if (data.password !== data.confirmPassword) {
-            alert("Passwords do not match.");
+        if (!token) {
+            alert("Missing reset token.");
             return;
         }
         
-        if (!token) {
-            alert("Missing reset token.");
+        if (data.password !== data.confirmPassword) {
+            alert("Passwords do not match.");
             return;
         }
 
