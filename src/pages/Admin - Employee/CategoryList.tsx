@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import api from "../../services/api";
 import React from 'react';
 
-
 const CategoryList = () => {
   const { categories: initialCategories, loading, error:fetchError } = useAllCategories();
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -180,7 +179,7 @@ const CategoryList = () => {
       </div>
       <main className="flex-1 max-w-7xl mx-auto py-12 px-4">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-lg font-semibold text-black text-left">Category List</h1>
+        <h1 className="text-2xl font-bold">Category List</h1>
         </div>
         {errorMessage && (
           <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
