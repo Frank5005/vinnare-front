@@ -13,7 +13,7 @@ jest.mock('../../components/organisms/DataTable', () => {
 });
 
 jest.mock('../../components/molecules/OrderDateFilter', () => ({ value, onChange }: any) => (
-  <select data-testid="order-date-filter" value={value} onChange={e => onChange(e.target.value)}>
+  <select title="order-data-filter" data-testid="order-date-filter" value={value} onChange={e => onChange(e.target.value)}>
     <option value="7">Last 7 Days</option>
     <option value="all">All</option>
   </select>

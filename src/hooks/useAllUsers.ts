@@ -14,7 +14,8 @@ export const useAllUsers = () => {
         const use = await getUsers();
         setUsers(use);
       } catch (err: any) {
-        setError("Error fetching users: " + (err?.message || JSON.stringify(err)));
+        setError("Error fetching users");
+        console.error(err);
       } finally {
         setLoading(false);
       }
