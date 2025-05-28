@@ -69,6 +69,7 @@ export function DataTable<T extends { id: number | string }>({
                     <button
                       key={idx}
                       title={action.label}
+                      aria-label={action.label}
                       onClick={() => action.onClick(row)}
                       disabled={action.disabled}
                       className={`${
