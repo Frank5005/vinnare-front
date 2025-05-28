@@ -20,7 +20,6 @@ const AdminEmployeeHomepage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Header sticky */}
       <div className="sticky top-0 z-50">
         <AdminHeader />
       </div>
