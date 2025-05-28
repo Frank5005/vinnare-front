@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import UserList from './UserList';
 import React from 'react';
 import { User } from '../../types/User';
