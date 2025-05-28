@@ -5,9 +5,7 @@ import { DataTable, DataTableColumn, DataTableAction } from "../../components/or
 import { FaCheck, FaTimes, FaTrash } from "react-icons/fa";
 import { TbXboxX } from "react-icons/tb";
 import OrderDateFilter from "../../components/molecules/OrderDateFilter";
-//import { useState } from "react";
-//import { reviewJob } from "../../services/adminService";
-//import React from 'react';
+import React from 'react';
 
 const JobsList = () => {
   const { loading, error, jobId, filteredJobs, dateFilter, isAccepting, isDeclining, handleAccept, handleReject, setDateFilter } = useJobsList();
