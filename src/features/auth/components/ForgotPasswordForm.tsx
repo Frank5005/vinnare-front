@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputField from "../../../components/atoms/InputField";
@@ -28,6 +28,7 @@ const ForgotPasswordForm = () => {
         resolver: zodResolver(forgotSchema),
     });
 
+    const [error, setError] = useState<string | null>(null);
     const [questions, setQuestions] = useState<{ value: string, label: string }[]>([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -38,7 +39,8 @@ const ForgotPasswordForm = () => {
                 const data = await getSecurityQuestions();
                 setQuestions(data);
             } catch (error) {
-                console.error("Error loading questions", error);
+                setError("Error loading questions");
+                console.error("Error loading questions");
             }
         };
         fetchQuestions();
@@ -57,10 +59,11 @@ const ForgotPasswordForm = () => {
                 localStorage.setItem("resetToken", isValid.token);
                 navigate("/new-password");
             } else {
+                setError("Invalid email, question, or answer.");
                 alert("Invalid email, question, or answer.");
             }
         } catch (error: any) {
-            console.error("Error verifying recovery data:", error);
+            setError("Verification failed. Please check your info and try again.");
             alert("Verification failed. Please check your info and try again.");
         } finally {
             setLoading(false);
@@ -70,6 +73,7 @@ const ForgotPasswordForm = () => {
     return (
         <FormCardLayout welcome="Welcome !" title="Forgot your password?" subtitle="Please enter the email you use to log in and your recovery information.">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+                {error && <p className="text-red-500 text-sm">{error}</p>}
                 <InputField
                     label="Email"
                     type="email"

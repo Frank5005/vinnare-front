@@ -6,7 +6,7 @@ import Button from "../../../components/atoms/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import PasswordInput from "../../../components/molecules/PasswordInput";
 import { resetPassword } from "../../../services/authService";
-import React from "react";
+import React, { useState } from "react";
 const newPasswordSchema = z.object({
     password: z
         .string()
@@ -15,11 +15,13 @@ const newPasswordSchema = z.object({
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
             "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 symbol"
         ),
-    confirmPassword: z.string(),
-})
+    confirmPassword: z.string().nonempty("Confirm Password is required"),
+});
+    /*
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match",
     });
+    */
 
 type NewPasswordFormData = z.infer<typeof newPasswordSchema>;
 
@@ -28,6 +30,7 @@ const NewPasswordForm = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const email = location.state?.email;
+    const [error, setError] = useState<string | null>(null);
 
     const {
         register,
@@ -39,11 +42,12 @@ const NewPasswordForm = () => {
 
     const onSubmit = async (data: NewPasswordFormData) => {
         const token = localStorage.getItem("resetToken");
+
         if (!token) {
             alert("Missing reset token.");
             return;
         }
-
+        
         if (data.password !== data.confirmPassword) {
             alert("Passwords do not match.");
             return;
@@ -55,6 +59,7 @@ const NewPasswordForm = () => {
             alert("Password updated successfully.");
             navigate("/login");
         } catch (error: any) {
+            setError("Error updating password");
             alert("Error updating password. Please try again.");
         }
     };
@@ -62,6 +67,7 @@ const NewPasswordForm = () => {
     return (
         <FormCardLayout welcome="Welcome !" title="New Password" subtitle="Please enter the new password that you will use to log in.">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+                {error && <p className="text-red-500 text-sm">{error}</p>}
                 <PasswordInput
                     label="New Password"
                     placeholder="Enter your New Password"

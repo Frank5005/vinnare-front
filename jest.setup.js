@@ -17,4 +17,12 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-}); 
+});
+
+Object.defineProperty(global, 'import.meta', {
+  value: {
+    env: {
+      PROD: 'https://5586-3-147-45-32.ngrok-free.app'
+    }
+  }
+});
