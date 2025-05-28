@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import JobsList from './JobsList';
 import React from 'react';
 import { Job } from '../../types/Job';
@@ -15,13 +15,6 @@ jest.mock('../../components/organisms/DataTable', () => {
     };
 });
 
-jest.mock('../../components/molecules/OrderDateFilter', () => ({ value, onChange }: any) => (
-    <select title="order-data-filter" data-testid="order-date-filter" value={value} onChange={e => onChange(e.target.value)}>
-        <option value="7">Last 7 Days</option>
-        <option value="all">All</option>
-    </select>
-));
-
 const mockJobs: Job[] = [
     {
         id: 1,
@@ -29,7 +22,7 @@ const mockJobs: Job[] = [
         categoryName: 'Electronics',
         productName: "null",
         creatorName: 'John Smith',
-        date: '2025-05-28T16:50:58.357Z',
+        date: '2025-05-24T16:50:58.357Z',
         type: 'Category',
         operation: 'Create'
     },
@@ -39,7 +32,7 @@ const mockJobs: Job[] = [
         categoryName: 'Home Appliances',
         productName: "null",
         creatorName: 'John Smith',
-        date: '2025-05-28T20:10:57.037Z',
+        date: '2025-05-26T20:10:57.037Z',
         type: 'Category',
         operation: 'Delete'
     },
@@ -49,7 +42,7 @@ const mockJobs: Job[] = [
         categoryName: "null",
         productName: 'Samsung TV',
         creatorName: 'Jane Doe',
-        date: '2025-05-28T21:00:00.000Z',
+        date: '2025-05-14T21:00:00.000Z',
         type: 'Product',
         operation: 'Create'
     },
@@ -59,30 +52,26 @@ const mockJobs: Job[] = [
         categoryName: "null",
         productName: 'iPhone 14',
         creatorName: 'Jane Doe',
-        date: '2025-05-28T22:15:12.000Z',
+        date: '2025-05-03T22:15:12.000Z',
         type: 'Product',
         operation: 'Delete'
     }
 ];
 let loading = false;
 let error: string | null = null;
-jest.mock('../../hooks/useJobsList');
-const mockedUseJobsList = useJobsList as jest.Mock;
+jest.mock('../../hooks/useJobsList', () => ({
+    useJobsList: () => ({
+        jobs: mockJobs,
+        loading,
+        error
+    })
+}));
 
 describe('JobsList', () => {
     beforeEach(() => {
-        mockedUseJobsList.mockReturnValue({
-            loading: false,
-            error: '',
-            jobId: null,
-            filteredJobs: mockJobs,
-            dateFilter: '',
-            isAccepting: false,
-            isDeclining: false,
-            handleAccept: jest.fn(),
-            handleReject: jest.fn(),
-            setDateFilter: jest.fn()
-        });
+        loading = false;
+        error = null;
+        jest.clearAllMocks();
     });
 
     it('renders the header and title', () => {
@@ -100,52 +89,42 @@ describe('JobsList', () => {
     });
 
     it('shows loading state', () => {
-        mockedUseJobsList.mockReturnValueOnce({
-            ...mockedUseJobsList(),
-            loading: true
-        });
+        loading = true;
         render(<JobsList />);
         expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     });
 
     it('shows error state', () => {
-        mockedUseJobsList.mockReturnValueOnce({
-            ...mockedUseJobsList(),
-            error: 'Error loading jobs'
-        });
+        error = 'Error loading jobs';
+        //error = 'Error fetching jobs';
         render(<JobsList />);
         expect(screen.getByText(/Error loading jobs/i)).toBeInTheDocument();
     });
 
-    it('filters jobs by date', () => {
+    it('filters jobs to show only last 7 days when selected', async () => {
         render(<JobsList />);
-        const select = screen.getByTestId('order-date-filter');
+
+        const select = screen.getByTitle(/Date filter/i);
+        fireEvent.change(select, { target: { value: '7' } });
+
+        await waitFor(() => {
+            expect(screen.getByText('Electronics')).toBeInTheDocument();
+            expect(screen.getByText('Home Appliances')).toBeInTheDocument();
+        });
+    });
+
+    it('shows all users when filter is "all"', async () => {
+        render(<JobsList />);
+
+        const select = screen.getByTitle(/date filter/i);
         fireEvent.change(select, { target: { value: 'all' } });
-        expect(select).toHaveValue('all');
-    });
 
-    it('calls handleAccept when Accept is clicked', () => {
-        const handleAccept = jest.fn();
-        mockedUseJobsList.mockReturnValueOnce({
-            ...mockedUseJobsList(),
-            handleAccept
+        await waitFor(() => {
+            expect(screen.getByText('Electronics')).toBeInTheDocument();
+            expect(screen.getByText('Home Appliances')).toBeInTheDocument();
+            expect(screen.getByText('Samsung TV')).toBeInTheDocument();
+            expect(screen.getByText('iPhone 14')).toBeInTheDocument();
         });
-        render(<JobsList />);
-        const acceptButton = screen.getAllByRole('button', { name: /Approve/i })[0];
-        fireEvent.click(acceptButton);
-        expect(handleAccept).toHaveBeenCalled();
-    });
-
-    it('calls handleReject when Decline is clicked', () => {
-        const handleReject = jest.fn();
-        mockedUseJobsList.mockReturnValueOnce({
-            ...mockedUseJobsList(),
-            handleReject
-        });
-        render(<JobsList />);
-        const declineButton = screen.getAllByRole('button', { name: /Decline/i })[0];
-        fireEvent.click(declineButton);
-        expect(handleReject).toHaveBeenCalled();
     });
 
 });

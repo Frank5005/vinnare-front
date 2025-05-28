@@ -21,3 +21,10 @@ it('calls handleAccept when Accept is clicked', () => {
     fireEvent.click(declineButton);
     expect(handleReject).toHaveBeenCalled();
   });
+
+  it('filters jobs by date', () => {
+        render(<JobsList />);
+        const select = screen.getByTestId('order-date-filter');
+        fireEvent.change(select, { target: { value: 'all' } });
+        expect(select).toHaveValue('all');
+    });
