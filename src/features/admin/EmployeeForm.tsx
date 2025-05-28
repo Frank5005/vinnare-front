@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getSecurityQuestions } from "../../services/authService";
 import { createEmployee } from "../../services/adminService";
-import FormCardLayout from "../../layouts/FormCardLayout";
+//import FormCardLayout from "../../layouts/FormCardLayout";
 import InputField from "../../components/atoms/InputField";
 import PasswordInput from "../../components/molecules/PasswordInput";
 import SelectField from "../../components/atoms/SelectField";
@@ -19,7 +19,7 @@ const schema = z
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email"),
     username: z.string().min(1, "Username is required"),
-    password: z.string().min(8),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
     confirmPassword: z.string(),
     address: z.string().min(1, "Address is required"),
     securityQuestion: z.string().min(1, "Select a question"),
@@ -51,6 +51,7 @@ const EmployeeForm = () => {
         const data = await getSecurityQuestions();
         setQuestions(data);
       } catch (error) {
+        setError('Error loading questions');
         console.error("Error loading questions", error);
       }
     };
@@ -73,7 +74,8 @@ const EmployeeForm = () => {
       toast.success("Employee created!");
       navigate("/admin/homepage");
     } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred during creation');
+      setError('An error occurred during creation');
+      console.error("Error creating employee:", err);
     }
   };
 
