@@ -78,10 +78,6 @@ const EmployeeForm = () => {
   };
 
   return (
-    <FormCardLayout
-      title=""
-      subtitle="Register the employee and their information"
-    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-4 w-full max-w-lg mx-auto text-base">
@@ -90,6 +86,7 @@ const EmployeeForm = () => {
         )}
 
         <InputField
+          className="mt-4"
           label="Full Name"
           placeholder="Enter their full name"
           {...register("name")}
@@ -150,7 +147,6 @@ const EmployeeForm = () => {
           {isSubmitting ? "Creating the employee..." : "Create employee"}
         </Button>
       </form>
-    </FormCardLayout>
   );
 }
 
