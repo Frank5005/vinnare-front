@@ -190,7 +190,7 @@ const CategoryList = () => {
         <h1 className="text-2xl font-bold">Category List</h1>
         </div>
         {errorMessage && (
-          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
+          <div role="alert" className="mb-4 p-4 bg-red-100 text-red-700 rounded">
             {errorMessage}
           </div>
         )}
