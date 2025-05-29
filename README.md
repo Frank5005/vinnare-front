@@ -1,54 +1,124 @@
-# React + TypeScript + Vite
+# Vinnare-Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+Vinnare-Front is a modern e-commerce application built with React and TypeScript. It offers an intuitive shopping experience for users and a robust admin panel for managing products, categories, and users.
 
-Currently, two official plugins are available:
+## Technology Stack
+| Category | Technologies |
+|-----------|-------------|
+| Core Framework | React 19, TypeScript |
+| Build System | Vite 6.3.1 |
+| Routing | React Router DOM 7.5.3 |
+| Styling | Tailwind CSS 4.1.5 |
+| Form Handling | React Hook Form 7.56.2, Zod 3.24.3 |
+| API Communication | Axios 1.9.0 |
+| Authentication | JWT (jwt-decode 4.0.0) |
+| UI Components | Lucide React 0.510.0, React Icons 5.5.0 |
+| Notifications | React Hot Toast 2.5.2 |
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Architecture
+![System Architecture]()
 
-## Expanding the ESLint configuration
+The application follows a component-based architecture with the following main features:
+- State management using Context API
+- Role-based protected routes
+- RESTful API integration
+- JWT authentication handling
+- Feature-based folder structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## How to Run the Project
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Prerequisites
+- Node.js (version 18 or higher)
+- npm (version 9 or higher)
+
+### Installation
+1. Clone the repository:
+```bash
+git clone https://github.com/Frank5005/vinnare-front.git
+cd vinnare-front
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
+```bash
+npm install
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Configure environment variables:
+```bash
+cp .env.example .env
+```
+Edit the `.env` file with the necessary configurations.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+4. Start the development server:
+```bash
+npm run dev
+```
+
+5. Open your browser and navigate to:
+```bash
+http://localhost:5173
+```
+
+## User Role System and Allowed Pages
+
+### Role: Admin
+Full access to the admin panel:
+- `/admin/homepage` - Main dashboard
+- `/admin/products-list` - Product management
+- `/admin/create-product` - Product creation
+- `/admin/categories-list` - Category management
+- `/admin/create-category` - Category creation
+- `/admin/view-all-users` - User management
+- `/admin/create-employee` - Employee creation
+- `/admin/jobs-list` - Job management
+
+### Role: Seller
+Limited access to the admin panel:
+- `/admin/homepage` - Main dashboard
+- `/admin/products-list` - Product management
+- `/admin/create-product` - Product creation
+- `/admin/categories-list` - Category management
+
+### Role: Shopper
+Access to shopping features:
+- `/shop-list` - Product listing
+- `/product/:id` - Product details
+- `/cart` - Shopping cart
+- `/checkout-address` - Checkout process (address)
+- `/checkout-shipping` - Checkout process (shipping)
+- `/checkout-payment` - Checkout process (payment)
+- `/my-orders` - Order history
+- `/wishlist` - Wishlist
+
+## Folder Structure
+```
+src/
+├── components/     # Reusable components
+├── features/       # Specific features
+├── hooks/         # Custom hooks
+├── pages/         # Application pages
+├── services/      # Services and API calls
+├── types/         # TypeScript type definitions
+└── utils/         # Utilities and helpers
+```
+
+## Example Flow
+![System Architecture]()
+
+## Test Coverage
+The project includes comprehensive test coverage for:
+- Components
+- Services
+- Hooks
+- Utils
+
+To run the tests:
+```bash
+npm test
+```
+
+To check test coverage:
+```bash
+npm test -- --coverage
 ```
