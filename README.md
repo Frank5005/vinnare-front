@@ -17,7 +17,8 @@ Vinnare-Front is a modern e-commerce application built with React and TypeScript
 | Notifications | React Hot Toast 2.5.2 |
 
 ## Architecture
-![System Architecture]()
+![System Architecture](https://github.com/user-attachments/assets/d65126ae-27eb-41a2-8c43-98c951a14f44)
+
 
 The application follows a component-based architecture with the following main features:
 - State management using Context API
@@ -104,7 +105,8 @@ src/
 ```
 
 ## Example Flow
-![System Architecture]()
+![System Architecture](https://github.com/user-attachments/assets/295b2330-aebf-402a-ac8c-4633b675b3f2)
+
 
 ## Test Coverage
 The project includes comprehensive test coverage for:
