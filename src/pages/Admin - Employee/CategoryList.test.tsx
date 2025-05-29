@@ -15,6 +15,7 @@ jest.mock('../../components/organisms/DataTable', () => {
 
 jest.mock('../../services/api', () => ({
     delete: jest.fn(),
+    put: jest.fn()
 }));
 
 const mockCategories = [
@@ -117,7 +118,13 @@ describe('CategoryList', () => {
     });
 
     it('shows error if delete fails', async () => {
-        (api.delete as jest.Mock).mockRejectedValueOnce({ response: { data: { title: 'Failed to delete category. Please try again.' } } });
+        (api.delete as jest.Mock).mockRejectedValueOnce({ 
+            response: { 
+                data: { 
+                    title: 'Failed to delete category. Please try again.' 
+                } 
+            } 
+        });
         render(<CategoryList />);
         const row = screen.getByText('Cat1').closest('tr');
         if (row) {
@@ -129,7 +136,27 @@ describe('CategoryList', () => {
         }
     });
 
-    
+    it('shows error when delete returns 500 status', async () => {
+        localStorage.setItem('userName', 'testuser');
+        (api.delete as jest.Mock).mockRejectedValueOnce({ 
+            response: { 
+                status: 500,
+                data: { 
+                    title: 'Failed to delete category. Please try again.' 
+                } 
+            } 
+        });
+        render(<CategoryList />);
+        const row = screen.getByText('Cat1').closest('tr');
+        if (row) {
+            const deleteButton = within(row).getByLabelText('Delete');
+            fireEvent.click(deleteButton);
+            await waitFor(() => {
+                expect(screen.getByText('Failed to delete category. Please try again.')).toBeInTheDocument();
+            });
+        }
+    });
+
     it('deletes a category successfully', async () => {
         localStorage.setItem('userName', 'testuser');
         localStorage.setItem('userRole', 'Admin');
@@ -151,4 +178,90 @@ describe('CategoryList', () => {
         }
     });
 
+    it('shows error when category is not found during edit', async () => {
+        (api.put as jest.Mock).mockRejectedValueOnce(new Error('Category not found'));
+        render(<CategoryList />);
+        const row = screen.getByText('Cat1').closest('tr');
+        if (row) {
+            const editButton = within(row).getByLabelText('Edit');
+            fireEvent.click(editButton);
+            currentCategories = currentCategories.filter(cat => cat.id !== 1);
+            const saveButton = within(row).getByLabelText('Save');
+            fireEvent.click(saveButton);
+            await waitFor(() => {
+                expect(screen.getByText('Failed to update category: Category not found')).toBeInTheDocument();
+            });
+        }
+    });
+
+    it('shows error when trying to edit unapproved category', async () => {
+        (api.put as jest.Mock).mockRejectedValueOnce({ 
+            response: { 
+                status: 500,
+                data: { message: 'Failed to update category that is not approved.' }
+            }
+        });
+        render(<CategoryList />);
+        const row = screen.getByText('Cat2').closest('tr');
+        if (row) {
+            const editButton = within(row).getByLabelText('Edit');
+            fireEvent.click(editButton);
+            const saveButton = within(row).getByLabelText('Save');
+            fireEvent.click(saveButton);
+            await waitFor(() => {
+                expect(screen.getByText('Failed to update category that is not approved.')).toBeInTheDocument();
+            });
+        }
+    });
+
+    it('shows error when username is not in localStorage during delete', async () => {
+        localStorage.removeItem('userName');
+        render(<CategoryList />);
+        const row = screen.getByText('Cat1').closest('tr');
+        if (row) {
+            const deleteButton = within(row).getByLabelText('Delete');
+            fireEvent.click(deleteButton);
+            await waitFor(() => {
+                expect(screen.getByText('Failed to delete category. Please try again.')).toBeInTheDocument();
+            });
+        }
+    });
+
+    it('handles edit with correct initial values', () => {
+        render(<CategoryList />);
+        const row = screen.getByText('Cat1').closest('tr');
+        if (row) {
+            const editButton = within(row).getByLabelText('Edit');
+            fireEvent.click(editButton);
+            const imageInput = within(row).getByPlaceholderText('Paste new image URL');
+            expect(imageInput).toHaveValue('');
+        }
+    });
+
+    it('updates category image URL after successful edit', async () => {
+        (api.put as jest.Mock).mockResolvedValueOnce({ status: 200 });
+        render(<CategoryList />);
+        const row = screen.getByText('Cat1').closest('tr');
+        if (row) {
+            const editButton = within(row).getByLabelText('Edit');
+            fireEvent.click(editButton);
+            
+            const imageInput = within(row).getByPlaceholderText('Paste new image URL');
+            fireEvent.change(imageInput, { target: { value: 'https://example.com/new-image.jpg' } });
+            
+            const saveButton = within(row).getByLabelText('Save');
+            fireEvent.click(saveButton);
+            
+            await waitFor(() => {
+                expect(api.put).toHaveBeenCalledWith('/api/category/1', {
+                    imageUrl: 'https://example.com/new-image.jpg'
+                });
+                const updatedRow = screen.getByText('Cat1').closest('tr');
+                if (updatedRow) {
+                    const image = within(updatedRow).getByRole('img');
+                    expect(image).toHaveAttribute('src', 'https://example.com/new-image.jpg');
+                }
+            });
+        }
+    });
 });
