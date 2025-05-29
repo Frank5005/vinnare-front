@@ -125,6 +125,7 @@ const CategoryList = () => {
               className="w-full px-2 py-1 border rounded mb-2"
               disabled={isSaving}
               placeholder="Paste new image URL"
+              aria-label="IMAGE"
             />
             {editForm.imageUrl && (
               <img
@@ -138,7 +139,15 @@ const CategoryList = () => {
           <img src={row.imageUrl} alt={row.name} className="w-12 h-12 object-cover rounded" />
         )
     },
-    { key: "approved", label: "APPROVED", render: (row) => (row.approved ? "✅" : "❌") },
+    { 
+      key: "approved", 
+      label: "APPROVED", 
+      render: (row) => (
+        <span data-testid={`approved-${row.id}`}>
+          {row.approved ? "✅" : "❌"}
+        </span>
+      )
+    },
   ];
 
   const actions: DataTableAction<Category>[] = editingId !== null
@@ -173,7 +182,6 @@ const CategoryList = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Header sticky */}
       <div className="sticky top-0 z-50">
         <AdminHeader />
       </div>
@@ -182,7 +190,7 @@ const CategoryList = () => {
         <h1 className="text-2xl font-bold">Category List</h1>
         </div>
         {errorMessage && (
-          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
+          <div role="alert" className="mb-4 p-4 bg-red-100 text-red-700 rounded">
             {errorMessage}
           </div>
         )}
