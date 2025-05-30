@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { waitFor } from '@testing-library/react';
-import useShopList from '../hooks/useShopList';
+import useShopList from './useShopList';
 import * as service from '../services/shopperService';
 
 jest.mock('../services/shopperService');
