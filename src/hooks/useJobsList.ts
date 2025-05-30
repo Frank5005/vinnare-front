@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Job } from "../types/Job";
 import { getJobs, reviewJob } from "../services/adminService";
+import { set } from "react-hook-form";
 
 export const useJobsList = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -18,11 +19,9 @@ export const useJobsList = () => {
       try {
         const jos = await getJobs();
         setJobs(jos);
-        console.log("Los trabajos son", jos);
+        console.log("The jobs are", jos);
       } catch (err: any) {
-        //setError(
-        //"Error fetching products: " + (err?.message || JSON.stringify(err))
-        //);
+        setError("Error fetching jobs");
         console.error("Failed to fetch jobs:", err);
       } finally {
         setLoading(false);
