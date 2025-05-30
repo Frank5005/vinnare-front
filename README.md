@@ -109,6 +109,8 @@ src/
 
 
 ## Test Coverage
+![image](https://github.com/user-attachments/assets/277b5ef2-37d0-40eb-934b-d515627aa89c)
+
 The project includes comprehensive test coverage for:
 - Components
 - Services
