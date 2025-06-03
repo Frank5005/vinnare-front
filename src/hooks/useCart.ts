@@ -59,11 +59,24 @@ export const useCart = () => {
       setCartItems(prods);
       setProductsIds(ids);
       console.log(prods);
-    } catch (err) {
-      if (productsIds.length == 0){
+      // Check if cart is empty
+      if (ids.length === 0) {
         setError("You don't have products in your cart, go to shopping!");
+      } else {
+        setError(""); // Clear previous error if any
       }
-      setError(err instanceof Error ? err.message : "An error occurred");
+    } catch (err) {
+      let errorMessage = "An error occurred";
+
+      if (err instanceof Error) {
+        if (err.message.includes("404")) {
+          errorMessage = "Sorry, something is wrong.";
+        } else {
+          errorMessage = err.message;
+        }
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -112,7 +125,6 @@ export const useCart = () => {
 
   const fetchPreview = async () => {
     try {
-
       const body = { coupon_code: appliedCouponCode || undefined };
 
       /* 

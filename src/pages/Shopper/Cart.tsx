@@ -36,7 +36,7 @@ const Cart = () => {
             </p>
 
             {loading && <p>Loading...</p>}
-            {error && <p className="text-red-600">{error}</p>}
+            {error && <p className="text-red-600">{"You don't have products in your cart, go to shopping!"}</p>}
 
             <div className="space-y-6">
               {cartItems.map(item => (
