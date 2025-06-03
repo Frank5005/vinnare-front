@@ -7,8 +7,8 @@ import {
   viewPreview,
 } from "../services/shopperService";
 import { Item } from "../types/Item";
-import { Preview } from "../types/Preview";
-import { PurchaseContextType } from "../types/PurchaseContextType";
+//import { Preview } from "../types/Preview";
+//import { PurchaseContextType } from "../types/PurchaseContextType";
 import { usePurchase } from "../context/purchaseContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -59,6 +59,9 @@ export const useCart = () => {
       setProductsIds(ids);
       console.log(prods);
     } catch (err) {
+      if (productsIds.length == 0){
+        setError("You don't have products in your cart, go to shopping!");
+      }
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);

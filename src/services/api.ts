@@ -1,15 +1,17 @@
 import axios from "axios";
 
 
+/*
 const baseURL = import.meta.env.PROD
   ? 'https://5586-3-147-45-32.ngrok-free.app'
   : '/api';
+  */
 
 
 const api = axios.create({
-  baseURL: baseURL,
+  //baseURL: baseURL,
   //baseURL: import.meta.env.VITE_API_URL,
-  //baseURL: 'https://5586-3-147-45-32.ngrok-free.app',
+  baseURL: 'https://5586-3-147-45-32.ngrok-free.app',
   withCredentials: true,
 });
 
