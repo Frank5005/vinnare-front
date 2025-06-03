@@ -28,6 +28,7 @@ export const useCart = () => {
   });
   const { data, setData } = usePurchase();
   const navigate = useNavigate();
+  productsIds.length = 0;
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
