@@ -9,7 +9,7 @@ export default defineConfig({
     port: 8080,
     proxy: {
       '/api': {
-        target: 'https://5586-3-147-45-32.ngrok-free.app',
+        target: 'https://49b9-3-144-90-59.ngrok-free.app',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''), // Elimina /api del path
