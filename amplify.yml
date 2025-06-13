@@ -13,6 +13,9 @@ frontend:
     baseDirectory: dist
     files:
       - '**/*'
+      - '!**/*.spec.*'
+      - '!**/__tests__/**'
+      - '!**/*.test.*'
   cache:
     paths:
       - node_modules/**/*
