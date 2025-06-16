@@ -10,8 +10,8 @@ const baseURL = import.meta.env.PROD
 
 const api = axios.create({
   //baseURL: baseURL,
-  baseURL: import.meta.env.VITE_API_URL,
-  //baseURL: 'https://49b9-3-144-90-59.ngrok-free.app',
+  //baseURL: import.meta.env.VITE_API_URL,
+  baseURL: 'https://49b9-3-144-90-59.ngrok-free.app',
   withCredentials: true,
 });
 
